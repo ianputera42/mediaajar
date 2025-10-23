@@ -1,0 +1,615 @@
+<!doctype html>
+<html lang="id" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Pembuat Presentasi AI</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <style>
+        body {
+            box-sizing: border-box;
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        .loading-spinner {
+            border: 3px solid #f3f4f6;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+  <style>@view-transition { navigation: auto; }</style>
+ </head>
+ <body class="h-full bg-gray-50">
+  <div class="min-h-full"><!-- Header -->
+   <header class="gradient-bg shadow-lg">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+     <div class="flex justify-between items-center py-6">
+      <div class="flex items-center">
+       <div class="flex-shrink-0">
+        <svg class="h-8 w-8 text-white" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+        </svg>
+       </div>
+       <div class="ml-4">
+        <h1 id="dashboard-title" class="text-2xl font-bold text-white">Dashboard Pembuat Presentasi AI</h1>
+        <p id="welcome-message" class="text-indigo-100">Selamat datang di Dashboard Pembuat Presentasi berbasis AI</p>
+       </div>
+      </div>
+      <div class="flex items-center space-x-4"><button id="refresh-btn" class="bg-white bg-opacity-20 hover:bg-opacity-30 text-white px-4 py-2 rounded-lg transition-colors">
+        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+        </svg></button>
+      </div>
+     </div>
+    </div>
+   </header><!-- Main Content -->
+   <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8"><!-- Stats Cards -->
+    <div class="px-4 py-6 sm:px-0">
+     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <div class="bg-white overflow-hidden shadow rounded-lg">
+       <div class="p-5">
+        <div class="flex items-center">
+         <div class="flex-shrink-0">
+          <svg class="h-6 w-6 text-blue-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+          </svg>
+         </div>
+         <div class="ml-5 w-0 flex-1">
+          <dl>
+           <dt class="text-sm font-medium text-gray-500 truncate">
+            Total Presentasi
+           </dt>
+           <dd id="total-presentations" class="text-lg font-medium text-gray-900">
+            0
+           </dd>
+          </dl>
+         </div>
+        </div>
+       </div>
+      </div>
+      <div class="bg-white overflow-hidden shadow rounded-lg">
+       <div class="p-5">
+        <div class="flex items-center">
+         <div class="flex-shrink-0">
+          <svg class="h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+         </div>
+         <div class="ml-5 w-0 flex-1">
+          <dl>
+           <dt class="text-sm font-medium text-gray-500 truncate">
+            Selesai
+           </dt>
+           <dd id="completed-presentations" class="text-lg font-medium text-gray-900">
+            0
+           </dd>
+          </dl>
+         </div>
+        </div>
+       </div>
+      </div>
+      <div class="bg-white overflow-hidden shadow rounded-lg">
+       <div class="p-5">
+        <div class="flex items-center">
+         <div class="flex-shrink-0">
+          <svg class="h-6 w-6 text-yellow-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+         </div>
+         <div class="ml-5 w-0 flex-1">
+          <dl>
+           <dt class="text-sm font-medium text-gray-500 truncate">
+            Dalam Proses
+           </dt>
+           <dd id="draft-presentations" class="text-lg font-medium text-gray-900">
+            0
+           </dd>
+          </dl>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div><!-- Create New Presentation Form -->
+     <div class="bg-white shadow rounded-lg mb-8">
+      <div class="px-4 py-5 sm:p-6">
+       <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Buat Presentasi Baru</h3>
+       <form id="presentation-form" class="space-y-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+         <div><label for="penyusun" class="block text-sm font-medium text-gray-700">Penyusun</label> <input type="text" id="penyusun" name="penyusun" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm px-3 py-2 border">
+         </div>
+         <div><label for="mata_pelajaran" class="block text-sm font-medium text-gray-700">Mata Pelajaran</label> <input type="text" id="mata_pelajaran" name="mata_pelajaran" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm px-3 py-2 border">
+         </div>
+         <div><label for="kelas_fase" class="block text-sm font-medium text-gray-700">Kelas/Fase</label> <input type="text" id="kelas_fase" name="kelas_fase" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm px-3 py-2 border">
+         </div>
+         <div><label for="topik_elemen" class="block text-sm font-medium text-gray-700">Topik/Elemen Materi</label> <input type="text" id="topik_elemen" name="topik_elemen" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm px-3 py-2 border">
+         </div>
+        </div><!-- Deep Learning Components -->
+        <div class="border-t pt-6">
+         <h4 class="text-md font-medium text-gray-900 mb-4">Komponen Deep Learning</h4>
+         <div class="space-y-6">
+          <div><label for="tujuan_pembelajaran" class="block text-sm font-medium text-gray-700">Tujuan Pembelajaran (Meaningful Learning)</label> <textarea id="tujuan_pembelajaran" name="tujuan_pembelajaran" rows="3" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm px-3 py-2 border" placeholder="Deskripsikan tujuan pembelajaran yang mengaitkan konsep dengan kehidupan nyata..."></textarea>
+          </div>
+          <div><label for="langkah_pembelajaran" class="block text-sm font-medium text-gray-700">Langkah Pembelajaran Aktif (Mindful Learning)</label> <textarea id="langkah_pembelajaran" name="langkah_pembelajaran" rows="3" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm px-3 py-2 border" placeholder="Jelaskan langkah pembelajaran yang mendorong refleksi dan kesadaran siswa..."></textarea>
+          </div>
+          <div><label for="penilaian" class="block text-sm font-medium text-gray-700">Penilaian Autentik</label>
+           <div class="mt-1 mb-2 p-3 bg-blue-50 border border-blue-200 rounded-md">
+            <p class="text-xs text-blue-800"><strong>Prinsip Penilaian Autentik:</strong></p>
+            <ul class="text-xs text-blue-700 mt-1 space-y-1">
+             <li>• <strong>Bagian dari proses pembelajaran:</strong> Penilaian terintegrasi langsung dengan proses belajar-mengajar</li>
+             <li>• <strong>Mencerminkan masalah dunia nyata:</strong> Tugas yang diberikan relevan dengan tantangan dan skenario di dunia nyata</li>
+             <li>• <strong>Menggunakan berbagai ukuran:</strong> Melibatkan berbagai metode dan kriteria yang sesuai dengan karakteristik pengalaman belajar siswa</li>
+             <li>• <strong>Bersifat holistik:</strong> Mencakup semua aspek tujuan pembelajaran, yaitu sikap, pengetahuan, dan keterampilan</li>
+            </ul>
+            <div class="mt-2 pt-2 border-t border-blue-200">
+             <p class="text-xs text-blue-800 font-medium mb-1">Contoh Penilaian Autentik:</p>
+             <ul class="text-xs text-blue-700 space-y-1">
+              <li>• <strong>Portfolio:</strong> Kumpulan karya siswa yang menunjukkan perkembangan belajar</li>
+              <li>• <strong>Proyek berbasis masalah:</strong> Siswa menyelesaikan masalah nyata di lingkungan mereka</li>
+              <li>• <strong>Presentasi dan demonstrasi:</strong> Siswa menjelaskan proses berpikir dan hasil karya</li>
+              <li>• <strong>Jurnal reflektif:</strong> Siswa menulis refleksi tentang proses pembelajaran</li>
+              <li>• <strong>Penilaian kinerja:</strong> Observasi langsung saat siswa melakukan tugas</li>
+              <li>• <strong>Peer assessment:</strong> Siswa menilai karya teman dengan rubrik yang jelas</li>
+              <li>• <strong>Self assessment:</strong> Siswa mengevaluasi pembelajaran dan kemajuan diri</li>
+             </ul>
+            </div>
+           </div><textarea id="penilaian" name="penilaian" rows="3" required class="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm px-3 py-2 border" placeholder="Pilih dan deskripsikan metode penilaian autentik yang sesuai dengan materi Anda..."></textarea>
+          </div>
+          <div><label for="media_interaktif" class="block text-sm font-medium text-gray-700">Media Pembelajaran Interaktif (Joyful Learning)</label>
+           <div class="mt-1 mb-2 p-3 bg-green-50 border border-green-200 rounded-md">
+            <p class="text-xs text-green-800"><strong>Media Pembelajaran Interaktif:</strong> Media yang menggabungkan teks, gambar, video, animasi, dan elemen interaktif lainnya untuk melibatkan siswa secara aktif dalam proses belajar. Daripada hanya menerima informasi secara pasif, siswa dapat berinteraksi langsung dengan materi melalui simulasi, permainan, dan kuis. Hal ini menjadikan pembelajaran lebih dinamis, memotivasi, dan mudah dipahami.</p>
+            <div class="mt-2 pt-2 border-t border-green-200">
+             <p class="text-xs text-green-800 font-medium mb-1">Contoh Media Pembelajaran Interaktif:</p>
+             <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs text-green-700">
+              <div>
+               <p class="font-medium">Digital &amp; Teknologi:</p>
+               <ul class="space-y-1 ml-2">
+                <li>• Simulasi virtual lab</li>
+                <li>• Aplikasi AR/VR</li>
+                <li>• Game edukasi digital</li>
+                <li>• Kuis interaktif online</li>
+                <li>• Video interaktif</li>
+                <li>• Infografis animasi</li>
+               </ul>
+              </div>
+              <div>
+               <p class="font-medium">Fisik &amp; Manipulatif:</p>
+               <ul class="space-y-1 ml-2">
+                <li>• Permainan papan edukatif</li>
+                <li>• Kartu interaktif</li>
+                <li>• Model 3D manipulatif</li>
+                <li>• Role playing games</li>
+                <li>• Eksperimen hands-on</li>
+                <li>• Puzzle dan teka-teki</li>
+               </ul>
+              </div>
+             </div>
+            </div>
+           </div><textarea id="media_interaktif" name="media_interaktif" rows="3" required class="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm px-3 py-2 border" placeholder="Pilih dan jelaskan media interaktif spesifik yang akan membuat pembelajaran menyenangkan..."></textarea>
+          </div>
+          <div><label for="relevansi_kehidupan" class="block text-sm font-medium text-gray-700">Relevansi dengan Kehidupan Nyata</label>
+           <div class="mt-1 mb-2 p-3 bg-yellow-50 border border-yellow-200 rounded-md">
+            <p class="text-xs text-yellow-800"><strong>Pembelajaran Kontekstual:</strong> Sebuah materi bisa relevan dengan kehidupan nyata melalui pembelajaran kontekstual, yaitu dengan menghubungkan teori yang dipelajari di kelas dengan situasi dan masalah yang dihadapi dalam kehidupan sehari-hari. Ketika siswa bisa melihat hubungan langsung antara apa yang mereka pelajari dengan pengalaman pribadi atau dunia di sekitar mereka, materi tersebut menjadi lebih bermakna dan mudah dipahami.</p>
+            <div class="mt-2 pt-2 border-t border-yellow-200">
+             <p class="text-xs text-yellow-800 font-medium mb-1">Contoh Relevansi dengan Kehidupan Nyata:</p>
+             <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs text-yellow-700">
+              <div>
+               <p class="font-medium">Matematika:</p>
+               <ul class="space-y-1 ml-2">
+                <li>• Menghitung diskon belanja</li>
+                <li>• Perencanaan keuangan pribadi</li>
+                <li>• Mengukur bahan masakan</li>
+                <li>• Menghitung jarak tempuh</li>
+               </ul>
+               <p class="font-medium mt-2">IPA:</p>
+               <ul class="space-y-1 ml-2">
+                <li>• Proses fotosintesis di taman</li>
+                <li>• Pencemaran air di lingkungan</li>
+                <li>• Gaya dan gerak saat bersepeda</li>
+                <li>• Listrik dalam rumah tangga</li>
+               </ul>
+              </div>
+              <div>
+               <p class="font-medium">Bahasa:</p>
+               <ul class="space-y-1 ml-2">
+                <li>• Menulis email formal</li>
+                <li>• Presentasi di depan umum</li>
+                <li>• Membaca berita dan artikel</li>
+                <li>• Komunikasi media sosial</li>
+               </ul>
+               <p class="font-medium mt-2">IPS:</p>
+               <ul class="space-y-1 ml-2">
+                <li>• Isu sosial di masyarakat</li>
+                <li>• Ekonomi keluarga</li>
+                <li>• Budaya lokal dan tradisi</li>
+                <li>• Masalah lingkungan sekitar</li>
+               </ul>
+              </div>
+             </div>
+            </div>
+           </div><textarea id="relevansi_kehidupan" name="relevansi_kehidupan" rows="3" required class="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm px-3 py-2 border" placeholder="Berikan contoh konkret bagaimana materi ini dapat diterapkan dalam kehidupan sehari-hari siswa..."></textarea>
+          </div>
+         </div>
+        </div>
+        <div class="flex justify-end"><button type="submit" id="submit-btn" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-md font-medium transition-colors flex items-center"> <span id="submit-text">Buat Presentasi dengan AI</span>
+          <div id="submit-spinner" class="loading-spinner ml-2 hidden"></div></button>
+        </div>
+       </form>
+      </div>
+     </div><!-- Presentations List -->
+     <div class="bg-white shadow rounded-lg">
+      <div class="px-4 py-5 sm:p-6">
+       <div class="flex justify-between items-center mb-4">
+        <h3 class="text-lg leading-6 font-medium text-gray-900">Presentasi Saya</h3>
+        <div class="flex space-x-2"><select id="status-filter" class="border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm px-3 py-2 border"> <option value="">Semua Status</option> <option value="draft">Draft</option> <option value="completed">Selesai</option> </select>
+        </div>
+       </div>
+       <div id="presentations-list" class="space-y-4">
+        <div class="text-center py-8 text-gray-500">
+         <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+         </svg>
+         <p class="mt-2">Belum ada presentasi. Buat presentasi pertama Anda!</p>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </main><!-- Footer -->
+   <footer class="bg-white border-t border-gray-200">
+    <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
+     <p id="footer-text" class="text-center text-sm text-gray-500">© 2024 Dashboard Pembuat Presentasi AI</p>
+    </div>
+   </footer>
+  </div>
+  <script>
+        // Configuration
+        const defaultConfig = {
+            dashboard_title: "Dashboard Pembuat Presentasi AI",
+            welcome_message: "Selamat datang di Dashboard Pembuat Presentasi berbasis AI",
+            footer_text: "© 2024 Dashboard Pembuat Presentasi AI",
+            primary_color: "#667eea",
+            secondary_color: "#764ba2",
+            background_color: "#f9fafb",
+            text_color: "#1f2937",
+            accent_color: "#10b981"
+        };
+
+        let presentations = [];
+        let currentRecordCount = 0;
+
+        // Data handler
+        const dataHandler = {
+            onDataChanged(data) {
+                presentations = data;
+                currentRecordCount = data.length;
+                updateStats();
+                renderPresentationsList();
+            }
+        };
+
+        // Initialize SDK
+        async function initializeApp() {
+            if (window.dataSdk) {
+                const initResult = await window.dataSdk.init(dataHandler);
+                if (!initResult.isOk) {
+                    showToast("Gagal menginisialisasi aplikasi", "error");
+                }
+            }
+
+            if (window.elementSdk) {
+                await window.elementSdk.init({
+                    defaultConfig,
+                    render,
+                    mapToCapabilities,
+                    mapToEditPanelValues
+                });
+            }
+
+            setupEventListeners();
+        }
+
+        // Render function for element SDK
+        async function render(config) {
+            const dashboardTitle = config.dashboard_title || defaultConfig.dashboard_title;
+            const welcomeMessage = config.welcome_message || defaultConfig.welcome_message;
+            const footerText = config.footer_text || defaultConfig.footer_text;
+            const primaryColor = config.primary_color || defaultConfig.primary_color;
+            const backgroundColor = config.background_color || defaultConfig.background_color;
+            const textColor = config.text_color || defaultConfig.text_color;
+
+            document.getElementById('dashboard-title').textContent = dashboardTitle;
+            document.getElementById('welcome-message').textContent = welcomeMessage;
+            document.getElementById('footer-text').textContent = footerText;
+
+            // Apply colors
+            document.body.style.backgroundColor = backgroundColor;
+            document.body.style.color = textColor;
+            
+            const header = document.querySelector('header');
+            if (header) {
+                header.style.background = `linear-gradient(135deg, ${primaryColor} 0%, ${config.secondary_color || defaultConfig.secondary_color} 100%)`;
+            }
+        }
+
+        // Capabilities mapping
+        function mapToCapabilities(config) {
+            return {
+                recolorables: [
+                    {
+                        get: () => config.primary_color || defaultConfig.primary_color,
+                        set: (value) => {
+                            if (window.elementSdk) {
+                                window.elementSdk.setConfig({ primary_color: value });
+                            }
+                        }
+                    },
+                    {
+                        get: () => config.background_color || defaultConfig.background_color,
+                        set: (value) => {
+                            if (window.elementSdk) {
+                                window.elementSdk.setConfig({ background_color: value });
+                            }
+                        }
+                    },
+                    {
+                        get: () => config.text_color || defaultConfig.text_color,
+                        set: (value) => {
+                            if (window.elementSdk) {
+                                window.elementSdk.setConfig({ text_color: value });
+                            }
+                        }
+                    }
+                ],
+                borderables: [],
+                fontEditable: undefined,
+                fontSizeable: undefined
+            };
+        }
+
+        // Edit panel values mapping
+        function mapToEditPanelValues(config) {
+            return new Map([
+                ["dashboard_title", config.dashboard_title || defaultConfig.dashboard_title],
+                ["welcome_message", config.welcome_message || defaultConfig.welcome_message],
+                ["footer_text", config.footer_text || defaultConfig.footer_text]
+            ]);
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            const form = document.getElementById('presentation-form');
+            const refreshBtn = document.getElementById('refresh-btn');
+            const statusFilter = document.getElementById('status-filter');
+
+            form.addEventListener('submit', handleFormSubmit);
+            refreshBtn.addEventListener('click', () => location.reload());
+            statusFilter.addEventListener('change', renderPresentationsList);
+        }
+
+        // Handle form submission
+        async function handleFormSubmit(event) {
+            event.preventDefault();
+            
+            if (currentRecordCount >= 999) {
+                showToast("Batas maksimum 999 presentasi telah tercapai. Hapus beberapa presentasi terlebih dahulu.", "error");
+                return;
+            }
+
+            const submitBtn = document.getElementById('submit-btn');
+            const submitText = document.getElementById('submit-text');
+            const submitSpinner = document.getElementById('submit-spinner');
+
+            // Show loading state
+            submitBtn.disabled = true;
+            submitText.textContent = 'Membuat Presentasi...';
+            submitSpinner.classList.remove('hidden');
+
+            try {
+                const formData = new FormData(event.target);
+                const presentationData = {
+                    id: generateId(),
+                    penyusun: formData.get('penyusun'),
+                    mata_pelajaran: formData.get('mata_pelajaran'),
+                    kelas_fase: formData.get('kelas_fase'),
+                    topik_elemen: formData.get('topik_elemen'),
+                    tujuan_pembelajaran: formData.get('tujuan_pembelajaran'),
+                    langkah_pembelajaran: formData.get('langkah_pembelajaran'),
+                    penilaian: formData.get('penilaian'),
+                    media_interaktif: formData.get('media_interaktif'),
+                    relevansi_kehidupan: formData.get('relevansi_kehidupan'),
+                    created_at: new Date().toISOString(),
+                    status: 'draft'
+                };
+
+                if (window.dataSdk) {
+                    const result = await window.dataSdk.create(presentationData);
+                    if (result.isOk) {
+                        showToast("Presentasi berhasil dibuat!", "success");
+                        event.target.reset();
+                    } else {
+                        showToast("Gagal membuat presentasi. Silakan coba lagi.", "error");
+                    }
+                }
+            } catch (error) {
+                showToast("Terjadi kesalahan. Silakan coba lagi.", "error");
+            } finally {
+                // Reset loading state
+                submitBtn.disabled = false;
+                submitText.textContent = 'Buat Presentasi dengan AI';
+                submitSpinner.classList.add('hidden');
+            }
+        }
+
+        // Update statistics
+        function updateStats() {
+            const total = presentations.length;
+            const completed = presentations.filter(p => p.status === 'completed').length;
+            const draft = presentations.filter(p => p.status === 'draft').length;
+
+            document.getElementById('total-presentations').textContent = total;
+            document.getElementById('completed-presentations').textContent = completed;
+            document.getElementById('draft-presentations').textContent = draft;
+        }
+
+        // Render presentations list
+        function renderPresentationsList() {
+            const container = document.getElementById('presentations-list');
+            const statusFilter = document.getElementById('status-filter').value;
+            
+            let filteredPresentations = presentations;
+            if (statusFilter) {
+                filteredPresentations = presentations.filter(p => p.status === statusFilter);
+            }
+
+            if (filteredPresentations.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-8 text-gray-500">
+                        <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                        <p class="mt-2">${statusFilter ? 'Tidak ada presentasi dengan status ini.' : 'Belum ada presentasi. Buat presentasi pertama Anda!'}</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = filteredPresentations.map(presentation => `
+                <div class="border border-gray-200 rounded-lg p-4 card-hover" data-id="${presentation.__backendId}">
+                    <div class="flex justify-between items-start">
+                        <div class="flex-1">
+                            <div class="flex items-center space-x-2 mb-2">
+                                <h4 class="text-lg font-medium text-gray-900">${presentation.mata_pelajaran}</h4>
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${presentation.status === 'completed' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}">
+                                    ${presentation.status === 'completed' ? 'Selesai' : 'Draft'}
+                                </span>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-1"><strong>Topik:</strong> ${presentation.topik_elemen}</p>
+                            <p class="text-sm text-gray-600 mb-1"><strong>Kelas:</strong> ${presentation.kelas_fase}</p>
+                            <p class="text-sm text-gray-600 mb-1"><strong>Penyusun:</strong> ${presentation.penyusun}</p>
+                            <p class="text-xs text-gray-500">Dibuat: ${new Date(presentation.created_at).toLocaleDateString('id-ID')}</p>
+                        </div>
+                        <div class="flex space-x-2 ml-4">
+                            <button onclick="toggleStatus('${presentation.__backendId}')" class="text-indigo-600 hover:text-indigo-900 text-sm font-medium">
+                                ${presentation.status === 'completed' ? 'Jadikan Draft' : 'Tandai Selesai'}
+                            </button>
+                            <button onclick="deletePresentation('${presentation.__backendId}')" class="text-red-600 hover:text-red-900 text-sm font-medium">
+                                Hapus
+                            </button>
+                        </div>
+                    </div>
+                    <div class="mt-3 pt-3 border-t border-gray-100">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                            <div>
+                                <p class="font-medium text-gray-700 mb-1">Tujuan Pembelajaran:</p>
+                                <p class="text-gray-600 text-xs">${presentation.tujuan_pembelajaran.substring(0, 100)}${presentation.tujuan_pembelajaran.length > 100 ? '...' : ''}</p>
+                            </div>
+                            <div>
+                                <p class="font-medium text-gray-700 mb-1">Media Interaktif:</p>
+                                <p class="text-gray-600 text-xs">${presentation.media_interaktif.substring(0, 100)}${presentation.media_interaktif.length > 100 ? '...' : ''}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Toggle presentation status
+        async function toggleStatus(backendId) {
+            const presentation = presentations.find(p => p.__backendId === backendId);
+            if (!presentation) return;
+
+            const newStatus = presentation.status === 'completed' ? 'draft' : 'completed';
+            const updatedPresentation = { ...presentation, status: newStatus };
+
+            if (window.dataSdk) {
+                const result = await window.dataSdk.update(updatedPresentation);
+                if (result.isOk) {
+                    showToast(`Status berhasil diubah menjadi ${newStatus === 'completed' ? 'selesai' : 'draft'}`, "success");
+                } else {
+                    showToast("Gagal mengubah status", "error");
+                }
+            }
+        }
+
+        // Delete presentation
+        async function deletePresentation(backendId) {
+            const presentation = presentations.find(p => p.__backendId === backendId);
+            if (!presentation) return;
+
+            // Inline confirmation
+            const card = document.querySelector(`[data-id="${backendId}"]`);
+            const originalContent = card.innerHTML;
+            
+            card.innerHTML = `
+                <div class="flex items-center justify-between p-4">
+                    <p class="text-sm text-gray-700">Yakin ingin menghapus presentasi ini?</p>
+                    <div class="flex space-x-2">
+                        <button onclick="confirmDelete('${backendId}')" class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-sm">
+                            Ya, Hapus
+                        </button>
+                        <button onclick="cancelDelete('${backendId}', \`${originalContent.replace(/`/g, '\\`')}\`)" class="bg-gray-300 hover:bg-gray-400 text-gray-700 px-3 py-1 rounded text-sm">
+                            Batal
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Confirm delete
+        async function confirmDelete(backendId) {
+            const presentation = presentations.find(p => p.__backendId === backendId);
+            if (!presentation) return;
+
+            if (window.dataSdk) {
+                const result = await window.dataSdk.delete(presentation);
+                if (result.isOk) {
+                    showToast("Presentasi berhasil dihapus", "success");
+                } else {
+                    showToast("Gagal menghapus presentasi", "error");
+                }
+            }
+        }
+
+        // Cancel delete
+        function cancelDelete(backendId, originalContent) {
+            const card = document.querySelector(`[data-id="${backendId}"]`);
+            card.innerHTML = originalContent;
+        }
+
+        // Show toast notification
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            toast.className = `fixed top-4 right-4 px-6 py-3 rounded-lg text-white z-50 ${
+                type === 'success' ? 'bg-green-500' : 
+                type === 'error' ? 'bg-red-500' : 'bg-blue-500'
+            }`;
+            toast.textContent = message;
+            
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        }
+
+        // Generate unique ID
+        function generateId() {
+            return Date.now().toString(36) + Math.random().toString(36).substr(2);
+        }
+
+        // Initialize app when DOM is loaded
+        document.addEventListener('DOMContentLoaded', initializeApp);
+    </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'992fad8b45736041',t:'MTc2MTIwNjE4Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
