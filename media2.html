@@ -1,0 +1,2495 @@
+<!doctype html>
+<html lang="id" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Generator Presentasi Canva</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="/_sdk/element_sdk.js"></script><!-- Professional Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;family=Playfair+Display:wght@400;500;600;700;800&amp;family=Source+Sans+Pro:wght@300;400;600;700&amp;display=swap" rel="stylesheet">
+  <style>
+        body {
+            box-sizing: border-box;
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .card-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .card-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        .loading-spinner {
+            border: 3px solid #f3f4f6;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .slide-preview {
+            width: 1024px;
+            height: 768px;
+            max-width: 100%;
+            aspect-ratio: 4/3;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 3rem;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            margin: 0 auto 2rem auto;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        @media (max-width: 1200px) {
+            .slide-preview {
+                width: 90vw;
+                height: calc(90vw * 3/4);
+                padding: 2rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .slide-preview {
+                width: 95vw;
+                height: calc(95vw * 3/4);
+                padding: 1.5rem;
+            }
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        .slide-navigation {
+            position: sticky;
+            top: 20px;
+            z-index: 10;
+        }
+    </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full bg-gray-50">
+  <div class="min-h-full"><!-- Header -->
+   <header class="gradient-bg shadow-lg">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+     <div class="flex justify-between items-center py-6">
+      <div class="flex items-center">
+       <div class="flex-shrink-0">
+        <svg class="h-8 w-8 text-white" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 4V2a1 1 0 011-1h8a1 1 0 011 1v2h4a1 1 0 110 2h-1v12a2 2 0 01-2 2H6a2 2 0 01-2-2V6H3a1 1 0 110-2h4zM9 3v1h6V3H9zm2 5a1 1 0 011 1v6a1 1 0 11-2 0V9a1 1 0 011-1zm4 0a1 1 0 011 1v6a1 1 0 11-2 0V9a1 1 0 011-1z"></path>
+        </svg>
+       </div>
+       <div class="ml-4">
+        <h1 id="app-title" class="text-2xl font-bold text-white">Generator Presentasi Canva</h1>
+        <p id="welcome-text" class="text-indigo-100">Buat presentasi Canva yang menakjubkan dalam hitungan detik</p>
+       </div>
+      </div>
+      <div class="flex items-center space-x-4">
+       <div class="text-white text-sm"><span class="bg-white bg-opacity-20 px-3 py-1 rounded-full">🎨 Desain Siap Pakai</span>
+       </div>
+      </div>
+     </div>
+    </div>
+   </header><!-- Main Content -->
+   <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+    <div class="px-4 py-6 sm:px-0"><!-- Generator Form -->
+     <div class="bg-white shadow rounded-lg mb-8">
+      <div class="px-4 py-5 sm:p-6">
+       <div class="flex items-center justify-between mb-6">
+        <h3 class="text-lg leading-6 font-medium text-gray-900">🎯 Generator Presentasi Pembelajaran</h3>
+        <div class="text-sm text-gray-500"><span class="bg-green-100 text-green-800 px-2 py-1 rounded-full">✨ Instant Generate</span>
+        </div>
+       </div>
+       <form id="presentation-form" class="space-y-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+         <div><label for="penyusun" class="block text-sm font-medium text-gray-700">👨‍🏫 Nama Guru/Penyusun</label> <input type="text" id="penyusun" name="penyusun" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm px-3 py-2 border" placeholder="Masukkan nama Anda">
+         </div>
+         <div><label for="mata_pelajaran" class="block text-sm font-medium text-gray-700">📚 Mata Pelajaran</label> <input type="text" id="mata_pelajaran" name="mata_pelajaran" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm px-3 py-2 border" placeholder="Contoh: Matematika, IPA, Bahasa Indonesia">
+         </div>
+         <div><label for="kelas_fase" class="block text-sm font-medium text-gray-700">🎓 Kelas/Fase</label> <input type="text" id="kelas_fase" name="kelas_fase" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm px-3 py-2 border" placeholder="Contoh: Kelas 5, Fase C, SMA Kelas 11">
+         </div>
+         <div><label for="topik_materi" class="block text-sm font-medium text-gray-700">📖 Topik/Materi Pembelajaran</label> <input type="text" id="topik_materi" name="topik_materi" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm px-3 py-2 border" placeholder="Contoh: Pecahan, Fotosintesis, Teks Narasi">
+         </div>
+        </div>
+        <div class="border-t pt-6">
+         <h4 class="text-md font-medium text-gray-900 mb-4">🎨 Pilih Template Desain Profesional</h4>
+         <div class="grid grid-cols-1 md:grid-cols-3 gap-4"><label class="cursor-pointer"> <input type="radio" name="template" value="modern" class="sr-only" checked>
+           <div class="template-card border-2 border-indigo-500 rounded-lg p-4 bg-gradient-to-br from-blue-700 to-indigo-800 text-white shadow-lg">
+            <h5 class="font-semibold mb-2">🌟 Modern Professional</h5>
+            <p class="text-sm opacity-90">Font Inter, gradien biru profesional, layout clean</p>
+            <div class="mt-2 text-xs opacity-75">
+             ✨ Recommended untuk semua mata pelajaran
+            </div>
+           </div></label> <label class="cursor-pointer"> <input type="radio" name="template" value="executive" class="sr-only">
+           <div class="template-card border-2 border-gray-300 rounded-lg p-4 bg-gradient-to-br from-slate-800 to-slate-900 text-white hover:border-indigo-500 transition-colors shadow-lg">
+            <h5 class="font-semibold mb-2">💼 Executive Premium</h5>
+            <p class="text-sm opacity-90">Font Playfair Display, tema gelap elegan, formal</p>
+            <div class="mt-2 text-xs opacity-75">
+             🎓 Ideal untuk presentasi formal &amp; seminar
+            </div>
+           </div></label> <label class="cursor-pointer"> <input type="radio" name="template" value="academic" class="sr-only">
+           <div class="template-card border-2 border-gray-300 rounded-lg p-4 bg-gradient-to-br from-indigo-700 to-purple-800 text-white hover:border-indigo-500 transition-colors shadow-lg">
+            <h5 class="font-semibold mb-2">🎓 Academic Excellence</h5>
+            <p class="text-sm opacity-90">Font Source Sans Pro, tema akademik, kontras tinggi</p>
+            <div class="mt-2 text-xs opacity-75">
+             📚 Perfect untuk pembelajaran &amp; riset
+            </div>
+           </div></label>
+         </div>
+        </div>
+        <div class="flex justify-center"><button type="submit" id="generate-btn" class="bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-3 rounded-lg font-medium text-lg transition-colors flex items-center shadow-lg"> <span id="generate-text">🚀 Generate Presentasi Canva</span>
+          <div id="generate-spinner" class="loading-spinner ml-3 hidden"></div></button>
+        </div>
+       </form>
+      </div>
+     </div><!-- Generated Presentation Preview -->
+     <div id="presentation-preview" class="hidden">
+      <div class="bg-white shadow rounded-lg">
+       <div class="px-4 py-5 sm:p-6">
+        <div class="flex justify-between items-center mb-6">
+         <h3 class="text-lg leading-6 font-medium text-gray-900">🎬 Preview Presentasi Anda</h3>
+         <div class="flex space-x-3"><button id="download-canva" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium flex items-center"> 📥 Download untuk Canva </button> <button id="create-new" class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg font-medium"> ➕ Buat Baru </button>
+         </div>
+        </div><!-- Slide Navigation -->
+        <div class="slide-navigation bg-gray-50 rounded-lg p-4 mb-6">
+         <div class="flex justify-between items-center">
+          <div class="text-sm text-gray-600"><span id="slide-info">Slide 1 dari 7</span>
+          </div>
+          <div class="flex space-x-2"><button id="prev-slide" class="px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded text-sm disabled:opacity-50" disabled> ← Sebelumnya </button> <button id="next-slide" class="px-3 py-1 bg-indigo-600 hover:bg-indigo-700 text-white rounded text-sm"> Selanjutnya → </button>
+          </div>
+         </div>
+         <div class="mt-3">
+          <div id="slide-dots" class="flex space-x-1"><!-- Dots will be generated dynamically -->
+          </div>
+         </div>
+        </div><!-- Slides Container -->
+        <div id="slides-container" class="space-y-6"><!-- Slides will be generated here -->
+        </div><!-- Presentation Info -->
+        <div class="mt-8 p-4 bg-blue-50 rounded-lg">
+         <h4 class="font-semibold text-blue-900 mb-2">📋 Informasi Presentasi</h4>
+         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-blue-800">
+          <div>
+           <p><strong>👨‍🏫 Penyusun:</strong> <span id="info-penyusun"></span></p>
+           <p><strong>📚 Mata Pelajaran:</strong> <span id="info-mapel"></span></p>
+           <p><strong>📐 Ukuran Slide:</strong> 1024×768 px (4:3)</p>
+          </div>
+          <div>
+           <p><strong>🎓 Kelas:</strong> <span id="info-kelas"></span></p>
+           <p><strong>📖 Topik:</strong> <span id="info-topik"></span></p>
+           <p><strong>📊 Total Slide:</strong> <span id="info-total-slides">10 slide</span></p>
+          </div>
+         </div>
+         <div class="mt-3 pt-3 border-t border-blue-200">
+          <p class="text-xs text-blue-700"><strong>💡 Tips:</strong> Presentasi berformat 4:3 (1024×768) dengan konten lengkap dan terstruktur. Siap digunakan di Canva atau platform presentasi lainnya. Materi sudah dioptimalkan untuk pembelajaran interaktif.</p>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </main><!-- Footer -->
+   <footer class="bg-white border-t border-gray-200 mt-12">
+    <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
+     <p id="footer-message" class="text-center text-sm text-gray-500">© 2024 Generator Presentasi Canva - Desain Profesional Siap Pakai</p>
+    </div>
+   </footer>
+  </div>
+  <script>
+        // Configuration
+        const defaultConfig = {
+            app_title: "Generator Presentasi Canva",
+            welcome_text: "Buat presentasi Canva yang menakjubkan dalam hitungan detik",
+            footer_message: "© 2024 Generator Presentasi Canva - Desain Profesional Siap Pakai",
+            primary_color: "#667eea",
+            secondary_color: "#764ba2",
+            background_color: "#f9fafb",
+            text_color: "#1f2937",
+            accent_color: "#10b981"
+        };
+
+        let currentSlideIndex = 0;
+        let totalSlides = 7;
+        let generatedSlides = [];
+
+        // Professional Template Configurations with Premium Design
+        const templates = {
+            modern: {
+                name: "Modern Professional",
+                fontFamily: "'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif",
+                colors: {
+                    primary: "linear-gradient(135deg, #1e3c72 0%, #2a5298 100%)",
+                    secondary: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+                    accent: "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)",
+                    success: "linear-gradient(135deg, #56ab2f 0%, #a8e6cf 100%)",
+                    warning: "linear-gradient(135deg, #f7971e 0%, #ffd200 100%)",
+                    info: "linear-gradient(135deg, #74b9ff 0%, #0984e3 100%)",
+                    closing: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
+                },
+                textColors: {
+                    primary: "#ffffff",
+                    secondary: "#f8f9fa",
+                    accent: "#e9ecef"
+                }
+            },
+            executive: {
+                name: "Executive Premium",
+                fontFamily: "'Playfair Display', 'Georgia', serif",
+                colors: {
+                    primary: "linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%)",
+                    secondary: "linear-gradient(135deg, #2c3e50 0%, #34495e 100%)",
+                    accent: "linear-gradient(135deg, #3498db 0%, #2980b9 100%)",
+                    success: "linear-gradient(135deg, #27ae60 0%, #2ecc71 100%)",
+                    warning: "linear-gradient(135deg, #f39c12 0%, #e67e22 100%)",
+                    info: "linear-gradient(135deg, #8e44ad 0%, #9b59b6 100%)",
+                    closing: "linear-gradient(135deg, #34495e 0%, #2c3e50 100%)"
+                },
+                textColors: {
+                    primary: "#ffffff",
+                    secondary: "#ecf0f1",
+                    accent: "#bdc3c7"
+                }
+            },
+            academic: {
+                name: "Academic Excellence",
+                fontFamily: "'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif",
+                colors: {
+                    primary: "linear-gradient(135deg, #1a237e 0%, #3949ab 100%)",
+                    secondary: "linear-gradient(135deg, #283593 0%, #5c6bc0 100%)",
+                    accent: "linear-gradient(135deg, #00695c 0%, #26a69a 100%)",
+                    success: "linear-gradient(135deg, #2e7d32 0%, #66bb6a 100%)",
+                    warning: "linear-gradient(135deg, #ef6c00 0%, #ff9800 100%)",
+                    info: "linear-gradient(135deg, #1565c0 0%, #42a5f5 100%)",
+                    closing: "linear-gradient(135deg, #4527a0 0%, #7986cb 100%)"
+                },
+                textColors: {
+                    primary: "#ffffff",
+                    secondary: "#f5f5f5",
+                    accent: "#e8eaf6"
+                }
+            }
+        };
+
+        // Initialize SDK
+        async function initializeApp() {
+            if (window.elementSdk) {
+                await window.elementSdk.init({
+                    defaultConfig,
+                    render,
+                    mapToCapabilities,
+                    mapToEditPanelValues
+                });
+            }
+
+            setupEventListeners();
+            setupTemplateSelection();
+        }
+
+        // Render function for element SDK
+        async function render(config) {
+            const appTitle = config.app_title || defaultConfig.app_title;
+            const welcomeText = config.welcome_text || defaultConfig.welcome_text;
+            const footerMessage = config.footer_message || defaultConfig.footer_message;
+            const primaryColor = config.primary_color || defaultConfig.primary_color;
+            const backgroundColor = config.background_color || defaultConfig.background_color;
+            const textColor = config.text_color || defaultConfig.text_color;
+
+            document.getElementById('app-title').textContent = appTitle;
+            document.getElementById('welcome-text').textContent = welcomeText;
+            document.getElementById('footer-message').textContent = footerMessage;
+
+            // Apply colors
+            document.body.style.backgroundColor = backgroundColor;
+            document.body.style.color = textColor;
+            
+            const header = document.querySelector('header');
+            if (header) {
+                header.style.background = `linear-gradient(135deg, ${primaryColor} 0%, ${config.secondary_color || defaultConfig.secondary_color} 100%)`;
+            }
+        }
+
+        // Capabilities mapping
+        function mapToCapabilities(config) {
+            return {
+                recolorables: [
+                    {
+                        get: () => config.primary_color || defaultConfig.primary_color,
+                        set: (value) => {
+                            if (window.elementSdk) {
+                                window.elementSdk.setConfig({ primary_color: value });
+                            }
+                        }
+                    },
+                    {
+                        get: () => config.background_color || defaultConfig.background_color,
+                        set: (value) => {
+                            if (window.elementSdk) {
+                                window.elementSdk.setConfig({ background_color: value });
+                            }
+                        }
+                    },
+                    {
+                        get: () => config.text_color || defaultConfig.text_color,
+                        set: (value) => {
+                            if (window.elementSdk) {
+                                window.elementSdk.setConfig({ text_color: value });
+                            }
+                        }
+                    }
+                ],
+                borderables: [],
+                fontEditable: undefined,
+                fontSizeable: undefined
+            };
+        }
+
+        // Edit panel values mapping
+        function mapToEditPanelValues(config) {
+            return new Map([
+                ["app_title", config.app_title || defaultConfig.app_title],
+                ["welcome_text", config.welcome_text || defaultConfig.welcome_text],
+                ["footer_message", config.footer_message || defaultConfig.footer_message]
+            ]);
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            const form = document.getElementById('presentation-form');
+            const createNewBtn = document.getElementById('create-new');
+            const downloadBtn = document.getElementById('download-canva');
+            const prevBtn = document.getElementById('prev-slide');
+            const nextBtn = document.getElementById('next-slide');
+
+            form.addEventListener('submit', handleFormSubmit);
+            
+            if (createNewBtn) {
+                createNewBtn.addEventListener('click', resetForm);
+            }
+            
+            if (downloadBtn) {
+                downloadBtn.addEventListener('click', downloadPresentation);
+            }
+            
+            if (prevBtn) {
+                prevBtn.addEventListener('click', () => navigateSlide(-1));
+            }
+            
+            if (nextBtn) {
+                nextBtn.addEventListener('click', () => navigateSlide(1));
+            }
+        }
+
+        // Setup template selection
+        function setupTemplateSelection() {
+            const templateCards = document.querySelectorAll('.template-card');
+            const radioInputs = document.querySelectorAll('input[name="template"]');
+
+            radioInputs.forEach((radio, index) => {
+                radio.addEventListener('change', () => {
+                    templateCards.forEach(card => {
+                        card.classList.remove('border-indigo-500');
+                        card.classList.add('border-gray-300');
+                    });
+                    
+                    if (radio.checked) {
+                        templateCards[index].classList.remove('border-gray-300');
+                        templateCards[index].classList.add('border-indigo-500');
+                    }
+                });
+            });
+        }
+
+        // Handle form submission
+        async function handleFormSubmit(event) {
+            event.preventDefault();
+            
+            const generateBtn = document.getElementById('generate-btn');
+            const generateText = document.getElementById('generate-text');
+            const generateSpinner = document.getElementById('generate-spinner');
+
+            // Show loading state
+            generateBtn.disabled = true;
+            generateText.textContent = '🎨 Sedang Membuat Desain...';
+            generateSpinner.classList.remove('hidden');
+
+            try {
+                const formData = new FormData(event.target);
+                
+                // Simulate generation time
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                
+                generatePresentation(formData);
+                
+                showToast("🎉 Presentasi Canva berhasil dibuat! Scroll ke bawah untuk melihat preview.", "success");
+                
+            } catch (error) {
+                showToast("Terjadi kesalahan. Silakan coba lagi.", "error");
+            } finally {
+                // Reset loading state
+                generateBtn.disabled = false;
+                generateText.textContent = '🚀 Generate Presentasi Canva';
+                generateSpinner.classList.add('hidden');
+            }
+        }
+
+        // Generate presentation with AI-powered content
+        function generatePresentation(formData) {
+            const selectedTemplate = formData.get('template') || 'modern';
+            const template = templates[selectedTemplate];
+            
+            // Generate detailed content using AI
+            const aiContent = generateDetailedContent(
+                formData.get('topik_materi'),
+                formData.get('mata_pelajaran'),
+                formData.get('kelas_fase')
+            );
+            
+            generatedSlides = [
+                {
+                    type: 'title',
+                    title: formData.get('mata_pelajaran'),
+                    subtitle: formData.get('topik_materi'),
+                    author: formData.get('penyusun'),
+                    class: formData.get('kelas_fase'),
+                    background: template.colors.primary,
+                    icon: getSubjectIcon(formData.get('mata_pelajaran')),
+                    date: new Date().toLocaleDateString('id-ID', { 
+                        weekday: 'long', 
+                        year: 'numeric', 
+                        month: 'long', 
+                        day: 'numeric' 
+                    })
+                },
+                {
+                    type: 'agenda',
+                    title: '📋 Agenda Pembelajaran Hari Ini',
+                    content: generateAgendaContent(aiContent),
+                    background: template.colors.secondary,
+                    icon: '📋'
+                },
+                {
+                    type: 'objectives',
+                    title: '🎯 Tujuan Pembelajaran',
+                    content: aiContent.tujuan,
+                    background: template.colors.accent,
+                    icon: '🎯'
+                },
+                {
+                    type: 'introduction',
+                    title: '📖 Pengenalan Topik',
+                    content: aiContent.pengenalan,
+                    background: template.colors.success,
+                    icon: '📖'
+                },
+                {
+                    type: 'theory',
+                    title: '🧠 Materi Inti & Teori',
+                    content: aiContent.teori,
+                    background: template.colors.warning,
+                    icon: '🧠'
+                },
+                {
+                    type: 'examples',
+                    title: '🌍 Aplikasi dalam Kehidupan',
+                    content: aiContent.contohKehidupan,
+                    background: template.colors.info,
+                    icon: '🌍'
+                },
+                {
+                    type: 'practice',
+                    title: '🎯 Aktivitas & Praktik Langsung',
+                    content: aiContent.latihanPraktik,
+                    background: template.colors.accent,
+                    icon: '🎯'
+                },
+                {
+                    type: 'assessment',
+                    title: '✅ Evaluasi & Penilaian',
+                    content: generateAssessmentContent(formData.get('topik_materi'), formData.get('mata_pelajaran')),
+                    background: template.colors.warning,
+                    icon: '✅'
+                },
+                {
+                    type: 'summary',
+                    title: '📝 Rangkuman Pembelajaran',
+                    content: generateSummaryContent(formData.get('topik_materi'), formData.get('mata_pelajaran')),
+                    background: template.colors.info,
+                    icon: '📝'
+                },
+                {
+                    type: 'closing',
+                    title: generateClosingTitle(formData.get('topik_materi')),
+                    subtitle: generateClosingMessage(formData.get('topik_materi'), formData.get('mata_pelajaran')),
+                    footer: `${formData.get('penyusun')} | ${formData.get('mata_pelajaran')} | ${formData.get('kelas_fase')} | ${new Date().getFullYear()}`,
+                    background: template.colors.closing,
+                    icon: '🎉'
+                }
+            ];
+
+            // Update presentation info
+            document.getElementById('info-penyusun').textContent = formData.get('penyusun');
+            document.getElementById('info-mapel').textContent = formData.get('mata_pelajaran');
+            document.getElementById('info-kelas').textContent = formData.get('kelas_fase');
+            document.getElementById('info-topik').textContent = formData.get('topik_materi');
+            document.getElementById('info-total-slides').textContent = `${generatedSlides.length} slide`;
+
+            renderSlides();
+            showPreview();
+            currentSlideIndex = 0;
+            totalSlides = generatedSlides.length;
+            updateSlideNavigation();
+            
+            // Update slide info in navigation
+            document.getElementById('slide-info').textContent = `Slide 1 dari ${totalSlides}`;
+        }
+
+        // Render slides with professional styling
+        function renderSlides() {
+            const container = document.getElementById('slides-container');
+            const selectedTemplate = document.querySelector('input[name="template"]:checked')?.value || 'modern';
+            const template = templates[selectedTemplate];
+            
+            container.innerHTML = generatedSlides.map((slide, index) => {
+                const fontFamily = template.fontFamily;
+                const textColor = template.textColors?.primary || '#ffffff';
+                
+                if (slide.type === 'title') {
+                    return `
+                        <div class="slide-preview fade-in" style="background: ${slide.background}; color: ${textColor}; font-family: ${fontFamily};" data-slide="${index}" ${index === 0 ? '' : 'style="display: none;"'}>
+                            <div class="absolute top-8 right-8 text-sm opacity-75 bg-black bg-opacity-20 px-3 py-1 rounded-full">
+                                ${slide.date || ''}
+                            </div>
+                            <div class="text-center h-full flex flex-col justify-center px-12">
+                                <div class="text-8xl mb-8 drop-shadow-lg">${slide.icon}</div>
+                                <h1 class="text-6xl font-bold mb-8 leading-tight drop-shadow-md">${slide.title}</h1>
+                                <h2 class="text-4xl mb-16 opacity-95 font-medium leading-relaxed">${slide.subtitle}</h2>
+                                <div class="mt-20 space-y-4 text-2xl">
+                                    <div class="bg-white bg-opacity-15 backdrop-blur-sm rounded-2xl p-6 mx-auto max-w-2xl">
+                                        <p class="flex items-center justify-center mb-3"><span class="mr-4 text-3xl">👨‍🏫</span><span class="font-semibold">${slide.author}</span></p>
+                                        <p class="flex items-center justify-center"><span class="mr-4 text-3xl">🎓</span><span class="font-semibold">${slide.class}</span></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                } else if (slide.type === 'agenda') {
+                    return `
+                        <div class="slide-preview fade-in" style="background: ${slide.background}; color: ${textColor}; font-family: ${fontFamily};" data-slide="${index}" ${index === 0 ? '' : 'style="display: none;"'}>
+                            <div class="h-full flex flex-col p-12">
+                                <div class="text-center mb-10">
+                                    <div class="text-7xl mb-6 drop-shadow-lg">${slide.icon}</div>
+                                    <h2 class="text-5xl font-bold drop-shadow-md">${slide.title}</h2>
+                                    <div class="w-32 h-1 bg-white bg-opacity-50 mx-auto mt-4 rounded-full"></div>
+                                </div>
+                                <div class="flex-1 text-left text-lg leading-relaxed space-y-3 max-w-6xl mx-auto overflow-y-auto">
+                                    ${slide.content.split('\n').map(line => {
+                                        if (line.trim() === '') return '';
+                                        if (line.includes('⏰') || line.includes('📖') || line.includes('✅')) {
+                                            return `<div class="bg-white bg-opacity-20 backdrop-blur-sm rounded-xl p-4 mt-8 mb-4">
+                                                <h3 class="text-2xl font-bold text-yellow-200 flex items-center">
+                                                    <span class="mr-3">${line.match(/[⏰📖✅]/)?.[0] || ''}</span>
+                                                    <span>${line.replace(/[⏰📖✅]/g, '').trim()}</span>
+                                                </h3>
+                                            </div>`;
+                                        }
+                                        if (line.startsWith('• ')) {
+                                            return `<div class="flex items-start ml-6 py-1">
+                                                <span class="mr-4 text-yellow-300 text-xl font-bold">•</span>
+                                                <span class="text-lg">${line.replace('• ', '')}</span>
+                                            </div>`;
+                                        }
+                                        if (line.includes('🎯 METODE:')) {
+                                            return `<div class="mt-8 p-6 bg-gradient-to-r from-white/20 to-white/10 backdrop-blur-sm rounded-2xl border border-white/20">
+                                                <p class="font-bold text-xl text-yellow-100">${line}</p>
+                                            </div>`;
+                                        }
+                                        return `<p class="text-xl font-medium opacity-95 leading-relaxed">${line}</p>`;
+                                    }).join('')}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                } else if (slide.type === 'objectives' || slide.type === 'introduction' || slide.type === 'theory' || slide.type === 'examples' || slide.type === 'practice') {
+                    return `
+                        <div class="slide-preview fade-in" style="background: ${slide.background}; color: white;" data-slide="${index}" ${index === 0 ? '' : 'style="display: none;"'}>
+                            <div class="h-full flex flex-col">
+                                <div class="text-center mb-8">
+                                    <div class="text-6xl mb-4">${slide.icon}</div>
+                                    <h2 class="text-4xl font-bold">${slide.title}</h2>
+                                </div>
+                                <div class="flex-1 text-left text-lg leading-relaxed space-y-3 max-w-5xl mx-auto overflow-y-auto">
+                                    ${slide.content.split('\n').map(line => {
+                                        if (line.trim() === '') return '';
+                                        if (line.startsWith('• ')) {
+                                            return `<p class="flex items-start"><span class="mr-3 text-yellow-300 font-bold">•</span><span>${line.replace('• ', '')}</span></p>`;
+                                        }
+                                        if (line.includes('🔸') || line.includes('🔹') || line.includes('📍') || line.includes('⏰') || line.includes('👥') || line.includes('❓') || line.includes('🔧')) {
+                                            return `<h3 class="text-2xl font-bold mt-6 mb-3 text-yellow-200">${line}</h3>`;
+                                        }
+                                        if (line.includes(':') && !line.startsWith('• ')) {
+                                            return `<h4 class="text-xl font-semibold mt-4 mb-2 text-yellow-100">${line}</h4>`;
+                                        }
+                                        return `<p class="text-lg">${line}</p>`;
+                                    }).join('')}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                } else if (slide.type === 'assessment' || slide.type === 'summary') {
+                    return `
+                        <div class="slide-preview fade-in" style="background: ${slide.background}; color: ${textColor}; font-family: ${fontFamily};" data-slide="${index}" ${index === 0 ? '' : 'style="display: none;"'}>
+                            <div class="h-full flex flex-col p-10">
+                                <div class="text-center mb-8">
+                                    <div class="text-6xl mb-4 drop-shadow-lg">${slide.icon}</div>
+                                    <h2 class="text-4xl font-bold drop-shadow-md">${slide.title}</h2>
+                                    <div class="w-24 h-1 bg-white bg-opacity-50 mx-auto mt-3 rounded-full"></div>
+                                </div>
+                                <div class="flex-1 text-left text-base leading-relaxed space-y-2 max-w-6xl mx-auto overflow-y-auto">
+                                    ${slide.content.split('\n').map(line => {
+                                        if (line.trim() === '') return '';
+                                        if (line.startsWith('• ')) {
+                                            return `<div class="flex items-start ml-4 py-1">
+                                                <span class="mr-3 text-yellow-300 text-lg font-bold">•</span>
+                                                <span class="text-base">${line.replace('• ', '')}</span>
+                                            </div>`;
+                                        }
+                                        if (line.includes('📊') || line.includes('🎯') || line.includes('📈') || line.includes('🔑') || line.includes('💡') || line.includes('📚') || line.includes('🔸') || line.includes('🚀') || line.includes('🌟')) {
+                                            return `<div class="bg-white bg-opacity-15 backdrop-blur-sm rounded-xl p-4 mt-6 mb-3">
+                                                <h3 class="text-xl font-bold text-yellow-200">${line}</h3>
+                                            </div>`;
+                                        }
+                                        if (line.includes(':') && !line.startsWith('• ') && !line.includes('🔸')) {
+                                            return `<h4 class="text-lg font-semibold mt-4 mb-2 text-yellow-100 border-l-4 border-yellow-300 pl-3">${line}</h4>`;
+                                        }
+                                        if (line.includes('✅')) {
+                                            return `<div class="flex items-start ml-2 py-1">
+                                                <span class="mr-2 text-green-300 text-lg">✅</span>
+                                                <span class="text-base text-green-100">${line.replace('✅', '').trim()}</span>
+                                            </div>`;
+                                        }
+                                        if (line.startsWith('"') && line.endsWith('"')) {
+                                            return `<div class="bg-gradient-to-r from-white/10 to-white/5 backdrop-blur-sm rounded-xl p-4 mt-4 mb-4 border-l-4 border-yellow-300">
+                                                <p class="text-lg italic font-medium text-yellow-100">${line}</p>
+                                            </div>`;
+                                        }
+                                        return `<p class="text-base leading-relaxed opacity-95">${line}</p>`;
+                                    }).join('')}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                } else if (slide.type === 'closing') {
+                    return `
+                        <div class="slide-preview fade-in" style="background: ${slide.background}; color: #2d3748; font-family: ${fontFamily};" data-slide="${index}" ${index === 0 ? '' : 'style="display: none;"'}>
+                            <div class="text-center h-full flex flex-col justify-center px-12 py-8">
+                                <div class="text-9xl mb-8 drop-shadow-xl animate-pulse">${slide.icon}</div>
+                                <h1 class="text-5xl font-bold mb-10 leading-tight drop-shadow-lg text-gray-800">${slide.title}</h1>
+                                <div class="text-lg mb-12 leading-relaxed max-w-5xl mx-auto overflow-y-auto">
+                                    ${slide.subtitle.split('\n').map(line => {
+                                        if (line.trim() === '') return '<div class="h-3"></div>';
+                                        if (line.includes('🌟') || line.includes('💪') || line.includes('🚀') || line.includes('🏗️') || line.includes('🌱') || line.includes('🎯') || line.includes('💝') || line.includes('🌈')) {
+                                            return `<div class="bg-gradient-to-r from-blue-100 to-purple-100 rounded-2xl p-6 mt-8 mb-6 shadow-lg border border-blue-200">
+                                                <h3 class="text-2xl font-bold text-blue-800 mb-3">${line}</h3>
+                                            </div>`;
+                                        }
+                                        if (line.startsWith('• ')) {
+                                            return `<div class="flex items-start justify-center max-w-4xl mx-auto mb-2">
+                                                <span class="mr-3 text-blue-600 font-bold text-xl">•</span>
+                                                <span class="text-left text-gray-700">${line.replace('• ', '')}</span>
+                                            </div>`;
+                                        }
+                                        if (line.startsWith('"') && line.endsWith('"')) {
+                                            return `<div class="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-2xl p-6 my-6 border-l-6 border-yellow-400 shadow-md">
+                                                <p class="italic text-xl font-medium text-gray-800 leading-relaxed">${line}</p>
+                                            </div>`;
+                                        }
+                                        if (line.includes('📚') || line.includes('🔬') || line.includes('🌐')) {
+                                            return `<div class="bg-white bg-opacity-80 rounded-xl p-4 mt-6 mb-4 shadow-md border border-gray-200">
+                                                <h4 class="text-lg font-semibold text-gray-800 mb-2">${line}</h4>
+                                            </div>`;
+                                        }
+                                        return `<p class="mb-3 text-gray-700 leading-relaxed max-w-4xl mx-auto">${line}</p>`;
+                                    }).join('')}
+                                </div>
+                                <div class="mt-auto pt-6 border-t border-gray-300">
+                                    <p class="text-sm text-gray-600 font-medium bg-white bg-opacity-70 rounded-full px-6 py-2 inline-block shadow-sm">${slide.footer}</p>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+            }).join('');
+        }
+
+        // Show preview section
+        function showPreview() {
+            const previewSection = document.getElementById('presentation-preview');
+            previewSection.classList.remove('hidden');
+            previewSection.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Navigate slides
+        function navigateSlide(direction) {
+            const newIndex = currentSlideIndex + direction;
+            
+            if (newIndex >= 0 && newIndex < totalSlides) {
+                // Hide current slide
+                const currentSlide = document.querySelector(`[data-slide="${currentSlideIndex}"]`);
+                if (currentSlide) {
+                    currentSlide.style.display = 'none';
+                }
+                
+                // Show new slide
+                const newSlide = document.querySelector(`[data-slide="${newIndex}"]`);
+                if (newSlide) {
+                    newSlide.style.display = 'flex';
+                    newSlide.classList.add('fade-in');
+                }
+                
+                currentSlideIndex = newIndex;
+                updateSlideNavigation();
+            }
+        }
+
+        // Update slide navigation
+        function updateSlideNavigation() {
+            const slideInfo = document.getElementById('slide-info');
+            const prevBtn = document.getElementById('prev-slide');
+            const nextBtn = document.getElementById('next-slide');
+            const dotsContainer = document.getElementById('slide-dots');
+
+            slideInfo.textContent = `Slide ${currentSlideIndex + 1} dari ${totalSlides}`;
+            
+            prevBtn.disabled = currentSlideIndex === 0;
+            nextBtn.disabled = currentSlideIndex === totalSlides - 1;
+            
+            // Generate dots dynamically
+            if (dotsContainer) {
+                dotsContainer.innerHTML = '';
+                for (let i = 0; i < totalSlides; i++) {
+                    const dot = document.createElement('div');
+                    dot.className = `slide-dot w-3 h-3 rounded-full cursor-pointer transition-colors ${
+                        i === currentSlideIndex ? 'bg-indigo-600' : 'bg-gray-300'
+                    }`;
+                    dot.addEventListener('click', () => {
+                        navigateToSlide(i);
+                    });
+                    dotsContainer.appendChild(dot);
+                }
+            }
+        }
+
+        // Navigate to specific slide
+        function navigateToSlide(targetIndex) {
+            if (targetIndex >= 0 && targetIndex < totalSlides && targetIndex !== currentSlideIndex) {
+                // Hide current slide
+                const currentSlide = document.querySelector(`[data-slide="${currentSlideIndex}"]`);
+                if (currentSlide) {
+                    currentSlide.style.display = 'none';
+                }
+                
+                // Show target slide
+                const targetSlide = document.querySelector(`[data-slide="${targetIndex}"]`);
+                if (targetSlide) {
+                    targetSlide.style.display = 'flex';
+                    targetSlide.classList.add('fade-in');
+                }
+                
+                currentSlideIndex = targetIndex;
+                updateSlideNavigation();
+            }
+        }
+
+        // Download presentation
+        function downloadPresentation() {
+            const presentationData = {
+                slides: generatedSlides,
+                info: {
+                    penyusun: document.getElementById('info-penyusun').textContent,
+                    mata_pelajaran: document.getElementById('info-mapel').textContent,
+                    kelas: document.getElementById('info-kelas').textContent,
+                    topik: document.getElementById('info-topik').textContent,
+                    created: new Date().toISOString()
+                }
+            };
+
+            const dataStr = JSON.stringify(presentationData, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(dataBlob);
+            
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `presentasi-${presentationData.info.mata_pelajaran.toLowerCase().replace(/\s+/g, '-')}-${Date.now()}.json`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+
+            showToast("📥 File presentasi berhasil didownload! Import ke Canva untuk mulai mengedit.", "success");
+        }
+
+        // Reset form
+        function resetForm() {
+            document.getElementById('presentation-form').reset();
+            document.getElementById('presentation-preview').classList.add('hidden');
+            
+            // Reset template selection
+            const firstTemplate = document.querySelector('input[name="template"]');
+            if (firstTemplate) {
+                firstTemplate.checked = true;
+                firstTemplate.dispatchEvent(new Event('change'));
+            }
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            
+            showToast("📝 Form berhasil direset. Siap membuat presentasi baru!", "info");
+        }
+
+        // Show toast notification
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            toast.className = `fixed top-4 right-4 px-6 py-3 rounded-lg text-white z-50 max-w-md ${
+                type === 'success' ? 'bg-green-500' : 
+                type === 'error' ? 'bg-red-500' : 
+                type === 'info' ? 'bg-blue-500' : 'bg-gray-500'
+            }`;
+            toast.textContent = message;
+            
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.remove();
+            }, 4000);
+        }
+
+        // Get subject-specific icon
+        function getSubjectIcon(mapel) {
+            const iconMap = {
+                'matematika': '🔢',
+                'ipa': '🔬',
+                'sains': '🔬',
+                'fisika': '⚛️',
+                'kimia': '🧪',
+                'biologi': '🧬',
+                'bahasa indonesia': '📚',
+                'bahasa inggris': '🌍',
+                'ips': '🌏',
+                'sejarah': '📜',
+                'geografi': '🗺️',
+                'ekonomi': '💰',
+                'pkn': '🏛️',
+                'seni': '🎨',
+                'olahraga': '⚽',
+                'agama': '🕌'
+            };
+            
+            const subject = mapel.toLowerCase();
+            for (const key in iconMap) {
+                if (subject.includes(key)) {
+                    return iconMap[key];
+                }
+            }
+            return '📖'; // default icon
+        }
+
+        // Generate agenda content
+        function generateAgendaContent(aiContent) {
+            return `Rundown pembelajaran hari ini:
+
+⏰ PEMBUKAAN (10 menit)
+• Salam dan presensi
+• Apersepsi dan motivasi
+• Penyampaian tujuan pembelajaran
+
+📖 KEGIATAN INTI (60 menit)
+• Pengenalan konsep dan teori dasar
+• Eksplorasi materi melalui diskusi interaktif
+• Demonstrasi dan contoh aplikasi nyata
+• Aktivitas praktik dan eksperimen
+• Analisis dan refleksi hasil pembelajaran
+
+✅ PENUTUP (20 menit)
+• Rangkuman dan kesimpulan
+• Evaluasi pemahaman siswa
+• Penugasan dan rencana pembelajaran berikutnya
+• Doa dan salam penutup
+
+🎯 METODE: Ceramah interaktif, diskusi, praktik langsung, dan evaluasi formatif`;
+        }
+
+        // Generate assessment content
+        function generateAssessmentContent(topik, mapel) {
+            return `Evaluasi pembelajaran ${topik} akan dilakukan melalui:
+
+📊 PENILAIAN AUTENTIK:
+• 📝 Tes Tertulis (30%): Soal pilihan ganda, essay, dan analisis kasus
+• 🎭 Praktik Langsung (25%): Demonstrasi penerapan konsep dalam situasi nyata
+• 👥 Penilaian Kelompok (20%): Diskusi, presentasi, dan kolaborasi tim
+• 📋 Portofolio (15%): Kumpulan tugas dan hasil kerja selama pembelajaran
+• 🔍 Observasi (10%): Pengamatan aktivitas, partisipasi, dan sikap belajar
+
+🎯 KRITERIA PENILAIAN:
+• Pemahaman Konsep: Menguasai definisi, prinsip, dan teori dasar
+• Aplikasi Praktis: Mampu menerapkan pengetahuan dalam kehidupan nyata
+• Analisis Kritis: Kemampuan menganalisis, mengevaluasi, dan menyimpulkan
+• Komunikasi: Menyampaikan ide dengan jelas, sistematis, dan percaya diri
+• Kolaborasi: Bekerja sama dalam tim dengan efektif dan saling menghargai
+
+📈 RUBRIK PENILAIAN:
+• Sangat Baik (A): 86-100 | Baik (B): 71-85 | Cukup (C): 56-70 | Kurang (D): ≤55`;
+        }
+
+        // Generate comprehensive summary content for effective learning closure
+        function generateSummaryContent(topik, mapel) {
+            return `🎯 KESIMPULAN PEMBELAJARAN ${topik.toUpperCase()}
+
+🔑 KONSEP KUNCI YANG TELAH DIKUASAI:
+• ✅ Memahami definisi dan karakteristik fundamental ${topik}
+• ✅ Menguasai prinsip-prinsip dasar yang mendasari ${topik}
+• ✅ Mengidentifikasi komponen-komponen penting dalam ${topik}
+• ✅ Menganalisis hubungan ${topik} dengan konsep lain dalam ${mapel}
+• ✅ Menerapkan pengetahuan ${topik} dalam konteks kehidupan nyata
+
+💡 INSIGHT & PEMAHAMAN MENDALAM:
+🔸 Signifikansi ${topik} dalam pembelajaran ${mapel}
+• Mengapa ${topik} menjadi fondasi penting dalam ${mapel}
+• Bagaimana ${topik} terhubung dengan materi sebelumnya
+• Relevansi ${topik} untuk materi pembelajaran selanjutnya
+
+🔸 Keterkaitan Teori dan Praktik
+• Penerapan konsep ${topik} dalam situasi nyata
+• Contoh-contoh konkret ${topik} di lingkungan sekitar
+• Manfaat memahami ${topik} untuk kehidupan sehari-hari
+
+🔸 Pengembangan Kemampuan Berpikir
+• Kemampuan analisis dan sintesis yang telah berkembang
+• Keterampilan pemecahan masalah terkait ${topik}
+• Kemampuan berpikir kritis dan logis yang terasah
+
+🎯 EVALUASI PENCAPAIAN KOMPETENSI:
+📊 Aspek Kognitif (Pengetahuan):
+• ✅ Menjelaskan konsep ${topik} dengan tepat
+• ✅ Mengidentifikasi ciri-ciri dan karakteristik ${topik}
+• ✅ Membandingkan dan mengkontraskan aspek-aspek ${topik}
+
+🛠️ Aspek Psikomotor (Keterampilan):
+• ✅ Menerapkan prosedur dan metode terkait ${topik}
+• ✅ Melakukan analisis dan evaluasi terhadap ${topik}
+• ✅ Menggunakan tools dan teknik yang relevan
+
+❤️ Aspek Afektif (Sikap):
+• ✅ Menunjukkan antusiasme dalam mempelajari ${topik}
+• ✅ Berpartisipasi aktif dalam diskusi dan kegiatan
+• ✅ Menghargai pentingnya ${topik} dalam ${mapel}
+
+🚀 RENCANA TINDAK LANJUT & PENGEMBANGAN:
+📚 Pendalaman Materi:
+• Review kembali catatan dan materi hari ini
+• Buat mind map atau diagram konsep ${topik}
+• Diskusikan dengan teman untuk memperkuat pemahaman
+• Cari sumber referensi tambahan untuk memperluas wawasan
+
+🔍 Eksplorasi Lanjutan:
+• Identifikasi aplikasi ${topik} di bidang lain
+• Cari contoh-contoh baru ${topik} di lingkungan sekitar
+• Hubungkan ${topik} dengan pengalaman pribadi
+• Buat proyek kecil yang menerapkan konsep ${topik}
+
+💪 Persiapan Pembelajaran Berikutnya:
+• Siapkan pertanyaan mendalam untuk diskusi lanjutan
+• Identifikasi aspek ${topik} yang masih perlu diperdalam
+• Buat target pembelajaran personal untuk materi selanjutnya
+• Refleksikan strategi belajar yang paling efektif
+
+🌟 REFLEKSI PEMBELAJARAN:
+"Hari ini kita telah menyelesaikan perjalanan pembelajaran yang bermakna tentang ${topik}. Setiap konsep yang dipelajari, setiap diskusi yang dilakukan, dan setiap aktivitas yang dikerjakan telah memperkaya pemahaman kita tentang ${mapel}. Mari kita bawa ilmu ini untuk diterapkan dalam kehidupan nyata dan menjadi bekal untuk pembelajaran selanjutnya."
+
+🎊 APRESIASI & MOTIVASI:
+Selamat! Kalian telah menunjukkan dedikasi dan semangat belajar yang luar biasa. Pemahaman kalian tentang ${topik} akan menjadi fondasi kuat untuk mempelajari konsep-konsep yang lebih kompleks. Terus pertahankan rasa ingin tahu dan semangat belajar ini!`;
+        }
+
+        // Generate closing title
+        function generateClosingTitle(topik) {
+            const titles = [
+                `🎉 Selamat! Kalian Telah Menguasai ${topik}!`,
+                `🌟 Luar Biasa! ${topik} Sudah Kalian Pahami!`,
+                `🏆 Hebat! Kalian Berhasil Mempelajari ${topik}!`,
+                `✨ Fantastis! ${topik} Kini Ada di Genggaman Kalian!`,
+                `🎊 Bravo! Kalian Sudah Jadi Ahli ${topik}!`
+            ];
+            return titles[Math.floor(Math.random() * titles.length)];
+        }
+
+        // Generate comprehensive closing message for impactful learning conclusion
+        function generateClosingMessage(topik, mapel) {
+            return `🎊 SELAMAT! PERJALANAN PEMBELAJARAN ${topik.toUpperCase()} TELAH BERHASIL DISELESAIKAN!
+
+🌟 PENCAPAIAN LUAR BIASA HARI INI:
+✨ Penguasaan Konsep Fundamental
+• Memahami esensi dan karakteristik ${topik} secara mendalam
+• Menguasai prinsip-prinsip dasar yang mendasari ${topik}
+• Mengidentifikasi komponen-komponen kritis dalam ${topik}
+
+🎯 Aplikasi Praktis yang Bermakna
+• Menerapkan konsep ${topik} dalam situasi kehidupan nyata
+• Menganalisis contoh-contoh ${topik} di lingkungan sekitar
+• Menghubungkan teori dengan pengalaman praktis
+
+🤝 Kolaborasi dan Partisipasi Aktif
+• Berpartisipasi dengan antusias dalam setiap aktivitas
+• Berkontribusi positif dalam diskusi kelompok
+• Menunjukkan sikap saling menghargai dan mendukung
+
+💪 PESAN INSPIRASI & MOTIVASI:
+
+🏗️ "Membangun Fondasi Pengetahuan yang Kokoh"
+"Pembelajaran ${mapel} adalah seperti membangun sebuah istana pengetahuan. ${topik} yang kalian pelajari hari ini adalah fondasi yang kokoh dan kuat. Dengan fondasi yang solid ini, kalian dapat membangun menara pengetahuan yang menjulang tinggi, mencapai pemahaman yang mendalam, dan meraih prestasi yang gemilang!"
+
+🌱 "Dari Benih Menjadi Pohon Besar"
+"Setiap konsep ${topik} yang kalian serap hari ini adalah benih pengetahuan yang akan tumbuh menjadi pohon kebijaksanaan yang rindang. Terus siram dengan rasa ingin tahu, pupuk dengan latihan yang konsisten, dan rawat dengan semangat belajar yang tak pernah padam!"
+
+🚀 ROADMAP PENGEMBANGAN BERKELANJUTAN:
+
+📚 Pendalaman & Eksplorasi
+• Jelajahi aspek-aspek ${topik} yang belum terungkap
+• Cari hubungan ${topik} dengan bidang ilmu lainnya
+• Buat proyek kreatif yang menerapkan konsep ${topik}
+• Diskusikan dengan ahli atau praktisi di bidang ${mapel}
+
+🔬 Penelitian & Inovasi
+• Lakukan mini research tentang perkembangan terbaru ${topik}
+• Buat hipotesis dan uji coba sederhana terkait ${topik}
+• Dokumentasikan temuan dan insight baru
+• Bagikan penemuan dengan komunitas belajar
+
+🌐 Aplikasi & Kontribusi
+• Identifikasi masalah nyata yang bisa diselesaikan dengan ${topik}
+• Buat solusi inovatif menggunakan prinsip ${topik}
+• Ajarkan ${topik} kepada adik kelas atau teman
+• Kontribusi dalam proyek komunitas yang relevan
+
+🎯 VISI MASA DEPAN:
+
+🌟 "Menjadi Agen Perubahan"
+Dengan pemahaman ${topik} yang kalian miliki, kalian berpotensi menjadi agen perubahan positif di masyarakat. Gunakan ilmu ini untuk menciptakan inovasi, memecahkan masalah, dan memberikan manfaat bagi banyak orang.
+
+🏆 "Meraih Keunggulan Akademik"
+Penguasaan ${topik} ini akan menjadi keunggulan kompetitif kalian dalam studi lanjutan. Terus kembangkan dan aplikasikan dalam berbagai konteks untuk meraih prestasi akademik yang membanggakan.
+
+💝 APRESIASI & TERIMA KASIH:
+Terima kasih atas dedikasi, antusiasme, dan semangat belajar yang luar biasa! Kalian telah membuktikan bahwa dengan tekad yang kuat dan usaha yang konsisten, tidak ada yang tidak mungkin untuk dicapai.
+
+🌈 PENUTUP YANG MENGINSPIRASI:
+"Ingatlah, setiap master pernah menjadi disaster, setiap ahli pernah menjadi pemula, dan setiap sukses dimulai dari langkah pertama yang berani. Kalian telah mengambil langkah penting hari ini. Terus melangkah dengan percaya diri menuju masa depan yang gemilang!"
+
+🎓 Sampai jumpa di petualangan pembelajaran selanjutnya yang akan lebih menantang dan menyenangkan! Keep learning, keep growing, keep shining! ✨`;
+        }
+
+        // AI Content Generator - Generates comprehensive, complete presentation content ready for classroom delivery
+        function generateDetailedContent(topik, mapel, kelas) {
+            // Grade level adaptation system
+            const gradeLevel = determineGradeLevel(kelas);
+            
+            const contentDatabase = {
+                // MATEMATIKA
+                'pecahan': {
+                    pengenalan: generateGradedContent('pecahan', 'pengenalan', gradeLevel, {
+                        elementary: `🍕 SELAMAT DATANG DI DUNIA PECAHAN!
+
+Halo anak-anak! Hari ini kita akan belajar tentang PECAHAN. Siapa yang suka pizza? Nah, pecahan itu seperti pizza yang dipotong-potong!
+
+🎯 APA ITU PECAHAN?
+Pecahan adalah cara untuk menunjukkan BAGIAN dari sesuatu yang UTUH. 
+
+Contoh mudahnya:
+• Pizza dipotong jadi 8 bagian → kamu makan 3 potong = 3/8
+• Cokelat batang dipotong jadi 4 bagian → adik makan 1 bagian = 1/4
+• Kue ulang tahun dipotong jadi 6 bagian → mama ambil 2 bagian = 2/6
+
+📍 DI MANA kita temukan pecahan setiap hari?
+🏠 Di Rumah:
+• Mama masak pakai 1/2 cangkir tepung
+• Papa minum 3/4 gelas kopi
+• Kamu tidur siang 1/2 jam (30 menit)
+
+🏪 Di Toko:
+• Diskon sepatu 1/4 dari harga asli
+• Beli 1/2 kg apel
+• Promo beli 2 gratis 1/3
+
+🏫 Di Sekolah:
+• Istirahat 1/4 jam (15 menit)
+• Selesai 2/3 dari PR matematika
+• Bagi kue untuk 8 teman, dapat 1/8 bagian
+
+⏰ KAPAN kita pakai pecahan?
+• SETIAP HARI dalam hidup kita!
+• Saat membagi makanan dengan adik
+• Waktu mama masak di dapur
+• Ketika bermain dan berbagi mainan
+• Saat menghitung waktu belajar dan bermain
+
+👥 SIAPA saja yang pakai pecahan?
+👩‍🍳 Koki: "Saya pakai 1/2 sendok garam untuk sup"
+👨‍⚕️ Dokter: "Minum obat 1/4 sendok teh"
+👷‍♂️ Tukang: "Potong kayu 3/4 meter"
+👨‍👩‍👧‍👦 Keluarga: "Bagi pizza sama rata ya!"
+
+❓ MENGAPA pecahan itu PENTING?
+✅ Membantu kita membagi sesuatu dengan ADIL
+✅ Bisa mengukur dengan TEPAT
+✅ Berguna untuk belanja dan menghitung uang
+✅ Dasar untuk belajar matematika yang lebih sulit nanti
+
+🔧 BAGAIMANA cara kerja pecahan?
+Mari kita lihat bagian-bagian pecahan:
+
+3/4 ← Ini contoh pecahan
+↑ ↑
+│ └── PENYEBUT (angka bawah) = berapa bagian TOTAL
+└──── PEMBILANG (angka atas) = berapa bagian yang kita AMBIL
+
+Jadi 3/4 artinya:
+• Ada 4 bagian total
+• Kita ambil 3 bagian
+• Seperti pizza dipotong 4, kita makan 3 potong!`,
+                        
+                        middle: `🔢 APA ITU PECAHAN?
+Pecahan adalah representasi matematis dari bilangan rasional yang menunjukkan hubungan antara bagian dan keseluruhan. Pecahan terdiri dari pembilang (numerator) dan penyebut (denominator) yang dipisahkan garis horizontal.
+
+📍 DI MANA pecahan diterapkan?
+• Dalam ilmu pengetahuan untuk pengukuran presisi
+• Di bidang teknologi untuk kalkulasi digital
+• Dalam ekonomi untuk analisis statistik
+• Di laboratorium untuk konsentrasi larutan
+• Dalam arsitektur untuk proporsi bangunan
+
+⏰ KAPAN konsep pecahan berkembang?
+• Peradaban Mesir kuno (3000 SM) - pecahan unit
+• Babilonia kuno - sistem basis 60
+• India abad ke-7 - notasi modern
+• Eropa abad pertengahan - standardisasi
+• Era modern - aplikasi dalam teknologi
+
+👥 SIAPA tokoh penting dalam sejarah pecahan?
+• Ahmes (Mesir) - Papirus Rhind dengan pecahan
+• Brahmagupta (India) - aturan operasi pecahan
+• Fibonacci - memperkenalkan ke Eropa
+• Matematikawan Arab - pengembangan aljabar
+
+❓ MENGAPA pecahan fundamental dalam matematika?
+• Dasar untuk memahami bilangan rasional
+• Prasyarat untuk aljabar dan kalkulus
+• Penting dalam pemecahan masalah proporsional
+• Aplikasi luas dalam sains dan teknologi
+• Mengembangkan pemikiran logis dan analitis
+
+🔧 BAGAIMANA sistem pecahan bekerja?
+• Pembilang menunjukkan jumlah unit yang dipertimbangkan
+• Penyebut menunjukkan total unit dalam keseluruhan
+• Operasi mengikuti aturan matematika yang ketat
+• Dapat dikonversi ke bentuk desimal dan persen
+• Memiliki sifat-sifat khusus dalam operasi aritmatika`,
+                        
+                        high: `📊 APA HAKIKAT PECAHAN DALAM MATEMATIKA?
+Pecahan merupakan elemen fundamental dalam sistem bilangan rasional (ℚ) yang merepresentasikan quotient dari dua bilangan bulat, di mana penyebut tidak sama dengan nol. Secara formal, pecahan a/b ∈ ℚ dengan a,b ∈ ℤ dan b ≠ 0.
+
+📍 DI MANA pecahan berperan dalam matematika lanjut?
+• Kalkulus: limit, turunan, dan integral
+• Aljabar linear: matriks dan determinan
+• Teori bilangan: bilangan rasional dan irasional
+• Geometri analitik: koordinat dan persamaan garis
+• Statistika: probabilitas dan distribusi
+• Matematika diskrit: kombinatorik dan graf
+
+⏰ KAPAN evolusi konsep pecahan terjadi?
+• 3000 SM: Pecahan unit Mesir (1/n)
+• 2000 SM: Sistem sexagesimal Babilonia
+• 500 M: Notasi desimal India-Arab
+• 1202 M: Fibonacci memperkenalkan ke Eropa
+• Abad 16-17: Formalisasi dalam aljabar
+• Abad 19-20: Teori bilangan modern
+
+👥 SIAPA kontributor utama teori pecahan?
+• Ahmes - dokumentasi sistematis pertama
+• Al-Khowarizmi - pengembangan algoritma
+• Fibonacci - transmisi ke Eropa Barat
+• Simon Stevin - sistem desimal modern
+• Dedekind - konstruksi rigorous bilangan real
+
+❓ MENGAPA pecahan krusial dalam matematika modern?
+• Fondasi untuk konstruksi bilangan real
+• Basis untuk analisis matematis
+• Aplikasi dalam teori probabilitas
+• Penting dalam komputasi numerik
+• Dasar untuk pemahaman kontinuitas dan limit
+
+🔧 BAGAIMANA pecahan dimanipulasi secara matematis?
+• Operasi aritmatika dengan aturan khusus
+• Konversi antar representasi (desimal, persen, eksponensial)
+• Aplikasi dalam persamaan dan pertidaksamaan
+• Penggunaan dalam fungsi dan grafik
+• Implementasi dalam algoritma komputasi`
+                    }),
+                    teori: generateGradedContent('pecahan', 'teori', gradeLevel, {
+                        elementary: `📚 MARI PELAJARI TEORI PECAHAN LEBIH DALAM!
+
+🎯 BAGIAN-BAGIAN PECAHAN:
+
+Setiap pecahan punya 3 bagian penting:
+
+🔸 PEMBILANG (Angka Atas):
+• Menunjukkan berapa bagian yang kita AMBIL atau PAKAI
+• Contoh: Dalam 3/4, angka 3 adalah pembilang
+• Artinya kita mengambil 3 bagian dari total
+• Seperti: "Aku makan 3 potong pizza"
+
+🔸 PENYEBUT (Angka Bawah):
+• Menunjukkan berapa bagian TOTAL yang ada
+• Contoh: Dalam 3/4, angka 4 adalah penyebut  
+• Artinya total ada 4 bagian
+• Seperti: "Pizza dipotong jadi 4 bagian"
+
+🔸 GARIS PECAHAN (Garis Tengah):
+• Garis yang memisahkan pembilang dan penyebut
+• Artinya "DIBAGI DENGAN" atau "DARI"
+• Seperti tanda ÷ dalam pembagian
+• Dibaca: "3 dari 4" atau "3 per 4"
+
+🎮 JENIS-JENIS PECAHAN YANG SERU:
+
+1️⃣ PECAHAN BIASA:
+• Contoh: 1/2, 3/4, 5/8, 2/3
+• Pembilang lebih kecil dari penyebut
+• Seperti: makan 3 potong dari 4 potong pizza
+
+2️⃣ PECAHAN CAMPURAN:
+• Contoh: 1 1/2, 2 3/4, 3 2/5
+• Ada bilangan bulat + pecahan biasa
+• Seperti: 1 pizza utuh + 1/2 pizza lagi
+
+3️⃣ PECAHAN DESIMAL:
+• Contoh: 0,5 = 1/2, 0,25 = 1/4, 0,75 = 3/4
+• Ditulis dengan koma
+• Mudah dihitung dengan kalkulator
+
+4️⃣ PERSEN (%):
+• Contoh: 50% = 1/2, 25% = 1/4, 75% = 3/4
+• Dari 100 bagian
+• Sering lihat di diskon toko!
+
+🔄 PECAHAN SENILAI (Yang Sama Besarnya):
+
+Tahukah kamu? Ada pecahan yang berbeda tapi nilainya SAMA!
+
+Contoh Pecahan Senilai:
+• 1/2 = 2/4 = 3/6 = 4/8 = 5/10
+• 1/3 = 2/6 = 3/9 = 4/12
+• 2/3 = 4/6 = 6/9 = 8/12
+
+🤔 Mengapa bisa sama?
+• Seperti pizza dipotong berbeda tapi ukuran yang dimakan sama
+• Pizza 1/2 = pizza 2/4 (sama-sama setengah pizza)
+
+🔧 Cara Mencari Pecahan Senilai:
+• KALIKAN pembilang dan penyebut dengan angka yang SAMA
+• Contoh: 1/2 → kalikan dengan 3 → (1×3)/(2×3) = 3/6
+• Atau BAGI pembilang dan penyebut dengan angka yang sama
+• Contoh: 6/8 → bagi dengan 2 → (6÷2)/(8÷2) = 3/4
+
+🎯 MEMBANDINGKAN PECAHAN:
+
+Mana yang lebih besar?
+
+Cara 1 - Penyebut Sama:
+• 2/5 vs 3/5 → 3/5 lebih besar (pembilang lebih besar)
+• 1/4 vs 3/4 → 3/4 lebih besar
+
+Cara 2 - Pembilang Sama:
+• 2/3 vs 2/5 → 2/3 lebih besar (penyebut lebih kecil)
+• 1/2 vs 1/4 → 1/2 lebih besar
+
+Cara 3 - Ubah ke Desimal:
+• 1/2 = 0,5 dan 3/4 = 0,75 → 3/4 lebih besar`,
+                        
+                        middle: `📐 STRUKTUR MATEMATIS PECAHAN:
+
+🔢 Komponen Fundamental:
+• Pembilang (a): bilangan bulat yang menunjukkan jumlah bagian
+• Penyebut (b): bilangan bulat ≠ 0 yang menunjukkan total bagian
+• Notasi: a/b dengan a,b ∈ ℤ, b ≠ 0
+
+📊 Klasifikasi Pecahan:
+• Pecahan Sejati: pembilang < penyebut (3/5, 7/10)
+• Pecahan Tidak Sejati: pembilang ≥ penyebut (5/3, 8/8)
+• Pecahan Campuran: kombinasi bilangan bulat dan pecahan sejati
+• Pecahan Desimal: representasi basis 10 (0,75 = 3/4)
+
+⚖️ Kesetaraan dan Operasi:
+• Pecahan Senilai: a/b = c/d jika ad = bc
+• Penyederhanaan: membagi pembilang dan penyebut dengan FPB
+• Operasi Penjumlahan: a/b + c/d = (ad + bc)/(bd)
+• Operasi Perkalian: a/b × c/d = (ac)/(bd)
+
+🔄 Konversi Antar Bentuk:
+• Pecahan ke Desimal: pembagian pembilang dengan penyebut
+• Desimal ke Pecahan: menggunakan nilai tempat
+• Pecahan ke Persen: kalikan dengan 100%
+• Persen ke Pecahan: bagi dengan 100`,
+                        
+                        high: `🧮 TEORI MATEMATIS PECAHAN:
+
+📈 Definisi Formal:
+Pecahan adalah elemen dari lapangan bilangan rasional ℚ = {a/b | a,b ∈ ℤ, b ≠ 0} dengan relasi ekuivalensi a/b ~ c/d ⟺ ad = bc.
+
+🔬 Sifat Aljabar:
+• Closure: ∀ a/b, c/d ∈ ℚ, operasi +,−,×,÷ menghasilkan elemen ℚ
+• Associativity: (a/b + c/d) + e/f = a/b + (c/d + e/f)
+• Commutativity: a/b + c/d = c/d + a/b
+• Identity: 0/1 untuk penjumlahan, 1/1 untuk perkalian
+• Inverse: untuk a/b ≠ 0, invers perkalian adalah b/a
+
+📊 Representasi dan Konversi:
+• Ekspansi Desimal: a/b memiliki ekspansi desimal berulang atau berakhir
+• Continued Fractions: representasi [a₀; a₁, a₂, ...] untuk aproksimasi
+• Farey Sequences: urutan pecahan tereduksi dalam interval [0,1]
+• Egyptian Fractions: representasi sebagai jumlah pecahan unit
+
+🔍 Aplikasi Lanjut:
+• Teori Bilangan: sifat divisibilitas dan kongruensi
+• Analisis: konstruksi bilangan real melalui Dedekind cuts
+• Aljabar: lapangan quotient dan lokalisasi ring
+• Geometri: koordinat homogen dan transformasi proyektif`
+                    }),
+                    contohKehidupan: generateGradedContent('pecahan', 'contohKehidupan', gradeLevel, {
+                        elementary: `🌟 PECAHAN ADA DI MANA-MANA! MARI KITA JELAJAHI!
+
+🏠 PETUALANGAN PECAHAN DI RUMAH:
+
+🍳 Di Dapur Bersama Mama:
+• Mama buat kue pakai 1/2 cangkir tepung + 1/4 cangkir gula
+• Resep puding: 3/4 liter susu + 1/8 kg gula
+• Potong semangka jadi 8 bagian, kamu makan 3/8 bagian
+• Bagi pizza keluarga: Papa 2/8, Mama 2/8, Kamu 2/8, Adik 2/8
+• Minum jus jeruk 1/2 gelas setiap pagi
+
+🕐 Waktu dan Kegiatan Sehari-hari:
+• Bangun tidur jam 6 pagi = 1/4 hari sudah berlalu
+• Main game 1/4 jam = 15 menit (seru tapi jangan lama-lama!)
+• Nonton kartun favorit 1/2 jam = 30 menit
+• Tidur siang 3/4 jam = 45 menit (biar segar lagi)
+• Belajar 2/3 jam = 40 menit setiap hari
+
+💰 Petualangan Uang Jajan:
+• Dapat uang jajan Rp 12.000 per minggu
+• Beli es krim 1/4 dari uang jajan = Rp 3.000
+• Nabung 1/2 dari uang jajan = Rp 6.000
+• Beli pensil 1/6 dari uang jajan = Rp 2.000
+• Sisanya 1/12 = Rp 1.000 untuk jajan kecil
+
+🏫 Seru-seruan di Sekolah:
+• Istirahat pertama 1/6 jam = 10 menit
+• Istirahat kedua 1/4 jam = 15 menit
+• Bagi kue ulang tahun untuk 10 teman, dapat 1/10 bagian
+• Selesai 3/5 dari PR matematika (tinggal 2/5 lagi!)
+• Perjalanan ke sekolah 2/3 sudah dilalui
+
+🎮 Dunia Bermain dan Hobi:
+• Menang 7/10 dari permainan congklak
+• Kumpulkan 15/20 kartu Pokemon (tinggal 5 lagi!)
+• Selesai 5/8 level game favorit
+• Puzzle 500 keping, sudah pasang 3/4 bagian
+• Baca buku cerita, sudah 2/3 halaman
+
+🛍️ Petualangan Belanja:
+• Diskon sepatu 1/3 dari harga asli Rp 150.000 = hemat Rp 50.000
+• Beli 1/2 kg apel untuk keluarga
+• Promo beli 2 gratis 1/3 di toko mainan
+• Cashback 1/10 dari total belanja
+
+🌈 Pecahan dalam Seni dan Kreativitas:
+• Gambar mewarnai: 1/4 bagian biru, 1/4 merah, 1/2 kuning
+• Origami: lipat kertas jadi 1/2, lalu 1/4, lalu 1/8
+• Plastisin: campur 2/3 warna biru + 1/3 warna putih = biru muda
+• Kolase: 3/5 bagian pakai kertas, 2/5 bagian pakai kain
+
+🏃‍♂️ Olahraga dan Kesehatan:
+• Lari keliling lapangan 3/4 putaran
+• Minum air putih 1/8 liter setiap jam
+• Senam pagi 1/6 jam = 10 menit
+• Main sepak bola 2/3 jam = 40 menit
+
+🎵 Musik dan Lagu:
+• Lagu favorit durasi 1/20 jam = 3 menit
+• Belajar piano 3/4 jam setiap hari
+• Nyanyi lagu daerah 1/12 jam = 5 menit
+• Mendengarkan musik klasik 1/2 jam sebelum tidur`,
+                        
+                        middle: `🔬 APLIKASI PECAHAN DALAM KEHIDUPAN:
+
+🧪 Sains dan Teknologi:
+• Konsentrasi larutan kimia: 3/4 mol/liter
+• Kecepatan internet: 2/3 dari kecepatan maksimal
+• Efisiensi mesin: 7/8 dari kapasitas penuh
+• Skala peta: 1/50.000 dari ukuran sebenarnya
+
+📊 Ekonomi dan Bisnis:
+• Inflasi tahunan: 3/100 atau 3%
+• Margin keuntungan: 1/5 dari harga jual
+• Investasi saham: naik 2/7 dari nilai awal
+• Pajak penghasilan: 1/10 dari gaji
+
+🏗️ Teknik dan Konstruksi:
+• Campuran semen: 1/3 semen, 2/3 pasir
+• Skala gambar arsitektur: 1/100
+• Kemiringan atap: 3/12 atau 1/4
+• Proporsi emas dalam arsitektur: 5/8
+
+🎨 Seni dan Desain:
+• Komposisi warna: 2/5 biru, 3/5 kuning
+• Proporsi tubuh manusia: kepala 1/8 tinggi badan
+• Tata letak majalah: 3/4 teks, 1/4 gambar
+• Tempo musik: 3/4 untuk waltz`,
+                        
+                        high: `📈 PECAHAN DALAM KONTEKS AKADEMIK DAN PROFESIONAL:
+
+🔬 Sains dan Penelitian:
+• Probabilitas eksperimen: P(A) = 3/7
+• Konsentrasi molar: 2/3 M dalam larutan buffer
+• Rasio isotop radioaktif: waktu paruh 1/2^n
+• Efisiensi fotosintesis: 3/100 energi cahaya dikonversi
+
+💼 Ekonomi dan Keuangan:
+• Rasio debt-to-equity: 2/3 dalam analisis fundamental
+• Beta saham: 3/4 volatilitas relatif terhadap pasar
+• Compound annual growth rate: (1 + 1/4)^n
+• Present value: PV = FV/(1 + r/n)^nt
+
+🏭 Teknik dan Industri:
+• Toleransi manufaktur: ±1/1000 inch
+• Efisiensi termal: η = 2/3 untuk mesin Carnot
+• Faktor keamanan struktur: 3/2 dari beban maksimal
+• Rasio kompresi mesin: 9/1 untuk bensin
+
+📊 Statistik dan Data Science:
+• Confidence interval: 19/20 atau 95%
+• Type I error rate: α = 1/20 = 0.05
+• Correlation coefficient: r = 3/4 = 0.75
+• Bayes' theorem: P(A|B) = P(B|A)×P(A)/P(B)`
+                    }),
+                    latihanPraktik: generateGradedContent('pecahan', 'latihanPraktik', gradeLevel, {
+                        elementary: `🎯 KEGIATAN SERU & PRAKTIK LANGSUNG BELAJAR PECAHAN!
+
+Mari kita praktik langsung supaya makin paham! Siap-siap seru-seruan sambil belajar!
+
+🍕 WORKSHOP PIZZA PECAHAN (30 menit):
+
+Alat yang dibutuhkan:
+• Kertas karton warna-warni
+• Gunting dan lem
+• Spidol warna
+• Jangka atau piring untuk cetak lingkaran
+
+Langkah-langkah:
+1️⃣ Buat 4 pizza dari kertas (lingkaran besar)
+2️⃣ Pizza 1: Potong jadi 2 bagian (1/2)
+3️⃣ Pizza 2: Potong jadi 4 bagian (1/4, 2/4, 3/4, 4/4)
+4️⃣ Pizza 3: Potong jadi 8 bagian (1/8, 2/8, 3/8, dst)
+5️⃣ Pizza 4: Potong jadi 6 bagian (1/6, 2/6, 3/6, dst)
+6️⃣ Warnai setiap bagian dengan warna berbeda
+7️⃣ Tulis pecahan di setiap potongan
+8️⃣ Coba susun kembali dan bandingkan ukurannya!
+
+Pertanyaan Seru:
+• Mana yang lebih besar: 1/2 atau 2/4? (Sama besar!)
+• Berapa 1/4 + 1/4? (2/4 = 1/2)
+• Jika kamu makan 3/8 pizza, berapa yang tersisa? (5/8)
+
+🎲 PERMAINAN KARTU PECAHAN SUPER SERU (20 menit):
+
+Buat Kartu Sendiri:
+• 20 kartu dengan gambar pecahan berbeda
+• 20 kartu dengan angka pecahan
+• Contoh: Gambar lingkaran 1/2 dicocokan dengan kartu "1/2"
+
+Permainan 1 - "SNAP PECAHAN":
+• Bagi kartu sama rata
+• Buka kartu bergantian
+• Jika ada pecahan yang sama, teriak "SNAP!"
+• Yang tercepat dapat semua kartu di meja
+
+Permainan 2 - "URUTAN PECAHAN":
+• Ambil 5 kartu acak
+• Urutkan dari terkecil ke terbesar
+• Yang benar dapat poin!
+
+Permainan 3 - "TEBAK PECAHAN":
+• Satu orang pegang kartu gambar
+• Yang lain tebak pecahannya
+• Berikan clue: "Lebih besar dari 1/4 tapi lebih kecil dari 1/2"
+
+🧮 LABORATORIUM DAPUR PECAHAN (45 menit):
+
+Eksperimen 1 - Resep Kue Sederhana:
+Bahan:
+• 1/2 cangkir tepung
+• 1/4 cangkir gula
+• 1/8 cangkir mentega
+• 3/4 cangkir susu
+
+Langkah:
+1️⃣ Ukur setiap bahan dengan gelas ukur
+2️⃣ Tulis pecahan yang digunakan
+3️⃣ Hitung total: berapa cangkir semua bahan?
+4️⃣ Kalau mau buat 2 kali lipat, berapa setiap bahan?
+
+Eksperimen 2 - Pembagian Adil:
+• Bawa 1 kue bolu
+• Bagi untuk 8 orang (berapa bagian setiap orang?)
+• Bagi untuk 6 orang (berapa bagian setiap orang?)
+• Bagi untuk 4 orang (berapa bagian setiap orang?)
+• Mana yang dapat bagian lebih besar?
+
+Eksperimen 3 - Campuran Warna:
+• 1/2 air + pewarna biru
+• 1/4 air + pewarna merah  
+• 1/4 air + pewarna kuning
+• Campur semua, jadi warna apa?
+
+🎨 STUDIO SENI PECAHAN (40 menit):
+
+Proyek 1 - Lukisan Pecahan:
+• Kanvas dibagi jadi 4 bagian
+• 1/4 bagian warna biru (langit)
+• 1/4 bagian warna hijau (rumput)
+• 1/4 bagian warna kuning (matahari)
+• 1/4 bagian warna coklat (tanah)
+
+Proyek 2 - Origami Pecahan:
+• Ambil kertas persegi
+• Lipat jadi 1/2 (bentuk segitiga)
+• Lipat lagi jadi 1/4 (segitiga kecil)
+• Lipat lagi jadi 1/8 (segitiga mini)
+• Buka dan lihat garis-garis pecahan!
+
+Proyek 3 - Kolase Pecahan:
+• Gambar rumah di kertas
+• 2/5 bagian pakai kertas koran
+• 2/5 bagian pakai kertas majalah
+• 1/5 bagian pakai kertas warna
+
+🏃‍♂️ PERMAINAN AKTIF PECAHAN (25 menit):
+
+Game 1 - "Lari Pecahan":
+• Buat garis start dan finish
+• Guru teriak "1/2 jalan!" → lari sampai setengah jalan, stop!
+• "3/4 jalan!" → lari sampai 3/4 jalan
+• "1/4 mundur!" → mundur 1/4 dari posisi sekarang
+
+Game 2 - "Kelompok Pecahan":
+• 20 siswa di kelas
+• Guru bilang "Buat kelompok 1/4 dari kelas!" → 5 orang per kelompok
+• "Buat kelompok 1/5 dari kelas!" → 4 orang per kelompok
+• Yang salah dapat tantangan matematika!
+
+Game 3 - "Tepuk Pecahan":
+• Guru tunjuk pecahan di papan
+• Siswa tepuk tangan sesuai pembilang
+• Contoh: 3/4 → tepuk 3 kali
+• 5/8 → tepuk 5 kali
+
+🎯 KUIS INTERAKTIF & EVALUASI (20 menit):
+
+Soal Cerita Seru:
+1️⃣ "Andi punya 12 kelereng. Dia beri 1/3 ke Budi, 1/4 ke Cici. Berapa kelereng Andi sekarang?"
+
+2️⃣ "Pizza dipotong 8 bagian. Keluarga makan 5/8. Berapa bagian tersisa untuk besok?"
+
+3️⃣ "Ibu beli 2 kg apel. Dipakai 3/4 kg untuk jus. Berapa kg apel yang tersisa?"
+
+Tantangan Kreatif:
+• Buat cerita sendiri dengan pecahan!
+• Gambar situasi yang menunjukkan pecahan 2/3
+• Temukan 5 benda di kelas yang bisa dibagi dengan pecahan
+
+🏆 PROYEK AKHIR - "PAMERAN PECAHAN KELAS":
+• Setiap siswa buat poster tentang 1 jenis pecahan
+• Presentasi 3 menit di depan kelas
+• Voting poster terbaik
+• Hadiah untuk 3 poster terfavorit!`,
+                        
+                        middle: `🔬 EKSPERIMEN DAN INVESTIGASI PECAHAN:
+
+📐 Laboratorium Matematika:
+• Gunakan fraction strips untuk membandingkan pecahan
+• Eksperimen dengan kalkulator: ubah pecahan ke desimal
+• Buat grafik lingkaran untuk representasi visual pecahan
+• Investigasi pola dalam pecahan senilai menggunakan tabel
+
+🏗️ Proyek Konstruksi Skala:
+• Buat model rumah dengan skala 1/50
+• Ukur objek nyata, buat miniatur dengan pecahan
+• Desain taman dengan proporsi 2/5 rumput, 3/5 tanaman
+• Hitung material yang dibutuhkan dengan rasio pecahan
+
+🧪 Eksperimen Sains Terapan:
+• Buat larutan dengan konsentrasi 1/4, 1/2, 3/4
+• Ukur pertumbuhan tanaman dalam pecahan dari tinggi awal
+• Analisis data cuaca: berapa pecahan hari hujan dalam sebulan
+• Eksperimen pendulum: hubungan panjang dan periode
+
+💰 Simulasi Ekonomi:
+• Buat toko kelas dengan sistem diskon pecahan
+• Simulasi investasi dengan return dalam bentuk pecahan
+• Analisis pengeluaran keluarga dalam bentuk pecahan
+• Permainan monopoli dengan transaksi pecahan`,
+                        
+                        high: `🎓 INVESTIGASI LANJUT DAN APLIKASI PROFESIONAL:
+
+🔬 Penelitian Matematis:
+• Investigasi sifat-sifat continued fractions
+• Analisis konvergensi deret dengan suku pecahan
+• Eksplorasi Egyptian fractions dan algoritma greedy
+• Studi kasus Farey sequences dan sifat-sifatnya
+
+📊 Proyek Data Science:
+• Analisis dataset dengan proporsi dan rasio
+• Implementasi algoritma machine learning dengan probabilitas
+• Visualisasi data menggunakan pecahan dan persentase
+• Statistical inference dengan confidence intervals
+
+🏭 Aplikasi Teknik:
+• Desain sistem kontrol dengan transfer functions
+• Analisis rangkaian listrik dengan impedansi kompleks
+• Optimasi proses industri dengan linear programming
+• Simulasi Monte Carlo dengan distribusi probabilitas
+
+💼 Studi Kasus Bisnis:
+• Analisis fundamental saham dengan financial ratios
+• Valuasi perusahaan menggunakan discounted cash flow
+• Risk assessment dengan probability distributions
+• Portfolio optimization dengan modern portfolio theory`
+                    })
+                },
+                'aljabar': {
+                    pengenalan: `Aljabar adalah cabang matematika yang menggunakan huruf dan simbol untuk mewakili bilangan dalam persamaan dan rumus. Aljabar memungkinkan kita menyelesaikan masalah yang melibatkan nilai yang tidak diketahui.
+
+• Definisi: Matematika yang menggunakan variabel untuk mewakili bilangan
+• Variabel: Huruf yang mewakili bilangan yang tidak diketahui (x, y, z)
+• Konstanta: Bilangan tetap yang nilainya tidak berubah
+• Koefisien: Bilangan yang mengalikan variabel
+• Tujuan: Mencari nilai variabel yang memenuhi persamaan`,
+                    teori: `Prinsip-prinsip dasar aljabar:
+
+• Variabel dan Konstanta: x, y adalah variabel; 5, -3 adalah konstanta
+• Suku: Bagian dari ekspresi yang dipisahkan tanda + atau - (3x, -2y, 7)
+• Koefisien: Bilangan di depan variabel (dalam 5x, koefisien adalah 5)
+• Operasi Aljabar: Penjumlahan, pengurangan, perkalian, pembagian suku sejenis
+• Persamaan Linear: ax + b = c (derajat tertinggi variabel adalah 1)
+• Menyelesaikan Persamaan: Isolasi variabel dengan operasi yang sama di kedua ruas`,
+                    contohKehidupan: `Aljabar digunakan dalam berbagai situasi nyata:
+
+• Keuangan: Menghitung bunga bank, cicilan, dan investasi
+• Bisnis: Menentukan harga jual, keuntungan, dan break-even point
+• Konstruksi: Menghitung material yang dibutuhkan untuk bangunan
+• Transportasi: Menghitung jarak, waktu, dan kecepatan perjalanan
+• Teknologi: Pemrograman komputer dan algoritma
+• Sains: Rumus fisika dan kimia menggunakan variabel aljabar`,
+                    latihanPraktik: `Aktivitas praktis untuk menguasai aljabar:
+
+• Praktik 1: Tebak angka dengan persamaan sederhana (x + 5 = 12)
+• Praktik 2: Hitung total belanja dengan variabel harga barang
+• Praktik 3: Selesaikan masalah umur dengan persamaan linear
+• Praktik 4: Buat persamaan dari situasi nyata di sekitar sekolah
+• Praktik 5: Gunakan timbangan untuk memahami kesetimbangan persamaan
+• Praktik 6: Permainan kartu aljabar untuk operasi penjumlahan dan pengurangan`
+                },
+                'geometri': {
+                    pengenalan: `Geometri adalah cabang matematika yang mempelajari bentuk, ukuran, posisi, dan sifat-sifat ruang. Geometri membantu kita memahami dunia di sekitar kita melalui bentuk-bentuk yang ada di alam dan buatan manusia.
+
+• Definisi: Ilmu yang mempelajari titik, garis, bidang, dan ruang
+• Unsur Dasar: Titik (tidak berdimensi), garis (satu dimensi), bidang (dua dimensi)
+• Bangun Datar: Segitiga, persegi, lingkaran, dan bentuk 2D lainnya
+• Bangun Ruang: Kubus, balok, bola, dan bentuk 3D lainnya
+• Aplikasi: Arsitektur, seni, desain, dan teknologi`,
+                    teori: `Konsep fundamental dalam geometri:
+
+• Titik: Lokasi yang tidak memiliki ukuran, dilambangkan dengan huruf kapital
+• Garis: Kumpulan titik yang membentang tanpa batas, memiliki panjang tanpa lebar
+• Sudut: Pertemuan dua garis yang membentuk bukaan, diukur dalam derajat
+• Bangun Datar: Bentuk 2D dengan luas dan keliling (persegi, segitiga, lingkaran)
+• Bangun Ruang: Bentuk 3D dengan volume dan luas permukaan
+• Kongruensi: Bangun yang sama bentuk dan ukurannya
+• Kesebangunan: Bangun yang sama bentuk tetapi berbeda ukuran`,
+                    contohKehidupan: `Geometri hadir dalam kehidupan sehari-hari:
+
+• Arsitektur: Desain rumah, gedung, dan jembatan menggunakan prinsip geometri
+• Seni: Lukisan, patung, dan desain grafis menerapkan bentuk geometris
+• Olahraga: Lapangan sepak bola, basket, dan tenis memiliki bentuk geometris
+• Teknologi: Layar HP, TV, dan komputer berbentuk persegi panjang
+• Alam: Sarang lebah berbentuk heksagon, kristal garam berbentuk kubus
+• Transportasi: Roda berbentuk lingkaran, jalan raya menggunakan garis lurus`,
+                    latihanPraktik: `Aktivitas hands-on untuk memahami geometri:
+
+• Praktik 1: Buat bangun datar dari kertas dan hitung luas serta kelilingnya
+• Praktik 2: Identifikasi bentuk geometris di sekitar sekolah dan rumah
+• Praktik 3: Gunakan jangka dan penggaris untuk menggambar bentuk presisi
+• Praktik 4: Buat model bangun ruang dari kardus dan hitung volumenya
+• Praktik 5: Permainan tangram untuk memahami transformasi geometri
+• Praktik 6: Ukur sudut dengan busur derajat pada berbagai objek
+• Praktik 7: Buat pola geometris dengan origami`
+                },
+                // IPA (SAINS)
+                'fotosintesis': {
+                    pengenalan: generateGradedContent('fotosintesis', 'pengenalan', gradeLevel, {
+                        elementary: `🌱 SELAMAT DATANG DI DUNIA AJAIB FOTOSINTESIS!
+
+Halo anak-anak! Pernahkah kalian bertanya-tanya bagaimana tumbuhan bisa hidup tanpa makan seperti kita? Ternyata, tumbuhan punya cara super keren untuk membuat makanan sendiri! Namanya FOTOSINTESIS!
+
+🎯 APA ITU FOTOSINTESIS?
+Fotosintesis adalah cara AJAIB tumbuhan membuat makanan sendiri menggunakan sinar matahari! Bayangkan tumbuhan seperti koki yang memasak makanan dengan bantuan matahari sebagai kompor!
+
+Contoh mudahnya:
+• Pohon mangga di halaman = pabrik makanan mini
+• Daun hijau = dapur tempat memasak
+• Sinar matahari = api kompor untuk memasak
+• Air dari akar = bahan masakan
+• Udara (CO₂) = bumbu masakan
+
+📍 DI MANA fotosintesis terjadi?
+🌿 Di Daun Tumbuhan:
+• Setiap daun hijau adalah pabrik makanan kecil
+• Bagian hijau daun namanya KLOROFIL (seperti koki di dapur)
+• Klorofil inilah yang menangkap sinar matahari
+
+🌳 Di Tumbuhan Mana Saja:
+• Pohon besar di taman
+• Tanaman hias di rumah
+• Sayuran di kebun mama
+• Rumput di lapangan
+• Ganggang di laut
+
+⏰ KAPAN fotosintesis terjadi?
+🌅 Setiap Hari Saat Ada Matahari:
+• Pagi hari saat matahari terbit
+• Siang hari saat matahari terang
+• Sore hari sebelum matahari tenggelam
+• TIDAK terjadi malam hari (gelap, tidak ada matahari)
+
+🌦️ Cuaca yang Mendukung:
+• Hari cerah = fotosintesis maksimal
+• Hari berawan = fotosintesis sedikit
+• Hari hujan = fotosintesis minimal
+
+👥 SIAPA yang melakukan fotosintesis?
+🌱 Semua Tumbuhan Hijau:
+• Pohon besar seperti beringin, mangga, rambutan
+• Tanaman kecil seperti cabai, tomat, bayam
+• Bunga-bunga cantik di taman
+• Rumput dan padi di sawah
+• Ganggang hijau di laut dan sungai
+
+🔬 Bagian Tumbuhan yang Berperan:
+• DAUN = tempat utama fotosintesis
+• BATANG hijau = membantu fotosintesis
+• AKAR = menyerap air dari tanah
+
+❓ MENGAPA fotosintesis SUPER PENTING?
+✅ Menghasilkan OKSIGEN untuk kita bernapas
+✅ Membuat MAKANAN untuk tumbuhan hidup
+✅ Menyediakan MAKANAN untuk hewan dan manusia
+✅ Membersihkan UDARA dari gas kotor (CO₂)
+✅ Menjaga BUMI tetap sejuk dan nyaman
+
+🔧 BAGAIMANA cara kerja fotosintesis?
+Mari kita lihat resep ajaib tumbuhan:
+
+BAHAN-BAHAN:
+• Air (H₂O) dari akar
+• Karbon dioksida (CO₂) dari udara
+• Sinar matahari sebagai energi
+• Klorofil sebagai "koki"
+
+CARA MEMASAK:
+1️⃣ Akar menyerap air dari tanah
+2️⃣ Daun menyerap CO₂ dari udara
+3️⃣ Klorofil menangkap sinar matahari
+4️⃣ Semua bahan "dimasak" di daun
+5️⃣ Hasilnya: GLUKOSA (makanan) + OKSIGEN
+
+HASIL MASAKAN:
+• Glukosa = makanan untuk tumbuhan tumbuh besar
+• Oksigen = gas segar untuk kita bernapas`,
+                        
+                        middle: `🔬 MEMAHAMI FOTOSINTESIS: PROSES KEHIDUPAN YANG MENAKJUBKAN
+
+Fotosintesis adalah salah satu proses biologis paling penting di Bumi yang memungkinkan kehidupan seperti yang kita kenal sekarang. Mari kita pelajari secara mendalam!
+
+🎯 APA ITU FOTOSINTESIS?
+Fotosintesis adalah proses biokimia kompleks di mana organisme autotrof (tumbuhan hijau, alga, dan beberapa bakteri) mengkonversi energi cahaya matahari menjadi energi kimia dalam bentuk glukosa.
+
+Definisi Ilmiah:
+• Proses anabolisme yang menggunakan energi cahaya
+• Konversi CO₂ dan H₂O menjadi glukosa dan O₂
+• Reaksi endotermik yang memerlukan input energi
+• Dasar dari hampir semua rantai makanan di Bumi
+
+📍 DI MANA fotosintesis berlangsung?
+🔬 Tingkat Seluler:
+• Kloroplas: organel khusus dalam sel tumbuhan
+• Tilakoid: membran dalam kloroplas tempat reaksi terang
+• Stroma: cairan kloroplas tempat reaksi gelap
+• Mesofil: jaringan daun dengan kloroplas terbanyak
+
+🌍 Tingkat Ekosistem:
+• Hutan hujan tropis: 40% fotosintesis global
+• Lautan: fitoplankton sebagai produsen utama
+• Padang rumput dan savana
+• Ekosistem air tawar: danau dan sungai
+• Tundra dan hutan boreal
+
+⏰ KAPAN dan BAGAIMANA fotosintesis diatur?
+📊 Faktor Temporal:
+• Ritme sirkadian: puncak aktivitas siang hari
+• Variasi musiman: maksimal di musim pertumbuhan
+• Respons terhadap intensitas cahaya
+• Adaptasi terhadap perubahan suhu
+
+🌡️ Faktor Lingkungan:
+• Intensitas cahaya: 0-2000 μmol/m²/s optimal
+• Suhu: 15-35°C untuk sebagian besar tumbuhan
+• Konsentrasi CO₂: 400 ppm di atmosfer saat ini
+• Ketersediaan air: faktor pembatas utama
+
+👥 SIAPA pelaku fotosintesis?
+🌱 Tumbuhan Tingkat Tinggi:
+• Gymnospermae: konifer dan sikad
+• Angiospermae: tumbuhan berbunga
+• Pteridophyta: paku-pakuan
+• Bryophyta: lumut dan kerabatnya
+
+🦠 Organisme Mikroskopis:
+• Cyanobacteria: bakteri fotosintetik
+• Alga hijau, merah, dan coklat
+• Diatom dan dinoflagellata
+• Beberapa spesies bakteri purpur dan hijau
+
+❓ MENGAPA fotosintesis krusial bagi kehidupan?
+🌍 Dampak Global:
+• Produksi 130 miliar ton biomassa per tahun
+• Sumber 99% oksigen atmosfer
+• Penyerap utama CO₂ atmosfer
+• Basis seluruh piramida energi ekosistem
+• Pengatur iklim global
+
+💡 Aplikasi Teknologi:
+• Inspirasi untuk sel surya biologis
+• Pengembangan biofuel generasi ketiga
+• Teknologi carbon capture alami
+• Sistem life support untuk eksplorasi ruang angkasa
+
+🔧 BAGAIMANA mekanisme fotosintesis bekerja?
+⚡ Reaksi Terang (Light-Dependent Reactions):
+Lokasi: Membran tilakoid
+Proses:
+1️⃣ Absorpsi foton oleh kompleks antena
+2️⃣ Eksitasi elektron dalam fotosistem II dan I
+3️⃣ Transport elektron melalui rantai sitokrom
+4️⃣ Fotolisis air menghasilkan O₂
+5️⃣ Sintesis ATP dan NADPH
+
+🔄 Reaksi Gelap/Siklus Calvin (Light-Independent):
+Lokasi: Stroma kloroplas
+Tahapan:
+1️⃣ Fiksasi CO₂ oleh enzim RuBisCO
+2️⃣ Reduksi 3-fosfogliserat menggunakan ATP dan NADPH
+3️⃣ Regenerasi RuBP untuk siklus berkelanjutan
+4️⃣ Produksi glukosa sebagai produk akhir
+
+📈 Persamaan Kimia Lengkap:
+6CO₂ + 6H₂O + energi cahaya → C₆H₁₂O₆ + 6O₂ + 6H₂O
+
+Efisiensi:
+• Konversi energi: 3-6% dari cahaya matahari
+• Produktivitas primer: 50-100 ton/ha/tahun (optimal)`,
+                        
+                        high: `🧬 FOTOSINTESIS: BIOKIMIA MOLEKULER DAN SIGNIFIKANSI EVOLUSIONER
+
+Fotosintesis merupakan proses bioenergitik fundamental yang mengkonversi energi elektromagnetik menjadi energi kimia, membentuk dasar kehidupan aerobik di Bumi.
+
+🎯 DEFINISI DAN KONSEP FUNDAMENTAL
+Fotosintesis adalah serangkaian reaksi redoks yang dikatalisis enzim, di mana CO₂ direduksi menjadi karbohidrat menggunakan elektron dari H₂O, dengan energi cahaya sebagai driving force.
+
+Aspek Termodinamika:
+• ΔG°' = +686 kcal/mol untuk sintesis glukosa
+• Memerlukan input energi minimum 48 foton per molekul glukosa
+• Efisiensi teoritis maksimal: 11% (praktis: 3-6%)
+• Coupling reaksi eksergonik dan endergonik
+
+📍 KOMPARTMENTALISASI SELULER DAN MOLEKULER
+🔬 Struktur Kloroplas:
+• Envelope ganda: regulasi transport metabolit
+• Tilakoid: membran fotosintesis dengan protein kompleks
+• Lumen tilakoid: kompartmen dengan pH rendah (5.0)
+• Stroma: matriks dengan pH tinggi (8.0), lokasi siklus Calvin
+
+🧪 Kompleks Protein Membran:
+• Fotosistem II (P680): water-splitting complex
+• Sitokrom b₆f: proton pump dan electron carrier
+• Fotosistem I (P700): NADPH production
+• ATP sintase: chemiosmotic ATP synthesis
+
+⏰ REGULASI TEMPORAL DAN SPASIAL
+🕐 Kontrol Sirkadian:
+• Ekspresi gen CAB (Chlorophyll A/B binding protein)
+• Regulasi enzim kunci: RuBisCO activase
+• Stomatal conductance rhythms
+• Starch synthesis/degradation cycles
+
+🌡️ Adaptasi Fisiologis:
+• C₄ photosynthesis: spatial CO₂ concentration
+• CAM metabolism: temporal CO₂ fixation
+• Photorespiration: oxygenase activity of RuBisCO
+• Non-photochemical quenching: photoprotection
+
+👥 DIVERSITAS EVOLUSIONER DAN FILOGENETIK
+🦠 Evolusi Fotosintesis:
+• Anoxygenic photosynthesis: 3.5 miliar tahun lalu
+• Oxygenic photosynthesis: 2.7 miliar tahun lalu
+• Great Oxidation Event: 2.4 miliar tahun lalu
+• Endosimbiosis: asal-usul kloroplas
+
+🌿 Variasi Metabolik:
+• Fotosistem tunggal: bakteri hijau dan purpur
+• Fotosistem ganda: cyanobacteria dan tumbuhan
+• Bacteriorhodopsin: fotosintesis berbasis retinal
+• Chlorophyll variants: adaptasi spektral
+
+❓ SIGNIFIKANSI BIOGEOKIMIA GLOBAL
+🌍 Siklus Biogeokimia:
+• Primary productivity: 105 Pg C/tahun (terestrial + marine)
+• Oxygen production: 300 Tmol O₂/tahun
+• Carbon sequestration: mitigasi perubahan iklim
+• Nitrogen fixation coupling: diazotroph associations
+
+🔬 Aplikasi Biotekologi:
+• Artificial photosynthesis: solar fuel production
+• Metabolic engineering: enhanced CO₂ fixation
+• Synthetic biology: designer photosynthetic organisms
+• Bioremediation: phototrophic pollutant degradation
+
+🔧 MEKANISME MOLEKULER DETAIL
+⚡ Z-Scheme Electron Transport:
+1️⃣ P680* → Pheophytin → QA → QB → PQ pool
+2️⃣ Cytochrome b₆f → Plastocyanin → P700
+3️⃣ P700* → A₀ → A₁ → FX → FA/FB → Ferredoxin
+4️⃣ Ferredoxin-NADP⁺ reductase → NADPH
+
+🔄 Calvin-Benson-Bassham Cycle:
+Fase 1 - Carboxylation:
+• RuBP + CO₂ → 2 × 3-PGA (RuBisCO)
+• Km(CO₂) = 20 μM, Km(O₂) = 200 μM
+
+Fase 2 - Reduction:
+• 3-PGA → 1,3-bisphosphoglycerate (3-PGA kinase)
+• 1,3-bisphosphoglycerate → G3P (GAPDH)
+
+Fase 3 - Regeneration:
+• Transketolase dan transaldolase reactions
+• Sedoheptulose-1,7-bisphosphatase
+• Ribose-5-phosphate isomerase
+
+📊 Kinetika dan Regulasi Enzim:
+• RuBisCO: Vmax = 3.3 s⁻¹, regulasi oleh RuBisCO activase
+• Fructose-1,6-bisphosphatase: inhibisi AMP, aktivasi Mg²⁺
+• Sedoheptulose-1,7-bisphosphatase: redox regulation
+• Glyceraldehyde-3-phosphate dehydrogenase: NADPH/NADP⁺ ratio
+
+🧬 Regulasi Genetik dan Epigenetik:
+• Light-responsive elements (LRE) dalam promoter
+• Circadian clock genes: CCA1, LHY, TOC1
+• MicroRNA regulation: miR159, miR319
+• Chromatin remodeling: histone modifications`
+                    }),
+                    teori: `Mekanisme fotosintesis melibatkan dua tahap utama:
+
+• Reaksi Terang (Light Reaction): Terjadi di tilakoid, mengubah energi cahaya menjadi ATP dan NADPH
+• Reaksi Gelap (Siklus Calvin): Terjadi di stroma, mengubah CO₂ menjadi glukosa menggunakan ATP dan NADPH
+• Klorofil: Pigmen hijau yang menangkap cahaya matahari dan memulai reaksi
+• Persamaan Kimia: 6CO₂ + 6H₂O + cahaya → C₆H₁₂O₆ + 6O₂ + 6H₂O
+• Faktor Pembatas: Intensitas cahaya, suhu, konsentrasi CO₂, dan ketersediaan air
+• Stomata: Pori-pori daun tempat pertukaran gas CO₂ dan O₂`,
+                    contohKehidupan: `Fotosintesis berperan penting dalam kehidupan sehari-hari:
+
+• Oksigen: Setiap napas yang kita hirup (21% udara) berasal dari fotosintesis
+• Makanan: Nasi, sayuran, buah-buahan, dan daging (dari hewan herbivora)
+• Bahan bakar: Kayu bakar, batu bara, minyak bumi, dan gas alam
+• Udara bersih: Tumbuhan menyerap CO₂ dan mengurangi polusi udara
+• Iklim: Hutan Amazon sebagai "paru-paru dunia" mengatur cuaca global
+• Industri: Kertas, tekstil, obat-obatan, dan kosmetik dari tumbuhan`,
+                    latihanPraktik: `Eksperimen untuk memahami fotosintesis:
+
+• Eksperimen 1: Uji gelembung oksigen dengan tanaman air (Hydrilla) di bawah lampu
+• Eksperimen 2: Uji amilum pada daun dengan larutan iodium (warna biru-hitam)
+• Eksperimen 3: Bandingkan pertumbuhan tanaman di tempat terang vs gelap selama 1 minggu
+• Eksperimen 4: Amati stomata daun dengan mikroskop dan hitung jumlahnya
+• Eksperimen 5: Buat terrarium mini untuk melihat siklus oksigen-karbon dioksida
+• Eksperimen 6: Ukur pH air sebelum dan sesudah fotosintesis tanaman air
+• Eksperimen 7: Bandingkan laju fotosintesis pada berbagai warna cahaya`
+                },
+                'sistem pencernaan': {
+                    pengenalan: `Sistem pencernaan adalah rangkaian organ yang bekerja sama untuk mengubah makanan menjadi nutrisi yang dapat diserap tubuh. Sistem ini sangat penting untuk menyediakan energi dan bahan baku bagi pertumbuhan dan perbaikan sel.
+
+• Definisi: Sistem organ yang mencerna makanan menjadi nutrisi
+• Fungsi Utama: Pencernaan mekanis dan kimiawi makanan
+• Organ Utama: Mulut, kerongkongan, lambung, usus halus, usus besar
+• Organ Bantu: Hati, pankreas, dan kantong empedu
+• Proses: Ingesti → Pencernaan → Absorpsi → Eliminasi`,
+                    teori: `Proses pencernaan melibatkan beberapa tahap:
+
+• Pencernaan Mekanis: Pengunyahan di mulut, pengadukan di lambung
+• Pencernaan Kimiawi: Enzim memecah molekul besar menjadi kecil
+• Enzim Pencernaan: Amilase (karbohidrat), pepsin (protein), lipase (lemak)
+• Absorpsi: Penyerapan nutrisi di usus halus melalui vili
+• Transportasi: Nutrisi dibawa darah ke seluruh tubuh
+• Eliminasi: Sisa makanan dikeluarkan melalui anus
+• Peristaltik: Gerakan otot untuk mendorong makanan sepanjang saluran`,
+                    contohKehidupan: `Sistem pencernaan dalam aktivitas sehari-hari:
+
+• Sarapan: Roti dipecah menjadi glukosa untuk energi pagi
+• Minum susu: Laktase memecah laktosa menjadi glukosa dan galaktosa
+• Makan daging: Protein dipecah menjadi asam amino untuk pertumbuhan otot
+• Konsumsi sayuran: Serat membantu pencernaan dan kesehatan usus
+• Minum air: Membantu proses pencernaan dan transportasi nutrisi
+• Olahraga: Membutuhkan energi dari hasil pencernaan karbohidrat`,
+                    latihanPraktik: `Aktivitas untuk memahami sistem pencernaan:
+
+• Praktik 1: Simulasi pencernaan dengan kantong plastik dan enzim (nanas)
+• Praktik 2: Uji kandungan amilase dalam air liur dengan roti dan iodium
+• Praktik 3: Buat model saluran pencernaan dengan selang dan corong
+• Praktik 4: Amati vili usus halus dengan mikroskop atau gambar
+• Praktik 5: Hitung waktu transit makanan dengan makan jagung
+• Praktik 6: Bandingkan pencernaan makanan keras vs lunak
+• Praktik 7: Buat jurnal makanan dan analisis nutrisinya`
+                },
+                'sistem peredaran darah': {
+                    pengenalan: `Sistem peredaran darah adalah jaringan organ yang mengangkut darah ke seluruh tubuh untuk mendistribusikan oksigen, nutrisi, dan mengangkut limbah metabolisme. Jantung berperan sebagai pompa utama dalam sistem ini.
+
+• Definisi: Sistem transportasi cairan tubuh (darah dan limfa)
+• Komponen Utama: Jantung, pembuluh darah, dan darah
+• Fungsi: Mengangkut O₂, CO₂, nutrisi, hormon, dan limbah
+• Jenis: Peredaran darah besar (sistemik) dan kecil (pulmonal)
+• Pentingnya: Menjaga homeostasis dan kelangsungan hidup sel`,
+                    teori: `Mekanisme sistem peredaran darah:
+
+• Jantung: Pompa berotot dengan 4 ruang (2 atrium, 2 ventrikel)
+• Pembuluh Darah: Arteri (dari jantung), vena (ke jantung), kapiler (pertukaran)
+• Darah: Plasma (55%) dan sel darah (45%) - eritrosit, leukosit, trombosit
+• Peredaran Besar: Jantung → Aorta → Organ → Vena Kava → Jantung
+• Peredaran Kecil: Jantung → Paru-paru → Jantung (pertukaran O₂/CO₂)
+• Tekanan Darah: Sistol (kontraksi) dan diastol (relaksasi) jantung
+• Denyut Nadi: Gelombang tekanan darah yang dapat diraba`,
+                    contohKehidupan: `Sistem peredaran darah dalam aktivitas harian:
+
+• Olahraga: Jantung berdetak lebih cepat untuk memenuhi kebutuhan O₂ otot
+• Tidur: Denyut jantung melambat untuk menghemat energi
+• Makan: Darah dialirkan lebih banyak ke sistem pencernaan
+• Cuaca dingin: Pembuluh darah menyempit untuk menjaga suhu tubuh
+• Luka: Trombosit membentuk bekuan darah untuk menghentikan pendarahan
+• Stres: Adrenalin meningkatkan denyut jantung dan tekanan darah`,
+                    latihanPraktik: `Eksperimen sistem peredaran darah:
+
+• Praktik 1: Ukur denyut nadi sebelum dan sesudah olahraga
+• Praktik 2: Amati pembuluh darah di mata atau tangan dengan kaca pembesar
+• Praktik 3: Buat model jantung dari botol dan selang
+• Praktik 4: Simulasi aliran darah dengan air berwarna dan pompa
+• Praktik 5: Ukur tekanan darah dengan tensimeter sederhana
+• Praktik 6: Amati sel darah merah dengan mikroskop
+• Praktik 7: Hitung waktu pembekuan darah dengan tusuk gigi`
+                },
+                // BAHASA INDONESIA
+                'teks narasi': {
+                    pengenalan: `Teks narasi adalah jenis teks yang menceritakan suatu peristiwa atau kejadian secara kronologis. Teks ini memiliki alur cerita yang jelas dengan tokoh, latar, dan konflik yang membuat pembaca terlibat dalam cerita.
+
+• Definisi: Teks yang menceritakan rangkaian peristiwa secara berurutan
+• Tujuan: Menghibur, menyampaikan pesan moral, atau berbagi pengalaman
+• Ciri khas: Memiliki alur, tokoh, latar, dan sudut pandang yang jelas
+• Jenis: Narasi fiksi (dongeng, cerpen, novel) dan non-fiksi (biografi, sejarah)
+• Fungsi: Komunikasi, hiburan, pendidikan, dan pelestarian budaya`,
+                    teori: `Struktur dan unsur-unsur teks narasi:
+
+• Struktur: Orientasi (pengenalan) → Komplikasi (konflik) → Resolusi (penyelesaian) → Koda (pesan moral)
+• Unsur Intrinsik: Tema, alur, tokoh, latar, sudut pandang, amanat
+• Unsur Kebahasaan: Kata kerja aksi, konjungsi temporal (kemudian, setelah itu), keterangan waktu dan tempat
+• Jenis Alur: Maju (kronologis), mundur (flashback), atau campuran
+• Sudut Pandang: Orang pertama (aku), kedua (kamu), atau ketiga (dia/mereka)
+• Tokoh: Protagonis (baik), antagonis (jahat), dan tritagonis (pendukung)
+• Latar: Tempat, waktu, dan suasana kejadian`,
+                    contohKehidupan: `Teks narasi hadir dalam berbagai bentuk di sekitar kita:
+
+• Media Sosial: Status dan cerita di Instagram, Facebook, TikTok, dan WhatsApp
+• Berita: Laporan kejadian di TV, koran, radio, dan media online
+• Hiburan: Film, sinetron, novel, cerpen, komik, dan webtoon
+• Pendidikan: Cerita sejarah, biografi tokoh, dongeng, dan legenda
+• Kehidupan Pribadi: Menceritakan pengalaman kepada teman dan keluarga
+• Tradisi Lisan: Cerita rakyat, mitos, dan legenda daerah`,
+                    latihanPraktik: `Aktivitas menulis dan menganalisis teks narasi:
+
+• Praktik 1: Menulis pengalaman pribadi yang berkesan dengan struktur lengkap
+• Praktik 2: Menganalisis struktur dan unsur intrinsik dari cerita pendek atau film
+• Praktik 3: Bermain peran berdasarkan tokoh dalam cerita rakyat Indonesia
+• Praktik 4: Membuat komik strip sederhana dengan alur narasi yang menarik
+• Praktik 5: Menceritakan ulang dongeng tradisional dengan versi modern
+• Praktik 6: Wawancara orang tua dan menulis cerita keluarga
+• Praktik 7: Membuat video storytelling dengan teknik narasi yang baik`
+                },
+                'teks deskripsi': {
+                    pengenalan: `Teks deskripsi adalah jenis teks yang menggambarkan atau melukiskan suatu objek, tempat, orang, atau peristiwa secara detail dan jelas. Tujuannya adalah membuat pembaca seolah-olah dapat melihat, mendengar, atau merasakan apa yang digambarkan.
+
+• Definisi: Teks yang menggambarkan objek secara detail dan jelas
+• Tujuan: Memberikan gambaran nyata tentang objek kepada pembaca
+• Ciri khas: Menggunakan panca indera untuk menggambarkan objek
+• Jenis: Deskripsi objektif (faktual) dan subjektif (dengan pendapat penulis)
+• Fungsi: Informasi, promosi, dokumentasi, dan apresiasi`,
+                    teori: `Struktur dan ciri-ciri teks deskripsi:
+
+• Struktur: Identifikasi (pengenalan objek) → Deskripsi (penggambaran detail)
+• Ciri Kebahasaan: Kata sifat (adjektiva), kata keterangan, majas perbandingan
+• Penggunaan Panca Indera: Penglihatan, pendengaran, penciuman, perasa, peraba
+• Sudut Pandang: Objektif (netral) atau subjektif (dengan opini)
+• Organisasi: Spasial (ruang), temporal (waktu), atau berdasarkan kepentingan
+• Majas: Metafora, simile, personifikasi untuk memperkuat deskripsi
+• Koherensi: Keterkaitan antar kalimat yang logis dan sistematis`,
+                    contohKehidupan: `Teks deskripsi dalam kehidupan sehari-hari:
+
+• Pariwisata: Brosur wisata, review tempat liburan, panduan perjalanan
+• Perdagangan: Deskripsi produk di toko online, katalog, dan iklan
+• Pendidikan: Buku pelajaran, ensiklopedia, dan materi pembelajaran
+• Media: Laporan cuaca, deskripsi peristiwa, dan feature artikel
+• Teknologi: Manual penggunaan, spesifikasi produk, dan review gadget
+• Kuliner: Menu restoran, resep masakan, dan review makanan`,
+                    latihanPraktik: `Aktivitas menulis dan menganalisis teks deskripsi:
+
+• Praktik 1: Mendeskripsikan tempat favorit di sekolah dengan detail
+• Praktik 2: Membuat deskripsi makanan tradisional daerah menggunakan panca indera
+• Praktik 3: Menggambarkan tokoh idola dengan objektif dan subjektif
+• Praktik 4: Membuat brosur wisata untuk tempat menarik di daerah
+• Praktik 5: Mendeskripsikan cuaca dan suasana alam saat ini
+• Praktik 6: Membuat review produk atau aplikasi yang sering digunakan
+• Praktik 7: Menggambarkan suasana pasar tradisional dengan vivid`
+                },
+                'puisi': {
+                    pengenalan: `Puisi adalah karya sastra yang menggunakan bahasa yang padat, indah, dan penuh makna untuk mengekspresikan perasaan, pikiran, atau pengalaman. Puisi memiliki kekhasan dalam penggunaan kata, ritme, dan makna yang mendalam.
+
+• Definisi: Karya sastra yang mengekspresikan perasaan dengan bahasa indah
+• Ciri khas: Bahasa figuratif, ritme, rima, dan makna yang padat
+• Unsur: Tema, diksi, majas, rima, ritme, dan tipografi
+• Jenis: Puisi lama (pantun, syair) dan puisi baru (soneta, balada, ode)
+• Fungsi: Ekspresi diri, hiburan, kritik sosial, dan pelestarian budaya`,
+                    teori: `Unsur-unsur dan struktur puisi:
+
+• Tema: Pokok pikiran atau ide utama yang ingin disampaikan penyair
+• Diksi: Pilihan kata yang tepat dan bermakna untuk menciptakan efek tertentu
+• Majas: Gaya bahasa seperti metafora, personifikasi, hiperbola, dan simile
+• Rima: Persamaan bunyi di akhir baris (a-a-a-a, a-b-a-b, a-b-c-b)
+• Ritme: Irama atau alun-alun suara yang teratur dalam puisi
+• Tipografi: Tata letak dan bentuk visual puisi di atas kertas
+• Amanat: Pesan moral atau nilai yang ingin disampaikan kepada pembaca`,
+                    contohKehidupan: `Puisi dalam kehidupan sehari-hari:
+
+• Media Sosial: Caption Instagram, status Facebook, dan tweet kreatif
+• Musik: Lirik lagu pop, rock, dangdut, dan musik tradisional
+• Pendidikan: Puisi anak-anak, lagu pembelajaran, dan yel-yel sekolah
+• Upacara: Puisi untuk hari kemerdekaan, hari kartini, dan peringatan nasional
+• Hiburan: Stand-up comedy, slam poetry, dan pertunjukan seni
+• Terapi: Puisi untuk healing, motivasi, dan ekspresi emosi`,
+                    latihanPraktik: `Aktivitas menulis dan mengapresiasi puisi:
+
+• Praktik 1: Menulis puisi bebas tentang alam atau lingkungan sekolah
+• Praktik 2: Membuat pantun dengan tema persahabatan atau cinta tanah air
+• Praktik 3: Menganalisis majas dan makna dalam puisi karya penyair terkenal
+• Praktik 4: Deklamasi puisi dengan penghayatan dan intonasi yang tepat
+• Praktik 5: Membuat puisi visual (concrete poetry) dengan bentuk menarik
+• Praktik 6: Menulis lirik lagu sederhana dengan tema kehidupan remaja
+• Praktik 7: Mengadakan lomba baca puisi atau cipta puisi di kelas`
+                },
+                'sistem persamaan linear': {
+                    pengenalan: `Sistem persamaan linear adalah kumpulan dua atau lebih persamaan linear yang memiliki variabel yang sama. Sistem ini sangat berguna untuk menyelesaikan masalah yang melibatkan beberapa kondisi atau batasan sekaligus.
+
+• Definisi: Kumpulan persamaan linear dengan variabel yang sama
+• Bentuk umum: ax + by = c dan dx + ey = f (untuk 2 variabel)
+• Tujuan: Mencari nilai variabel yang memenuhi semua persamaan sekaligus
+• Aplikasi: Pemecahan masalah nyata dengan multiple constraints
+• Karakteristik: Derajat tertinggi variabel adalah 1 (linear)`,
+                    teori: `Metode penyelesaian sistem persamaan linear:
+
+• Metode Grafik: Menggambar garis dan mencari titik potong sebagai solusi
+• Metode Substitusi: Mengganti satu variabel dengan ekspresi dari persamaan lain
+• Metode Eliminasi: Menghilangkan satu variabel dengan operasi penjumlahan/pengurangan
+• Metode Campuran: Kombinasi substitusi dan eliminasi untuk efisiensi
+• Interpretasi Solusi: Satu solusi (berpotongan), tak hingga solusi (berimpit), tidak ada solusi (sejajar)
+• Determinan: Menggunakan aturan Cramer untuk sistem 2x2 dan 3x3
+• Matriks: Representasi sistem dalam bentuk matriks untuk penyelesaian`,
+                    contohKehidupan: `Sistem persamaan linear dalam kehidupan sehari-hari:
+
+• Bisnis: Menentukan harga dan kuantitas untuk memaksimalkan keuntungan
+• Transportasi: Mengoptimalkan rute, waktu, dan biaya perjalanan
+• Keuangan: Perencanaan investasi, alokasi dana, dan analisis portofolio
+• Produksi: Menentukan kombinasi produk untuk efisiensi dan profit maksimal
+• Nutrisi: Merencanakan diet dengan batasan kalori, protein, dan vitamin
+• Konstruksi: Menghitung kebutuhan material dengan batasan anggaran`,
+                    latihanPraktik: `Latihan penyelesaian sistem persamaan linear:
+
+• Praktik 1: Soal cerita pembelian barang dengan harga dan jumlah berbeda
+• Praktik 2: Masalah campuran larutan dengan konsentrasi dan volume tertentu
+• Praktik 3: Optimasi produksi dengan batasan bahan baku dan tenaga kerja
+• Praktik 4: Perencanaan perjalanan dengan batasan waktu, jarak, dan biaya
+• Praktik 5: Analisis break-even point dalam bisnis kecil-kecilan
+• Praktik 6: Menentukan komposisi makanan untuk memenuhi kebutuhan gizi
+• Praktik 7: Simulasi investasi dengan berbagai pilihan dan return`
+                },
+                
+                // IPS (ILMU PENGETAHUAN SOSIAL)
+                'keragaman budaya indonesia': {
+                    pengenalan: `Indonesia adalah negara kepulauan dengan keragaman budaya yang luar biasa kaya. Dengan lebih dari 17.000 pulau, 300 kelompok etnis, dan 700 bahasa daerah, Indonesia menjadi salah satu negara paling beragam di dunia.
+
+• Definisi: Keanekaragaman suku, bahasa, adat, dan tradisi di Indonesia
+• Jumlah Suku: Lebih dari 300 kelompok etnis dengan karakteristik unik
+• Bahasa: Bahasa Indonesia sebagai pemersatu, 700+ bahasa daerah
+• Agama: 6 agama resmi yang hidup berdampingan secara harmonis
+• Semboyan: Bhinneka Tunggal Ika (berbeda-beda tetapi tetap satu)`,
+                    teori: `Unsur-unsur keragaman budaya Indonesia:
+
+• Suku Bangsa: Jawa, Sunda, Batak, Minang, Dayak, Papua, dan ratusan lainnya
+• Bahasa Daerah: Jawa, Sunda, Batak, Minang, Bali, dan bahasa-bahasa lainnya
+• Adat Istiadat: Upacara pernikahan, kelahiran, kematian yang berbeda-beda
+• Kesenian: Tari, musik, lukisan, dan kerajinan khas setiap daerah
+• Arsitektur: Rumah adat dengan filosofi dan fungsi yang unik
+• Kuliner: Masakan khas daerah dengan cita rasa yang beragam
+• Pakaian Adat: Busana tradisional dengan makna dan fungsi khusus`,
+                    contohKehidupan: `Keragaman budaya dalam kehidupan sehari-hari:
+
+• Kuliner: Gudeg Yogya, rendang Padang, pempek Palembang, soto Betawi
+• Festival: Sekaten, Nyepi, Toraja Rambu Solo, Waisak, Cap Go Meh
+• Seni Pertunjukan: Wayang kulit, kecak Bali, saman Aceh, reog Ponorogo
+• Arsitektur: Rumah gadang, joglo, tongkonan, honai Papua
+• Bahasa: Sapaan dan ungkapan khas setiap daerah dalam pergaulan
+• Pakaian: Kebaya, batik, ulos, songket dalam acara formal`,
+                    latihanPraktik: `Aktivitas mengenal keragaman budaya Indonesia:
+
+• Praktik 1: Pameran budaya daerah dengan display makanan, pakaian, dan kesenian
+• Praktik 2: Pertunjukan tari dan musik tradisional dari berbagai daerah
+• Praktik 3: Membuat peta budaya Indonesia dengan ciri khas setiap provinsi
+• Praktik 4: Wawancara dengan orang dari daerah lain tentang budayanya
+• Praktik 5: Memasak makanan tradisional dan mempelajari sejarahnya
+• Praktik 6: Membuat kerajinan tangan khas daerah tertentu
+• Praktik 7: Festival bahasa daerah dengan dongeng dan lagu tradisional`
+                },
+                'sistem ekonomi': {
+                    pengenalan: `Sistem ekonomi adalah cara suatu negara atau masyarakat mengatur produksi, distribusi, dan konsumsi barang dan jasa. Setiap sistem memiliki karakteristik, kelebihan, dan kekurangan masing-masing.
+
+• Definisi: Cara mengatur kegiatan ekonomi dalam suatu negara
+• Komponen: Produksi, distribusi, dan konsumsi barang/jasa
+• Tujuan: Memenuhi kebutuhan masyarakat dan mencapai kesejahteraan
+• Jenis Utama: Tradisional, komando, pasar, dan campuran
+• Faktor Penentu: Kepemilikan sumber daya dan peran pemerintah`,
+                    teori: `Jenis-jenis sistem ekonomi dan karakteristiknya:
+
+• Sistem Tradisional: Berdasarkan adat, turun-temurun, barter, subsisten
+• Sistem Komando: Pemerintah mengatur semua, perencanaan terpusat, tidak ada persaingan
+• Sistem Pasar: Mekanisme pasar, persaingan bebas, kepemilikan privat
+• Sistem Campuran: Kombinasi peran pemerintah dan swasta, regulasi seimbang
+• Peran Pemerintah: Regulator, fasilitator, atau pengendali utama
+• Mekanisme Harga: Ditentukan pasar, pemerintah, atau kombinasi keduanya
+• Kepemilikan: Privat, negara, atau campuran keduanya`,
+                    contohKehidupan: `Sistem ekonomi dalam kehidupan sehari-hari:
+
+• Indonesia: Sistem campuran dengan BUMN dan swasta berdampingan
+• Pasar Tradisional: Tawar-menawar harga, hubungan personal pedagang-pembeli
+• Mall/Supermarket: Harga tetap, sistem modern, persaingan brand
+• Koperasi: Gotong royong, keuntungan dibagi rata, demokratis
+• UMKM: Usaha kecil dengan dukungan pemerintah dan akses pasar
+• E-commerce: Sistem pasar digital dengan algoritma dan rating`,
+                    latihanPraktik: `Aktivitas memahami sistem ekonomi:
+
+• Praktik 1: Simulasi pasar tradisional dengan tawar-menawar dan barter
+• Praktik 2: Membuat koperasi kelas untuk mengelola kantin atau alat tulis
+• Praktik 3: Analisis perbedaan harga barang di pasar tradisional vs modern
+• Praktik 4: Studi kasus UMKM sukses di sekitar sekolah
+• Praktik 5: Debat tentang kelebihan dan kekurangan setiap sistem ekonomi
+• Praktik 6: Membuat business plan sederhana dengan analisis pasar
+• Praktik 7: Kunjungan ke bank, koperasi, atau pusat perdagangan`
+                },
+                'globalisasi': {
+                    pengenalan: `Globalisasi adalah proses integrasi dan interaksi antara orang, perusahaan, dan pemerintah dari berbagai negara. Proses ini didorong oleh perdagangan internasional, investasi, dan teknologi informasi.
+
+• Definisi: Proses integrasi ekonomi, politik, budaya, dan sosial dunia
+• Faktor Pendorong: Teknologi, transportasi, komunikasi, perdagangan
+• Dampak: Positif (kemajuan, akses informasi) dan negatif (kesenjangan, hilang identitas)
+• Bidang: Ekonomi, politik, budaya, teknologi, dan lingkungan
+• Era: Dimulai abad ke-15, dipercepat revolusi industri dan internet`,
+                    teori: `Aspek-aspek dan dampak globalisasi:
+
+• Globalisasi Ekonomi: Perdagangan bebas, investasi asing, pasar global
+• Globalisasi Politik: Organisasi internasional, diplomasi multilateral
+• Globalisasi Budaya: Penyebaran nilai, gaya hidup, dan produk budaya
+• Globalisasi Teknologi: Transfer teknologi, inovasi, dan digitalisasi
+• Dampak Positif: Kemajuan teknologi, akses informasi, peluang ekonomi
+• Dampak Negatif: Kesenjangan ekonomi, hilangnya budaya lokal, ketergantungan
+• Tantangan: Regulasi internasional, perlindungan budaya lokal, distribusi manfaat`,
+                    contohKehidupan: `Globalisasi dalam kehidupan sehari-hari:
+
+• Teknologi: Smartphone, internet, media sosial, aplikasi global
+• Makanan: McDonald's, KFC, Pizza Hut, sushi, pasta di Indonesia
+• Fashion: Brand internasional, tren mode global, fast fashion
+• Hiburan: Film Hollywood, K-Pop, anime, Netflix, YouTube
+• Pendidikan: Program pertukaran, kursus online, sertifikasi internasional
+• Ekonomi: Produk impor, ekspor, mata uang asing, investasi global`,
+                    latihanPraktik: `Aktivitas memahami globalisasi:
+
+• Praktik 1: Identifikasi produk global vs lokal dalam kehidupan sehari-hari
+• Praktik 2: Analisis dampak media sosial terhadap budaya remaja Indonesia
+• Praktik 3: Debat tentang pro-kontra masuknya budaya asing ke Indonesia
+• Praktik 4: Membuat peta perdagangan internasional Indonesia
+• Praktik 5: Studi kasus perusahaan multinasional di Indonesia
+• Praktik 6: Survey penggunaan teknologi global di kalangan siswa
+• Praktik 7: Diskusi strategi mempertahankan budaya lokal di era global`
+                }
+            };
+
+            // Normalize topic for matching
+            const normalizedTopic = topik.toLowerCase().trim();
+            
+            // Try to find exact match or partial match
+            let matchedContent = null;
+            
+            // Exact match
+            if (contentDatabase[normalizedTopic]) {
+                matchedContent = contentDatabase[normalizedTopic];
+            } else {
+                // Partial match
+                for (const key in contentDatabase) {
+                    if (normalizedTopic.includes(key) || key.includes(normalizedTopic)) {
+                        matchedContent = contentDatabase[key];
+                        break;
+                    }
+                }
+            }
+            
+            // If no match found, generate generic content
+            if (!matchedContent) {
+                matchedContent = generateGenericContent(topik, mapel, kelas);
+            }
+            
+            // Add specific learning objectives
+            const tujuan = `Setelah mengikuti pembelajaran tentang ${topik}, siswa diharapkan mampu:
+
+• Memahami konsep dasar dan definisi ${topik}
+• Menganalisis komponen-komponen penting dalam ${topik}
+• Menerapkan pengetahuan ${topik} dalam situasi nyata
+• Mengevaluasi dan membuat kesimpulan tentang ${topik}
+• Mengkomunikasikan pemahaman ${topik} dengan jelas`;
+
+            return {
+                tujuan: tujuan,
+                pengenalan: matchedContent.pengenalan,
+                teori: matchedContent.teori,
+                contohKehidupan: matchedContent.contohKehidupan,
+                latihanPraktik: matchedContent.latihanPraktik
+            };
+        }
+
+        // Generate generic content for topics not in database
+        function generateGenericContent(topik, mapel, kelas) {
+            return {
+                pengenalan: `${topik} adalah salah satu konsep penting dalam ${mapel} yang perlu dipahami siswa ${kelas}. Topik ini memiliki relevansi tinggi dengan kehidupan sehari-hari dan menjadi dasar untuk memahami konsep-konsep lanjutan.
+
+• Definisi: Konsep fundamental dalam ${mapel}
+• Ruang lingkup: Mencakup teori dan aplikasi praktis
+• Pentingnya: Dasar untuk pembelajaran selanjutnya
+• Aplikasi: Dapat diterapkan dalam berbagai situasi`,
+                teori: `Konsep dasar ${topik} meliputi beberapa prinsip fundamental:
+
+• Prinsip 1: Landasan teoritis yang mendasari ${topik}
+• Prinsip 2: Hubungan antar komponen dalam ${topik}
+• Prinsip 3: Aturan dan pola yang berlaku dalam ${topik}
+• Prinsip 4: Metode analisis dan pemecahan masalah
+• Prinsip 5: Evaluasi dan interpretasi hasil`,
+                contohKehidupan: `${topik} dapat ditemukan dalam berbagai aspek kehidupan:
+
+• Kehidupan sehari-hari: Aplikasi langsung dalam aktivitas harian
+• Teknologi: Penerapan dalam perangkat dan sistem modern
+• Lingkungan: Keterkaitan dengan fenomena alam sekitar
+• Sosial: Dampak dan manfaat bagi masyarakat
+• Masa depan: Relevansi untuk perkembangan selanjutnya`,
+                latihanPraktik: `Aktivitas pembelajaran untuk menguasai ${topik}:
+
+• Aktivitas 1: Observasi dan identifikasi ${topik} di lingkungan sekitar
+• Aktivitas 2: Eksperimen sederhana untuk membuktikan konsep
+• Aktivitas 3: Diskusi kelompok tentang aplikasi ${topik}
+• Aktivitas 4: Presentasi hasil analisis dan temuan
+• Aktivitas 5: Refleksi dan evaluasi pemahaman konsep`
+            };
+        }
+
+        // Grade level determination system
+        function determineGradeLevel(kelas) {
+            const kelasLower = kelas.toLowerCase();
+            
+            // Elementary (SD/MI) - Kelas 1-6, Fase A-C
+            if (kelasLower.includes('sd') || kelasLower.includes('mi') || 
+                kelasLower.includes('fase a') || kelasLower.includes('fase b') || kelasLower.includes('fase c') ||
+                /kelas [1-6]/.test(kelasLower) || /^[1-6]$/.test(kelas.trim())) {
+                return 'elementary';
+            }
+            
+            // Middle School (SMP/MTs) - Kelas 7-9, Fase D
+            if (kelasLower.includes('smp') || kelasLower.includes('mts') || 
+                kelasLower.includes('fase d') ||
+                /kelas [7-9]/.test(kelasLower) || /^[7-9]$/.test(kelas.trim())) {
+                return 'middle';
+            }
+            
+            // High School (SMA/SMK/MA) - Kelas 10-12, Fase E-F
+            if (kelasLower.includes('sma') || kelasLower.includes('smk') || kelasLower.includes('ma') ||
+                kelasLower.includes('fase e') || kelasLower.includes('fase f') ||
+                /kelas 1[0-2]/.test(kelasLower) || /^1[0-2]$/.test(kelas.trim())) {
+                return 'high';
+            }
+            
+            // Default to middle if unclear
+            return 'middle';
+        }
+
+        // Generate content based on grade level
+        function generateGradedContent(topic, section, gradeLevel, contentLevels) {
+            return contentLevels[gradeLevel] || contentLevels.middle || contentLevels.elementary;
+        }
+
+        // Initialize app when DOM is loaded
+        document.addEventListener('DOMContentLoaded', initializeApp);
+    </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'993046ebd2d6aeb9',t:'MTc2MTIxMjQ2OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
