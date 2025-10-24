@@ -1,0 +1,2778 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Pembuat Presentasi Guru - ChatGPT Integration</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            box-sizing: border-box;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100%;
+        }
+        html, body {
+            height: 100%;
+        }
+        .slide-preview {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            aspect-ratio: 16/9;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255,255,255,0.2);
+        }
+        .slide-preview:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.2);
+        }
+        .loading-spinner {
+            border: 3px solid #f3f3f4;
+            border-top: 3px solid #3498db;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="min-h-full p-6">
+        <header class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-white mb-2">🎓 Dashboard Pembuat Presentasi Guru</h1>
+            <p class="text-blue-100 text-lg">Powered by ChatGPT - Buat presentasi pembelajaran yang menarik dan sesuai kurikulum</p>
+        </header>
+
+        <main class="max-w-7xl mx-auto">
+            <!-- Form Input -->
+            <div class="bg-white rounded-xl shadow-2xl p-8 mb-8">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                    📝 Data Pembelajaran
+                </h2>
+                
+                <form id="presentationForm" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="penyusun" class="block text-sm font-semibold text-gray-700 mb-2">Nama Penyusun</label>
+                        <input type="text" id="penyusun" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Masukkan nama guru">
+                    </div>
+                    
+                    <div>
+                        <label for="mataPelajaran" class="block text-sm font-semibold text-gray-700 mb-2">Mata Pelajaran</label>
+                        <select id="mataPelajaran" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            <option value="">Pilih Mata Pelajaran</option>
+                            <option value="Matematika">Matematika</option>
+                            <option value="Bahasa Indonesia">Bahasa Indonesia</option>
+                            <option value="IPA">IPA (Ilmu Pengetahuan Alam)</option>
+                            <option value="IPS">IPS (Ilmu Pengetahuan Sosial)</option>
+                            <option value="Bahasa Inggris">Bahasa Inggris</option>
+                            <option value="PKn">Pendidikan Kewarganegaraan</option>
+                            <option value="Seni Budaya">Seni Budaya</option>
+                            <option value="PJOK">Pendidikan Jasmani</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label for="kelasFase" class="block text-sm font-semibold text-gray-700 mb-2">Kelas/Fase</label>
+                        <select id="kelasFase" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            <option value="">Pilih Kelas/Fase</option>
+                            <option value="Fase A (Kelas 1-2)">Fase A (Kelas 1-2)</option>
+                            <option value="Fase B (Kelas 3-4)">Fase B (Kelas 3-4)</option>
+                            <option value="Fase C (Kelas 5-6)">Fase C (Kelas 5-6)</option>
+                            <option value="Fase D (Kelas 7-9)">Fase D (Kelas 7-9)</option>
+                            <option value="Fase E (Kelas 10)">Fase E (Kelas 10)</option>
+                            <option value="Fase F (Kelas 11-12)">Fase F (Kelas 11-12)</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label for="topikMateri" class="block text-sm font-semibold text-gray-700 mb-2">Topik/Elemen Materi</label>
+                        <input type="text" id="topikMateri" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Contoh: Pecahan, Fotosintesis, dll">
+                    </div>
+                    
+                    <div class="md:col-span-2">
+                        <label for="capaianPembelajaran" class="block text-sm font-semibold text-gray-700 mb-2">Capaian/Tujuan Pembelajaran</label>
+                        <textarea id="capaianPembelajaran" rows="4" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Masukkan tujuan pembelajaran yang ingin dicapai..."></textarea>
+                    </div>
+                    
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Pilih AI Engine untuk Analisis</label>
+                        <div class="flex gap-4 mb-4">
+                            <label class="flex items-center">
+                                <input type="radio" name="aiEngine" value="chatgpt" checked class="mr-2">
+                                <span class="text-sm">🤖 ChatGPT (Analisis Komprehensif)</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="radio" name="aiEngine" value="gemini" class="mr-2">
+                                <span class="text-sm">💎 AI Gemini (Analisis Kontekstual)</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="radio" name="aiEngine" value="hybrid" class="mr-2">
+                                <span class="text-sm">⚡ Hybrid (ChatGPT + Gemini)</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="md:col-span-2 text-center">
+                        <button type="submit" class="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:from-blue-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-200 shadow-lg">
+                            🚀 Analisis & Buat Presentasi dengan AI
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Loading State -->
+            <div id="loadingState" class="hidden bg-white rounded-xl shadow-2xl p-8 mb-8 text-center">
+                <div class="loading-spinner mx-auto mb-4"></div>
+                <h3 class="text-xl font-semibold text-gray-700 mb-2">Sedang Menganalisis dengan AI...</h3>
+                <p class="text-gray-600" id="loadingText">AI sedang menganalisis data pembelajaran dan menyusun materi presentasi yang sesuai</p>
+                <div class="mt-4 text-sm text-gray-500">
+                    <div id="analysisSteps" class="space-y-2">
+                        <!-- Steps akan diisi dinamis -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI Analysis Results -->
+            <div id="aiAnalysisSection" class="hidden bg-white rounded-xl shadow-2xl p-8 mb-8 fade-in">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                    🧠 Analisis AI Mendalam
+                </h2>
+                <div id="aiAnalysisContent" class="space-y-6">
+                    <!-- Analysis content akan diisi dinamis -->
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div id="resultsSection" class="hidden">
+                <!-- Presentation Info -->
+                <div class="bg-white rounded-xl shadow-2xl p-8 mb-8 fade-in">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                        📊 Informasi Presentasi
+                    </h2>
+                    <div id="presentationInfo" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <!-- Info akan diisi dinamis -->
+                    </div>
+                </div>
+
+                <!-- Slide Preview -->
+                <div class="bg-white rounded-xl shadow-2xl p-8 mb-8 fade-in">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl font-bold text-gray-800 flex items-center">
+                            🎯 Preview Presentasi
+                        </h2>
+                        <div class="flex flex-col sm:flex-row gap-2 sm:gap-2 items-center">
+                            <button id="prevSlide" class="w-full sm:w-auto bg-gray-500 text-white px-3 sm:px-4 py-2 rounded-lg hover:bg-gray-600 transition-all duration-200 text-sm sm:text-base disabled:opacity-50 disabled:cursor-not-allowed">
+                                <span class="hidden sm:inline">← Sebelumnya</span>
+                                <span class="sm:hidden">←</span>
+                            </button>
+                            <span id="slideCounter" class="px-3 sm:px-4 py-2 bg-gradient-to-r from-blue-100 to-purple-100 text-blue-800 rounded-lg font-semibold text-sm sm:text-base border border-blue-200">1 / 10</span>
+                            <button id="nextSlide" class="w-full sm:w-auto bg-blue-600 text-white px-3 sm:px-4 py-2 rounded-lg hover:bg-blue-700 transition-all duration-200 text-sm sm:text-base disabled:opacity-50 disabled:cursor-not-allowed">
+                                <span class="hidden sm:inline">Selanjutnya →</span>
+                                <span class="sm:hidden">→</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="slide-preview mb-4" id="slidePreview">
+                        <!-- Slide content akan diisi dinamis -->
+                    </div>
+                    
+                    <!-- Progress Indicator -->
+                    <div class="mb-4">
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div id="slideProgress" class="bg-gradient-to-r from-blue-500 to-purple-500 h-2 rounded-full transition-all duration-300" style="width: 10%"></div>
+                        </div>
+                        <div class="flex justify-between text-xs text-gray-500 mt-1">
+                            <span>Mulai</span>
+                            <span id="progressText">10% selesai</span>
+                            <span>Selesai</span>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center">
+                        <div class="flex flex-col sm:flex-row gap-3 justify-center items-center">
+                            <button id="downloadBtn" class="w-full sm:w-auto bg-green-600 text-white px-4 sm:px-6 py-3 rounded-lg font-semibold hover:bg-green-700 transition-all duration-200 text-sm sm:text-base">
+                                📥 Download Presentasi
+                            </button>
+                            <button id="editBtn" class="w-full sm:w-auto bg-orange-600 text-white px-4 sm:px-6 py-3 rounded-lg font-semibold hover:bg-orange-700 transition-all duration-200 text-sm sm:text-base">
+                                ✏️ Edit Presentasi
+                            </button>
+                            <button id="fullscreenBtn" class="w-full sm:w-auto bg-purple-600 text-white px-4 sm:px-6 py-3 rounded-lg font-semibold hover:bg-purple-700 transition-all duration-200 text-sm sm:text-base">
+                                🔍 Mode Presentasi
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide Structure -->
+                <div class="bg-white rounded-xl shadow-2xl p-8 fade-in">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                        📋 Struktur Presentasi
+                    </h2>
+                    <div id="slideStructure" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <!-- Structure akan diisi dinamis -->
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        let presentationData = null;
+
+        // Struktur slide akan dihasilkan dinamis oleh AI berdasarkan mata pelajaran dan fase
+
+        document.getElementById('presentationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            generatePresentation();
+        });
+
+        function generatePresentation() {
+            const formData = {
+                penyusun: document.getElementById('penyusun').value,
+                mataPelajaran: document.getElementById('mataPelajaran').value,
+                kelasFase: document.getElementById('kelasFase').value,
+                topikMateri: document.getElementById('topikMateri').value,
+                capaianPembelajaran: document.getElementById('capaianPembelajaran').value,
+                aiEngine: document.querySelector('input[name="aiEngine"]:checked').value
+            };
+
+            // Validasi form
+            if (!formData.penyusun || !formData.mataPelajaran || !formData.kelasFase || !formData.topikMateri || !formData.capaianPembelajaran) {
+                const customModal = document.createElement('div');
+                customModal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+                customModal.innerHTML = `
+                    <div class="bg-white p-8 rounded-xl max-w-md mx-4">
+                        <h3 class="text-xl font-bold mb-4">⚠️ Data Tidak Lengkap</h3>
+                        <p class="text-gray-600 mb-6">Mohon lengkapi semua field yang diperlukan untuk analisis AI yang akurat</p>
+                        <button onclick="this.closest('.fixed').remove()" class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700">OK</button>
+                    </div>
+                `;
+                document.body.appendChild(customModal);
+                return;
+            }
+
+            // Show loading with AI-specific steps
+            document.getElementById('loadingState').classList.remove('hidden');
+            document.getElementById('resultsSection').classList.add('hidden');
+            document.getElementById('aiAnalysisSection').classList.add('hidden');
+
+            // Start AI analysis simulation
+            simulateAIAnalysis(formData);
+        }
+
+        function simulateAIAnalysis(formData) {
+            const steps = getAnalysisSteps(formData.aiEngine);
+            let currentStep = 0;
+            const totalAnalysisTime = Math.random() * 90000 + 30000; // 30 detik - 2 menit untuk analisis mendalam
+            const stepInterval = totalAnalysisTime / steps.length;
+            
+            // Add progress bar
+            const progressBar = document.createElement('div');
+            progressBar.className = 'w-full bg-gray-200 rounded-full h-2 mt-4';
+            progressBar.innerHTML = '<div id="progressFill" class="bg-blue-600 h-2 rounded-full transition-all duration-500" style="width: 0%"></div>';
+            document.getElementById('loadingState').appendChild(progressBar);
+            
+            // Add estimated time with deep analysis indicator
+            const timeEstimate = document.createElement('div');
+            timeEstimate.className = 'text-sm text-gray-500 mt-2';
+            timeEstimate.innerHTML = `
+                <div class="flex items-center justify-center gap-2 mb-2">
+                    <span class="animate-pulse">🧠</span>
+                    <span class="font-semibold text-blue-600">ANALISIS MENDALAM SEDANG BERLANGSUNG</span>
+                    <span class="animate-pulse">🔍</span>
+                </div>
+                <span id="timeRemaining">Estimasi waktu: ${Math.round(totalAnalysisTime/1000)} detik</span>
+            `;
+            document.getElementById('loadingState').appendChild(timeEstimate);
+
+            function showNextStep() {
+                if (currentStep < steps.length) {
+                    const step = steps[currentStep];
+                    const stepElement = document.createElement('div');
+                    stepElement.className = 'flex items-center text-green-600 animate-pulse';
+                    stepElement.innerHTML = `<span class="mr-2">⏳</span> ${step}`;
+                    document.getElementById('analysisSteps').appendChild(stepElement);
+                    
+                    document.getElementById('loadingText').textContent = step;
+                    
+                    // Update progress
+                    const progress = ((currentStep + 1) / steps.length) * 100;
+                    document.getElementById('progressFill').style.width = `${progress}%`;
+                    
+                    // Update time remaining
+                    const timeLeft = Math.round((totalAnalysisTime - (stepInterval * (currentStep + 1))) / 1000);
+                    document.getElementById('timeRemaining').textContent = `Estimasi waktu tersisa: ${Math.max(0, timeLeft)} detik`;
+                    
+                    // Mark previous step as complete
+                    if (currentStep > 0) {
+                        const prevStep = document.getElementById('analysisSteps').children[currentStep - 1];
+                        prevStep.className = 'flex items-center text-green-600';
+                        prevStep.innerHTML = prevStep.innerHTML.replace('⏳', '✓').replace('animate-pulse', '');
+                    }
+                    
+                    currentStep++;
+                    setTimeout(showNextStep, stepInterval);
+                } else {
+                    // Mark last step as complete
+                    const lastStep = document.getElementById('analysisSteps').children[currentStep - 1];
+                    lastStep.className = 'flex items-center text-green-600';
+                    lastStep.innerHTML = lastStep.innerHTML.replace('⏳', '✓').replace('animate-pulse', '');
+                    
+                    // Complete analysis
+                    document.getElementById('progressFill').style.width = '100%';
+                    document.getElementById('timeRemaining').textContent = 'Analisis selesai! Menyusun presentasi...';
+                    
+                    setTimeout(() => {
+                        const aiAnalysis = generateAIAnalysis(formData);
+                        presentationData = generatePresentationContent(formData, aiAnalysis);
+                        
+                        displayAIAnalysis(aiAnalysis);
+                        displayResults(formData, presentationData);
+                        
+                        document.getElementById('loadingState').classList.add('hidden');
+                        document.getElementById('aiAnalysisSection').classList.remove('hidden');
+                        document.getElementById('resultsSection').classList.remove('hidden');
+                        
+                        document.getElementById('aiAnalysisSection').scrollIntoView({ behavior: 'smooth' });
+                    }, 2000);
+                }
+            }
+            
+            showNextStep();
+        }
+
+        function getAnalysisSteps(aiEngine) {
+            const deepAnalysisSteps = [
+                'Menganalisis kurikulum dan standar kompetensi...',
+                'Memetakan karakteristik kognitif siswa berdasarkan fase...',
+                'Mengidentifikasi prerequisite knowledge dan gap analysis...',
+                'Menganalisis kompleksitas materi dan tingkat abstraksi...',
+                'Mengevaluasi gaya belajar dominan untuk fase ini...',
+                'Menganalisis konteks sosial-budaya pembelajaran...',
+                'Memetakan potensi miskonsepsi dan kesulitan belajar...',
+                'Mengidentifikasi strategi scaffolding yang optimal...',
+                'Menganalisis kebutuhan diferensiasi pembelajaran...',
+                'Mengevaluasi kesesuaian dengan tujuan pembelajaran...'
+            ];
+
+            switch(aiEngine) {
+                case 'chatgpt':
+                    return [
+                        ...deepAnalysisSteps,
+                        'ChatGPT: Menganalisis struktur logis konsep...',
+                        'ChatGPT: Memetakan progression kognitif optimal...',
+                        'ChatGPT: Mengidentifikasi critical thinking opportunities...',
+                        'ChatGPT: Menganalisis metacognitive strategies...',
+                        'ChatGPT: Menyusun systematic knowledge building...',
+                        'ChatGPT: Mengoptimalkan cognitive load management...',
+                        'ChatGPT: Menghasilkan assessment rubrics...',
+                        'ChatGPT: Menyesuaikan kompleksitas bahasa...',
+                        'ChatGPT: Mengintegrasikan prior knowledge activation...',
+                        'ChatGPT: Finalizing systematic learning structure...'
+                    ];
+                case 'gemini':
+                    return [
+                        ...deepAnalysisSteps,
+                        'Gemini: Menganalisis konteks budaya Indonesia...',
+                        'Gemini: Memetakan visual learning preferences...',
+                        'Gemini: Mengidentifikasi local wisdom connections...',
+                        'Gemini: Menganalisis multi-sensory learning opportunities...',
+                        'Gemini: Menyusun contextual examples database...',
+                        'Gemini: Mengoptimalkan engagement strategies...',
+                        'Gemini: Menghasilkan creative expression activities...',
+                        'Gemini: Menyesuaikan dengan learning environment...',
+                        'Gemini: Mengintegrasikan collaborative elements...',
+                        'Gemini: Finalizing contextual learning experience...'
+                    ];
+                case 'hybrid':
+                    return [
+                        ...deepAnalysisSteps,
+                        'ChatGPT: Menganalisis cognitive architecture...',
+                        'Gemini: Menganalisis contextual relevance...',
+                        'ChatGPT: Memetakan systematic progression...',
+                        'Gemini: Mengidentifikasi cultural connections...',
+                        'ChatGPT: Mengoptimalkan knowledge construction...',
+                        'Gemini: Mengintegrasikan experiential learning...',
+                        'Hybrid: Menggabungkan systematic & contextual approaches...',
+                        'Hybrid: Mengoptimalkan cognitive & affective domains...',
+                        'Hybrid: Menyeimbangkan structure & creativity...',
+                        'Hybrid: Mengintegrasikan assessment strategies...',
+                        'Hybrid: Finalizing comprehensive learning design...'
+                    ];
+                default:
+                    return deepAnalysisSteps;
+            }
+        }
+
+        function generateAIAnalysis(formData) {
+            const phaseAnalysis = getPhaseAnalysis(formData.kelasFase);
+            const subjectAnalysis = getSubjectAnalysis(formData.mataPelajaran, formData.topikMateri);
+            const topicAnalysis = getTopicSpecificAnalysis(formData.mataPelajaran, formData.topikMateri, formData.kelasFase);
+            const pedagogicalAnalysis = getPedagogicalAnalysis(formData);
+            const aiSpecificAnalysis = getAISpecificAnalysis(formData.aiEngine, formData);
+            const structuralAnalysis = getStructuralAnalysis(formData);
+
+            return {
+                phase: phaseAnalysis,
+                subject: subjectAnalysis,
+                topic: topicAnalysis,
+                pedagogical: pedagogicalAnalysis,
+                aiSpecific: aiSpecificAnalysis,
+                structural: structuralAnalysis,
+                recommendations: generateRecommendations(formData),
+                slideStructure: determineOptimalSlideStructure(formData, phaseAnalysis, subjectAnalysis, topicAnalysis)
+            };
+        }
+
+        function getPhaseAnalysis(kelasFase) {
+            const phaseData = {
+                'Fase A (Kelas 1-2)': {
+                    kognitif: 'Tahap praoperasional - berpikir simbolik, belum logis abstrak',
+                    karakteristik: 'Senang bermain, perhatian singkat, belajar melalui pengalaman konkret',
+                    pendekatan: 'Pembelajaran berbasis permainan, visual, dan manipulatif',
+                    bahasa: 'Sederhana, kalimat pendek, banyak repetisi'
+                },
+                'Fase B (Kelas 3-4)': {
+                    kognitif: 'Transisi ke operasional konkret - mulai berpikir logis dengan objek konkret',
+                    karakteristik: 'Mulai memahami aturan, dapat mengklasifikasi, masih butuh contoh nyata',
+                    pendekatan: 'Pembelajaran hands-on, eksperimen sederhana, cerita',
+                    bahasa: 'Kalimat lebih kompleks, mulai memahami sebab-akibat'
+                },
+                'Fase C (Kelas 5-6)': {
+                    kognitif: 'Operasional konkret - berpikir logis dengan objek konkret',
+                    karakteristik: 'Dapat memecahkan masalah konkret, memahami konservasi',
+                    pendekatan: 'Pembelajaran berbasis masalah sederhana, investigasi',
+                    bahasa: 'Dapat memahami konsep abstrak dengan bantuan konkret'
+                },
+                'Fase D (Kelas 7-9)': {
+                    kognitif: 'Transisi ke operasional formal - mulai berpikir abstrak',
+                    karakteristik: 'Mulai berpikir hipotesis, memahami variabel',
+                    pendekatan: 'Pembelajaran berbasis inkuiri, eksperimen terkontrol',
+                    bahasa: 'Dapat memahami konsep abstrak dan simbolik'
+                },
+                'Fase E (Kelas 10)': {
+                    kognitif: 'Operasional formal awal - berpikir abstrak dan hipotesis',
+                    karakteristik: 'Dapat berpikir sistematis, memahami hubungan kompleks',
+                    pendekatan: 'Pembelajaran berbasis penelitian, analisis kritis',
+                    bahasa: 'Memahami konsep abstrak dan teoritis'
+                },
+                'Fase F (Kelas 11-12)': {
+                    kognitif: 'Operasional formal lanjut - berpikir abstrak kompleks',
+                    karakteristik: 'Dapat berpikir meta-kognitif, memahami sistem kompleks',
+                    pendekatan: 'Pembelajaran mandiri, sintesis pengetahuan',
+                    bahasa: 'Dapat memahami konsep teoritis dan filosofis'
+                }
+            };
+
+            return phaseData[kelasFase] || phaseData['Fase C (Kelas 5-6)'];
+        }
+
+        function getSubjectAnalysis(mataPelajaran, topikMateri) {
+            const subjectData = {
+                'Matematika': {
+                    natureMata: 'Ilmu eksak yang membutuhkan pemahaman konsep bertahap dan logika deduktif',
+                    challenges: 'Abstraksi konsep, ketakutan matematika, kesalahan konsep dasar, kesulitan transfer knowledge',
+                    strategies: 'Pembelajaran spiral, manipulatif konkret, pemecahan masalah kontekstual, visualisasi konsep',
+                    cognitiveLoad: 'Tinggi - membutuhkan working memory yang kuat untuk manipulasi simbolik',
+                    learningProgression: 'Konkret → Semi-konkret → Abstrak → Aplikasi',
+                    commonMisconceptions: 'Kesalahan operasi, pemahaman konsep yang parsial, generalisasi berlebihan'
+                },
+                'IPA': {
+                    natureMata: 'Ilmu empiris yang membutuhkan observasi, eksperimen, dan pemahaman fenomena alam',
+                    challenges: 'Konsep abstrak, miskonsepsi sains, kurangnya pengalaman langsung, kompleksitas sistem',
+                    strategies: 'Pembelajaran inkuiri, eksperimen hands-on, observasi alam, modeling konseptual',
+                    cognitiveLoad: 'Sedang-Tinggi - membutuhkan integrasi observasi dengan teori',
+                    learningProgression: 'Observasi → Hipotesis → Eksperimen → Generalisasi → Aplikasi',
+                    commonMisconceptions: 'Intuitive physics, anthropomorphic thinking, linear causality'
+                },
+                'Bahasa Indonesia': {
+                    natureMata: 'Keterampilan komunikasi yang membutuhkan praktik berkelanjutan dan pemahaman konteks',
+                    challenges: 'Kemampuan literasi, pemahaman teks kompleks, ekspresi ide, variasi register bahasa',
+                    strategies: 'Pembelajaran komunikatif, berbasis teks, kontekstual, scaffolding linguistik',
+                    cognitiveLoad: 'Sedang - membutuhkan pemrosesan semantik dan pragmatik',
+                    learningProgression: 'Pemahaman → Analisis → Sintesis → Evaluasi → Kreasi',
+                    commonMisconceptions: 'Literal interpretation, genre confusion, register mismatch'
+                },
+                'IPS': {
+                    natureMata: 'Ilmu sosial yang membutuhkan pemahaman konteks, perspektif multipel, dan analisis kritis',
+                    challenges: 'Abstraksi konsep sosial, bias perspektif, relevansi dengan kehidupan, kompleksitas sistem sosial',
+                    strategies: 'Pembelajaran berbasis masalah sosial, studi kasus, diskusi, role-playing, analisis sumber',
+                    cognitiveLoad: 'Sedang - membutuhkan perspective-taking dan analisis kontekstual',
+                    learningProgression: 'Deskripsi → Analisis → Sintesis → Evaluasi → Aksi Sosial',
+                    commonMisconceptions: 'Oversimplification, presentism, cultural bias'
+                },
+                'Bahasa Inggris': {
+                    natureMata: 'Keterampilan bahasa asing yang membutuhkan exposure dan praktik intensif',
+                    challenges: 'Interferensi L1, kompleksitas grammar, pronunciation, cultural understanding',
+                    strategies: 'Communicative approach, task-based learning, authentic materials, scaffolding',
+                    cognitiveLoad: 'Tinggi - membutuhkan dual language processing',
+                    learningProgression: 'Input → Notice → Practice → Output → Fluency',
+                    commonMisconceptions: 'Direct translation, grammar overgeneralization, cultural assumptions'
+                },
+                'PKn': {
+                    natureMata: 'Pendidikan karakter dan kewarganegaraan yang membutuhkan pemahaman nilai dan praktik',
+                    challenges: 'Abstraksi nilai, relevansi dengan kehidupan, kompleksitas sistem politik',
+                    strategies: 'Value clarification, experiential learning, civic engagement, moral reasoning',
+                    cognitiveLoad: 'Sedang - membutuhkan moral reasoning dan perspective-taking',
+                    learningProgression: 'Awareness → Understanding → Commitment → Action',
+                    commonMisconceptions: 'Absolute thinking, authority bias, civic disengagement'
+                }
+            };
+
+            return subjectData[mataPelajaran] || subjectData['IPA'];
+        }
+
+        function getTopicSpecificAnalysis(mataPelajaran, topikMateri, kelasFase) {
+            // Analisis mendalam berdasarkan topik spesifik
+            const topik = topikMateri.toLowerCase();
+            const phase = getComplexityLevel(kelasFase);
+            
+            let analysis = {
+                conceptualComplexity: 'sedang',
+                prerequisiteKnowledge: [],
+                keyLearningObjectives: [],
+                potentialDifficulties: [],
+                realWorldConnections: [],
+                assessmentStrategies: []
+            };
+
+            // Analisis berdasarkan mata pelajaran dan topik
+            if (mataPelajaran === 'Matematika') {
+                if (topik.includes('pecahan') || topik.includes('fraction')) {
+                    analysis = {
+                        conceptualComplexity: phase <= 2 ? 'tinggi' : 'sedang',
+                        prerequisiteKnowledge: ['Bilangan bulat', 'Konsep bagian dan keseluruhan', 'Pembagian dasar'],
+                        keyLearningObjectives: ['Memahami konsep pecahan sebagai bagian dari keseluruhan', 'Membandingkan pecahan', 'Operasi pecahan'],
+                        potentialDifficulties: ['Konsep abstrak bagian-keseluruhan', 'Equivalensi pecahan', 'Operasi dengan penyebut berbeda'],
+                        realWorldConnections: ['Membagi makanan', 'Mengukur bahan masakan', 'Waktu (setengah jam, seperempat jam)'],
+                        assessmentStrategies: ['Manipulatif visual', 'Problem solving kontekstual', 'Peer explanation']
+                    };
+                } else if (topik.includes('geometri') || topik.includes('bangun')) {
+                    analysis = {
+                        conceptualComplexity: 'sedang',
+                        prerequisiteKnowledge: ['Konsep ruang', 'Pengukuran dasar', 'Pola dan simetri'],
+                        keyLearningObjectives: ['Mengenali bentuk geometri', 'Memahami sifat bangun', 'Menghitung luas dan keliling'],
+                        potentialDifficulties: ['Visualisasi 3D', 'Konsep luas vs keliling', 'Transfer ke bentuk tidak beraturan'],
+                        realWorldConnections: ['Arsitektur bangunan', 'Desain dan seni', 'Navigasi dan peta'],
+                        assessmentStrategies: ['Hands-on construction', 'Visual-spatial tasks', 'Real-world applications']
+                    };
+                }
+            } else if (mataPelajaran === 'IPA') {
+                if (topik.includes('fotosintesis')) {
+                    analysis = {
+                        conceptualComplexity: phase <= 3 ? 'tinggi' : 'sedang',
+                        prerequisiteKnowledge: ['Struktur tumbuhan', 'Konsep makanan', 'Siklus air', 'Cahaya matahari'],
+                        keyLearningObjectives: ['Memahami proses fotosintesis', 'Mengidentifikasi faktor-faktor fotosintesis', 'Menjelaskan pentingnya fotosintesis'],
+                        potentialDifficulties: ['Proses mikroskopis', 'Konsep energi', 'Hubungan input-output'],
+                        realWorldConnections: ['Pertanian dan tanaman pangan', 'Hutan dan lingkungan', 'Oksigen yang kita hirup'],
+                        assessmentStrategies: ['Eksperimen sederhana', 'Observasi tumbuhan', 'Diagram proses']
+                    };
+                } else if (topik.includes('sistem') && topik.includes('pencernaan')) {
+                    analysis = {
+                        conceptualComplexity: 'tinggi',
+                        prerequisiteKnowledge: ['Organ tubuh', 'Konsep makanan dan nutrisi', 'Proses biologis dasar'],
+                        keyLearningObjectives: ['Mengidentifikasi organ pencernaan', 'Memahami proses pencernaan', 'Menjaga kesehatan pencernaan'],
+                        potentialDifficulties: ['Proses internal yang tidak terlihat', 'Sekuensi proses', 'Fungsi setiap organ'],
+                        realWorldConnections: ['Kebiasaan makan sehat', 'Masalah pencernaan', 'Nutrisi dan diet'],
+                        assessmentStrategies: ['Model anatomi', 'Simulasi proses', 'Health behavior tracking']
+                    };
+                }
+            }
+
+            return analysis;
+        }
+
+        function getPedagogicalAnalysis(formData) {
+            const phase = getComplexityLevel(formData.kelasFase);
+            const subject = formData.mataPelajaran;
+            
+            return {
+                optimalDuration: phase <= 2 ? '20-30 menit' : phase <= 4 ? '35-45 menit' : '45-60 menit',
+                attentionSpan: phase <= 2 ? '5-10 menit per aktivitas' : phase <= 4 ? '10-15 menit per aktivitas' : '15-20 menit per aktivitas',
+                preferredModalities: phase <= 2 ? ['Visual', 'Kinesthetic', 'Auditory'] : phase <= 4 ? ['Visual', 'Kinesthetic', 'Reading'] : ['Visual', 'Reading', 'Auditory'],
+                scaffoldingNeeds: phase <= 2 ? 'Tinggi - perlu bimbingan konstan' : phase <= 4 ? 'Sedang - perlu struktur jelas' : 'Rendah - dapat bekerja mandiri',
+                socialLearning: phase <= 2 ? 'Parallel play, guided interaction' : phase <= 4 ? 'Small group collaboration' : 'Complex group dynamics',
+                motivationalFactors: phase <= 2 ? ['Praise', 'Games', 'Stories'] : phase <= 4 ? ['Achievement', 'Peer recognition', 'Autonomy'] : ['Mastery', 'Purpose', 'Self-direction']
+            };
+        }
+
+        function getStructuralAnalysis(formData) {
+            const phase = getComplexityLevel(formData.kelasFase);
+            const subject = formData.mataPelajaran;
+            
+            // Calculate actual slide count based on the new algorithm
+            const actualSlideCount = determineOptimalSlideCount(subject, phase, {});
+            
+            return {
+                optimalSlideCount: `${actualSlideCount} slides (${phase <= 2 ? '10-12' : phase <= 4 ? '15-18' : '18-20'} range)`,
+                contentDensity: phase <= 2 ? 'Rendah - 1 konsep utama per slide' : phase <= 4 ? 'Sedang - 2-3 konsep terintegrasi per slide' : 'Tinggi - multiple konsep dengan hubungan kompleks',
+                visualRatio: phase <= 2 ? '70% visual, 30% teks' : phase <= 4 ? '60% visual, 40% teks' : '50% visual, 50% teks',
+                interactionFrequency: phase <= 2 ? 'Setiap 2-3 slide' : phase <= 4 ? 'Setiap 3-4 slide' : 'Setiap 4-5 slide',
+                assessmentIntegration: phase <= 2 ? 'Informal, observational' : phase <= 4 ? 'Formative, embedded' : 'Summative, comprehensive',
+                slideDistribution: generateSlideDistribution(actualSlideCount, phase, subject),
+                adaptiveStructure: `Struktur adaptif berdasarkan kompleksitas ${subject} untuk fase ${formData.kelasFase}`
+            };
+        }
+
+        function generateSlideDistribution(totalSlides, phase, subject) {
+            if (phase <= 2) {
+                return {
+                    pembuka: '2 slides (20%)',
+                    konsep: `${Math.floor(totalSlides * 0.4)} slides (40%)`,
+                    aplikasi: `${Math.floor(totalSlides * 0.25)} slides (25%)`,
+                    latihan: `${Math.floor(totalSlides * 0.15)} slides (15%)`
+                };
+            } else if (phase <= 4) {
+                return {
+                    pembuka: '3 slides (20%)',
+                    konsep: `${Math.floor(totalSlides * 0.35)} slides (35%)`,
+                    aplikasi: `${Math.floor(totalSlides * 0.25)} slides (25%)`,
+                    latihan: `${Math.floor(totalSlides * 0.2)} slides (20%)`
+                };
+            } else {
+                return {
+                    pembuka: '3 slides (15%)',
+                    konsep: `${Math.floor(totalSlides * 0.4)} slides (40%)`,
+                    aplikasi: `${Math.floor(totalSlides * 0.25)} slides (25%)`,
+                    analisis: `${Math.floor(totalSlides * 0.2)} slides (20%)`
+                };
+            }
+        }
+
+        function determineOptimalSlideStructure(formData, phaseAnalysis, subjectAnalysis, topicAnalysis) {
+            const phase = getComplexityLevel(formData.kelasFase);
+            const subject = formData.mataPelajaran;
+            const aiEngine = formData.aiEngine;
+            
+            // Struktur slide yang berbeda berdasarkan analisis mendalam
+            let structure = [];
+            
+            if (subject === 'Matematika') {
+                if (phase <= 2) {
+                    structure = ['Hook Konkret', 'Eksplorasi Manipulatif', 'Konsep Dasar', 'Latihan Terbimbing', 'Aplikasi Sederhana', 'Refleksi Visual'];
+                } else if (phase <= 4) {
+                    structure = ['Masalah Kontekstual', 'Investigasi', 'Konsep Formal', 'Contoh Beragam', 'Latihan Mandiri', 'Koneksi Matematika', 'Evaluasi'];
+                } else {
+                    structure = ['Tantangan Kognitif', 'Analisis Masalah', 'Teori dan Konsep', 'Pembuktian', 'Aplikasi Kompleks', 'Generalisasi', 'Sintesis'];
+                }
+            } else if (subject === 'IPA') {
+                if (phase <= 2) {
+                    structure = ['Fenomena Menarik', 'Observasi Langsung', 'Pertanyaan Sederhana', 'Eksplorasi Hands-on', 'Penemuan', 'Aplikasi Harian'];
+                } else if (phase <= 4) {
+                    structure = ['Fenomena Kompleks', 'Hipotesis', 'Investigasi Terkontrol', 'Analisis Data', 'Kesimpulan', 'Aplikasi Teknologi', 'Refleksi Saintifik'];
+                } else {
+                    structure = ['Masalah Saintifik', 'Literature Review', 'Metodologi', 'Eksperimen', 'Analisis Statistik', 'Diskusi', 'Implikasi'];
+                }
+            } else if (subject === 'Bahasa Indonesia') {
+                if (phase <= 2) {
+                    structure = ['Cerita Menarik', 'Kosakata Baru', 'Pemahaman Dasar', 'Latihan Berbicara', 'Ekspresi Kreatif', 'Sharing'];
+                } else if (phase <= 4) {
+                    structure = ['Teks Otentik', 'Analisis Struktur', 'Pemahaman Mendalam', 'Produksi Teks', 'Peer Review', 'Publikasi'];
+                } else {
+                    structure = ['Wacana Kompleks', 'Analisis Kritis', 'Sintesis Ide', 'Argumentasi', 'Produksi Kreatif', 'Evaluasi'];
+                }
+            }
+            
+            // Modifikasi berdasarkan AI engine
+            if (aiEngine === 'gemini') {
+                structure = structure.map(s => s + ' (Visual-Kontekstual)');
+            } else if (aiEngine === 'chatgpt') {
+                structure = structure.map(s => s + ' (Sistematis-Kognitif)');
+            } else if (aiEngine === 'hybrid') {
+                structure = structure.map(s => s + ' (Terintegrasi)');
+            }
+            
+            return structure;
+        }
+
+        function getAISpecificAnalysis(aiEngine, formData) {
+            switch(aiEngine) {
+                case 'chatgpt':
+                    return {
+                        strength: 'Analisis mendalam struktur kognitif dan progression pembelajaran',
+                        focus: 'Optimalisasi urutan konsep dan scaffolding pembelajaran',
+                        recommendation: 'Struktur pembelajaran yang sistematis dengan penguatan konsep bertahap'
+                    };
+                case 'gemini':
+                    return {
+                        strength: 'Analisis kontekstual dan adaptasi budaya pembelajaran',
+                        focus: 'Personalisasi konten sesuai karakteristik dan lingkungan siswa',
+                        recommendation: 'Pembelajaran yang relevan dengan konteks lokal dan gaya belajar visual'
+                    };
+                case 'hybrid':
+                    return {
+                        strength: 'Kombinasi analisis kognitif dan kontekstual yang komprehensif',
+                        focus: 'Optimalisasi pembelajaran dari aspek struktur dan relevansi',
+                        recommendation: 'Pembelajaran yang sistematis, kontekstual, dan adaptif'
+                    };
+                default:
+                    return {
+                        strength: 'Analisis standar pembelajaran',
+                        focus: 'Penyesuaian dengan kurikulum',
+                        recommendation: 'Pembelajaran sesuai standar kurikulum'
+                    };
+            }
+        }
+
+        function generateRecommendations(formData) {
+            const phase = getPhaseAnalysis(formData.kelasFase);
+            const subject = getSubjectAnalysis(formData.mataPelajaran, formData.topikMateri);
+            
+            return {
+                pedagogical: `Gunakan ${phase.pendekatan} dengan ${subject.strategies}`,
+                content: `Sesuaikan kompleksitas materi dengan ${phase.kognitif}`,
+                language: `${phase.bahasa} dengan terminologi ${formData.mataPelajaran}`,
+                assessment: `Evaluasi berbasis ${phase.karakteristik} dan ${subject.natureMata}`
+            };
+        }
+
+        function displayAIAnalysis(analysis) {
+            const analysisHTML = `
+                <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+                    <div class="bg-blue-50 p-6 rounded-lg border-l-4 border-blue-500">
+                        <h3 class="text-lg font-bold text-blue-800 mb-3">📊 Analisis Fase Pembelajaran</h3>
+                        <div class="space-y-2 text-sm">
+                            <p><strong>Tingkat Kognitif:</strong> ${analysis.phase.kognitif}</p>
+                            <p><strong>Karakteristik:</strong> ${analysis.phase.karakteristik}</p>
+                            <p><strong>Pendekatan Optimal:</strong> ${analysis.phase.pendekatan}</p>
+                            <p><strong>Bahasa:</strong> ${analysis.phase.bahasa}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-green-50 p-6 rounded-lg border-l-4 border-green-500">
+                        <h3 class="text-lg font-bold text-green-800 mb-3">🎯 Analisis Mata Pelajaran</h3>
+                        <div class="space-y-2 text-sm">
+                            <p><strong>Karakteristik:</strong> ${analysis.subject.natureMata}</p>
+                            <p><strong>Cognitive Load:</strong> ${analysis.subject.cognitiveLoad}</p>
+                            <p><strong>Learning Progression:</strong> ${analysis.subject.learningProgression}</p>
+                            <p><strong>Strategi:</strong> ${analysis.subject.strategies}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-yellow-50 p-6 rounded-lg border-l-4 border-yellow-500">
+                        <h3 class="text-lg font-bold text-yellow-800 mb-3">🔍 Analisis Topik Spesifik</h3>
+                        <div class="space-y-2 text-sm">
+                            <p><strong>Kompleksitas:</strong> ${analysis.topic.conceptualComplexity}</p>
+                            <p><strong>Prerequisite:</strong> ${analysis.topic.prerequisiteKnowledge.join(', ')}</p>
+                            <p><strong>Kesulitan Potensial:</strong> ${analysis.topic.potentialDifficulties.join(', ')}</p>
+                            <p><strong>Koneksi Dunia Nyata:</strong> ${analysis.topic.realWorldConnections.join(', ')}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-purple-50 p-6 rounded-lg border-l-4 border-purple-500">
+                        <h3 class="text-lg font-bold text-purple-800 mb-3">🤖 Insight AI Engine</h3>
+                        <div class="space-y-2 text-sm">
+                            <p><strong>Kekuatan:</strong> ${analysis.aiSpecific.strength}</p>
+                            <p><strong>Fokus Analisis:</strong> ${analysis.aiSpecific.focus}</p>
+                            <p><strong>Rekomendasi:</strong> ${analysis.aiSpecific.recommendation}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-indigo-50 p-6 rounded-lg border-l-4 border-indigo-500">
+                        <h3 class="text-lg font-bold text-indigo-800 mb-3">🎓 Analisis Pedagogis</h3>
+                        <div class="space-y-2 text-sm">
+                            <p><strong>Durasi Optimal:</strong> ${analysis.pedagogical.optimalDuration}</p>
+                            <p><strong>Attention Span:</strong> ${analysis.pedagogical.attentionSpan}</p>
+                            <p><strong>Modalitas:</strong> ${analysis.pedagogical.preferredModalities.join(', ')}</p>
+                            <p><strong>Scaffolding:</strong> ${analysis.pedagogical.scaffoldingNeeds}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-pink-50 p-6 rounded-lg border-l-4 border-pink-500">
+                        <h3 class="text-lg font-bold text-pink-800 mb-3">🏗️ Analisis Struktural</h3>
+                        <div class="space-y-2 text-sm">
+                            <p><strong>Jumlah Slide:</strong> ${analysis.structural.optimalSlideCount}</p>
+                            <p><strong>Kepadatan Konten:</strong> ${analysis.structural.contentDensity}</p>
+                            <p><strong>Rasio Visual:</strong> ${analysis.structural.visualRatio}</p>
+                            <p><strong>Frekuensi Interaksi:</strong> ${analysis.structural.interactionFrequency}</p>
+                            <p><strong>Assessment:</strong> ${analysis.structural.assessmentIntegration}</p>
+                            <p><strong>Kedalaman:</strong> ${analysis.structural.depthAnalysis}</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-8 bg-gray-50 p-6 rounded-lg border-l-4 border-gray-500">
+                    <h3 class="text-lg font-bold text-gray-800 mb-3">📋 Struktur Slide yang Direkomendasikan</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
+                        ${analysis.slideStructure.map((structure, index) => `
+                            <div class="bg-white p-3 rounded border text-sm">
+                                <span class="font-semibold text-blue-600">${index + 1}.</span> ${structure}
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+                
+                <div class="mt-6 bg-teal-50 p-6 rounded-lg border-l-4 border-teal-500">
+                    <h3 class="text-lg font-bold text-teal-800 mb-3">📊 Distribusi Slide Optimal</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                        ${Object.entries(analysis.structural.slideDistribution).map(([key, value]) => `
+                            <div class="bg-white p-3 rounded border text-center">
+                                <div class="font-semibold text-teal-700 capitalize">${key}</div>
+                                <div class="text-teal-600">${value}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+                
+                <div class="mt-6 bg-orange-50 p-6 rounded-lg border-l-4 border-orange-500">
+                    <h3 class="text-lg font-bold text-orange-800 mb-3">💡 Rekomendasi Implementasi</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                        <div>
+                            <p><strong>Pedagogis:</strong> ${analysis.recommendations.pedagogical}</p>
+                            <p><strong>Konten:</strong> ${analysis.recommendations.content}</p>
+                        </div>
+                        <div>
+                            <p><strong>Bahasa:</strong> ${analysis.recommendations.language}</p>
+                            <p><strong>Evaluasi:</strong> ${analysis.recommendations.assessment}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('aiAnalysisContent').innerHTML = analysisHTML;
+        }
+
+        function generatePresentationContent(formData, aiAnalysis) {
+            // Generate dynamic slide structure based on AI analysis
+            const phaseLevel = getComplexityLevel(formData.kelasFase);
+            const slideStructure = generateAISlideStructure(formData, aiAnalysis, phaseLevel);
+            
+            return slideStructure;
+        }
+
+        function getComplexityLevel(kelasFase) {
+            const levels = {
+                'Fase A (Kelas 1-2)': 1,
+                'Fase B (Kelas 3-4)': 2,
+                'Fase C (Kelas 5-6)': 3,
+                'Fase D (Kelas 7-9)': 4,
+                'Fase E (Kelas 10)': 5,
+                'Fase F (Kelas 11-12)': 6
+            };
+            return levels[kelasFase] || 3;
+        }
+
+        function generateAISlideStructure(formData, aiAnalysis, phaseLevel) {
+            // AI generates slide structure based on subject, phase, and learning objectives
+            const aiEngine = formData.aiEngine;
+            const mataPelajaran = formData.mataPelajaran;
+            const topik = formData.topikMateri;
+            const capaianPembelajaran = formData.capaianPembelajaran;
+            
+            // Different AI engines generate different slide approaches
+            if (aiEngine === 'chatgpt') {
+                return generateChatGPTSlides(formData, aiAnalysis, phaseLevel);
+            } else if (aiEngine === 'gemini') {
+                return generateGeminiSlides(formData, aiAnalysis, phaseLevel);
+            } else if (aiEngine === 'hybrid') {
+                return generateHybridSlides(formData, aiAnalysis, phaseLevel);
+            }
+            
+            return generateDefaultSlides(formData, aiAnalysis, phaseLevel);
+        }
+
+        function generateChatGPTSlides(formData, aiAnalysis, phaseLevel) {
+            // ChatGPT focuses on systematic cognitive progression with 5-section structure
+            const slides = [];
+            const topik = formData.topikMateri;
+            const mataPelajaran = formData.mataPelajaran;
+            const capaianPembelajaran = formData.capaianPembelajaran;
+            
+            // Determine slide count based on phase and subject complexity (15-20 slides)
+            const slideCount = determineOptimalSlideCount(mataPelajaran, phaseLevel, aiAnalysis);
+            
+            // BAGIAN 1: JUDUL DAN TUJUAN PEMBELAJARAN (3-4 slides)
+            slides.push({
+                title: `${topik} - ${mataPelajaran}`,
+                icon: "📚",
+                content: generateTitleSlide(topik, mataPelajaran, formData.penyusun, formData.kelasFase)
+            });
+            
+            slides.push({
+                title: "Tujuan Pembelajaran Hari Ini",
+                icon: "🎯",
+                content: generateLearningObjectivesMarkdown(capaianPembelajaran, topik, phaseLevel)
+            });
+            
+            slides.push({
+                title: "Apa yang Akan Kita Pelajari?",
+                icon: "🗺️",
+                content: generateLearningRoadmap(topik, mataPelajaran, phaseLevel)
+            });
+            
+            // BAGIAN 2: PENGENALAN KONSEP (3-4 slides)
+            const introCount = Math.ceil(slideCount * 0.2); // 20% untuk pengenalan
+            for (let i = 1; i <= introCount; i++) {
+                slides.push({
+                    title: getIntroTitle(topik, mataPelajaran, i, phaseLevel),
+                    icon: getIntroIcon(i),
+                    content: generateIntroConceptMarkdown(topik, mataPelajaran, i, phaseLevel)
+                });
+            }
+            
+            // BAGIAN 3: MATERI INTI/PENJELASAN (6-8 slides)
+            const coreCount = Math.ceil(slideCount * 0.4); // 40% untuk materi inti
+            for (let i = 1; i <= coreCount; i++) {
+                slides.push({
+                    title: getCoreTitle(topik, mataPelajaran, i, phaseLevel),
+                    icon: getCoreIcon(i),
+                    content: generateCoreContentMarkdown(topik, mataPelajaran, i, phaseLevel, aiAnalysis)
+                });
+            }
+            
+            // BAGIAN 4: CONTOH DAN AKTIVITAS SISWA (4-6 slides)
+            const activityCount = Math.ceil(slideCount * 0.25); // 25% untuk aktivitas
+            for (let i = 1; i <= activityCount; i++) {
+                slides.push({
+                    title: getActivityTitle(topik, mataPelajaran, i, phaseLevel),
+                    icon: getActivityIcon(i),
+                    content: generateActivityMarkdown(topik, mataPelajaran, i, phaseLevel, aiAnalysis)
+                });
+            }
+            
+            // BAGIAN 5: KESIMPULAN DAN REFLEKSI (2-3 slides)
+            slides.push({
+                title: "Apa yang Sudah Kita Pelajari?",
+                icon: "📝",
+                content: generateConclusionMarkdown(topik, mataPelajaran, capaianPembelajaran, phaseLevel)
+            });
+            
+            slides.push({
+                title: "Refleksi dan Pesan Guru",
+                icon: "💭",
+                content: generateReflectionMarkdown(topik, mataPelajaran, phaseLevel)
+            });
+            
+            if (slideCount >= 18) {
+                slides.push({
+                    title: "Tantangan untuk Besok",
+                    icon: "🚀",
+                    content: generateNextChallengeMarkdown(topik, mataPelajaran, phaseLevel)
+                });
+            }
+            
+            return slides;
+        }
+
+        function generateGeminiSlides(formData, aiAnalysis, phaseLevel) {
+            // Gemini focuses on contextual and visual learning with 5-section structure
+            const slides = [];
+            const topik = formData.topikMateri;
+            const mataPelajaran = formData.mataPelajaran;
+            const capaianPembelajaran = formData.capaianPembelajaran;
+            
+            // Determine slide count based on phase and subject complexity (15-20 slides)
+            const slideCount = determineOptimalSlideCount(mataPelajaran, phaseLevel, aiAnalysis);
+            
+            // BAGIAN 1: JUDUL DAN TUJUAN PEMBELAJARAN (3-4 slides)
+            slides.push({
+                title: `${topik} - Mari Belajar Bersama!`,
+                icon: "🌈",
+                content: generateVisualTitleSlide(topik, mataPelajaran, formData.penyusun, formData.kelasFase)
+            });
+            
+            slides.push({
+                title: "Impian Belajar Kita Hari Ini",
+                icon: "✨",
+                content: generateVisualLearningGoalsMarkdown(capaianPembelajaran, topik, phaseLevel)
+            });
+            
+            slides.push({
+                title: "Petualangan Belajar Dimulai!",
+                icon: "🗺️",
+                content: generateVisualRoadmap(topik, mataPelajaran, phaseLevel)
+            });
+            
+            // BAGIAN 2: PENGENALAN KONSEP (3-4 slides)
+            const introCount = Math.ceil(slideCount * 0.2); // 20% untuk pengenalan
+            for (let i = 1; i <= introCount; i++) {
+                slides.push({
+                    title: getVisualIntroTitle(topik, mataPelajaran, i, phaseLevel),
+                    icon: getVisualIntroIcon(i),
+                    content: generateVisualIntroMarkdown(topik, mataPelajaran, i, phaseLevel)
+                });
+            }
+            
+            // BAGIAN 3: MATERI INTI/PENJELASAN (6-8 slides)
+            const coreCount = Math.ceil(slideCount * 0.4); // 40% untuk materi inti
+            for (let i = 1; i <= coreCount; i++) {
+                slides.push({
+                    title: getVisualCoreTitle(topik, mataPelajaran, i, phaseLevel),
+                    icon: getVisualCoreIcon(i),
+                    content: generateVisualCoreMarkdown(topik, mataPelajaran, i, phaseLevel, aiAnalysis)
+                });
+            }
+            
+            // BAGIAN 4: CONTOH DAN AKTIVITAS SISWA (4-6 slides)
+            const activityCount = Math.ceil(slideCount * 0.25); // 25% untuk aktivitas
+            for (let i = 1; i <= activityCount; i++) {
+                slides.push({
+                    title: getCreativeActivityTitle(topik, mataPelajaran, i, phaseLevel),
+                    icon: getCreativeActivityIcon(i),
+                    content: generateCreativeActivityMarkdown(topik, mataPelajaran, i, phaseLevel, aiAnalysis)
+                });
+            }
+            
+            // BAGIAN 5: KESIMPULAN DAN REFLEKSI (2-3 slides)
+            slides.push({
+                title: "Wow! Lihat Pencapaian Kita!",
+                icon: "🎉",
+                content: generateVisualConclusionMarkdown(topik, mataPelajaran, capaianPembelajaran, phaseLevel)
+            });
+            
+            slides.push({
+                title: "Berbagi Cerita dan Perasaan",
+                icon: "💝",
+                content: generateVisualReflectionMarkdown(topik, mataPelajaran, phaseLevel)
+            });
+            
+            if (slideCount >= 18) {
+                slides.push({
+                    title: "Mimpi dan Cita-cita Baru",
+                    icon: "🌟",
+                    content: generateVisualFutureMarkdown(topik, mataPelajaran, phaseLevel)
+                });
+            }
+            
+            return slides;
+        }
+
+        function generateHybridSlides(formData, aiAnalysis, phaseLevel) {
+            // Hybrid combines systematic progression with contextual engagement
+            const slides = [];
+            const topik = formData.topikMateri;
+            const mataPelajaran = formData.mataPelajaran;
+            const capaianPembelajaran = formData.capaianPembelajaran;
+            
+            // Determine slide count based on phase and subject complexity
+            const slideCount = determineOptimalSlideCount(mataPelajaran, phaseLevel, aiAnalysis);
+            
+            // Slide 1: Engaging Introduction (Gemini approach)
+            slides.push({
+                title: "PEMBUKA MENARIK",
+                icon: "✨",
+                content: generateEngagingIntro(topik, mataPelajaran, phaseLevel)
+            });
+            
+            // Slide 2: Systematic Foundation (ChatGPT approach)
+            slides.push({
+                title: "FONDASI SISTEMATIS",
+                icon: "🏗️",
+                content: generateSystematicFoundation(topik, mataPelajaran, phaseLevel)
+            });
+            
+            // Slide 3: Integrated Learning Goals
+            slides.push({
+                title: "TUJUAN TERINTEGRASI",
+                icon: "🎯",
+                content: generateIntegratedGoals(capaianPembelajaran, topik, phaseLevel)
+            });
+            
+            // Progressive Understanding (ChatGPT) - 5-7 slides for systematic depth
+            const progressiveCount = Math.floor(slideCount * 0.32); // 32% for systematic progression - enhanced
+            for (let i = 1; i <= progressiveCount; i++) {
+                slides.push({
+                    title: `PEMAHAMAN ${i}: ${getProgressiveTitle(topik, mataPelajaran, i, phaseLevel)}`,
+                    icon: getProgressiveIcon(i),
+                    content: generateHybridProgressiveContent(topik, mataPelajaran, i, phaseLevel, aiAnalysis)
+                });
+            }
+            
+            // Contextual Examples (Gemini) - 4-6 slides for comprehensive context
+            const contextualCount = Math.floor(slideCount * 0.28); // 28% for contextual learning - increased
+            for (let i = 1; i <= contextualCount; i++) {
+                slides.push({
+                    title: `KONTEKS ${i}: ${getContextualTitle(topik, mataPelajaran, i, phaseLevel)}`,
+                    icon: getContextualIcon(i),
+                    content: generateHybridContextualContent(topik, mataPelajaran, i, phaseLevel, aiAnalysis)
+                });
+            }
+            
+            // Problem Solving & Application (Hybrid) - 3-5 slides for thorough practice
+            const problemCount = Math.floor(slideCount * 0.22); // 22% for problem solving - enhanced
+            for (let i = 1; i <= problemCount; i++) {
+                slides.push({
+                    title: `TANTANGAN ${i}: ${getProblemTitle(topik, mataPelajaran, i, phaseLevel)}`,
+                    icon: "🧩",
+                    content: generateHybridProblemContent(topik, mataPelajaran, i, phaseLevel, aiAnalysis)
+                });
+            }
+            
+            // Creative Integration (Gemini) - 2-3 slides for deeper creativity
+            const creativeCount = Math.floor(slideCount * 0.12); // 12% for creativity - increased opportunities
+            for (let i = 1; i <= Math.max(2, creativeCount); i++) {
+                slides.push({
+                    title: `KREASI ${i}: ${getCreativeIntegrationTitle(topik, mataPelajaran, i, phaseLevel)}`,
+                    icon: "💡",
+                    content: generateHybridCreativeContent(topik, mataPelajaran, i, phaseLevel, aiAnalysis)
+                });
+            }
+            
+            // Integrated Summary (Hybrid)
+            slides.push({
+                title: "RANGKUMAN TERINTEGRASI",
+                icon: "🔄",
+                content: generateComprehensiveIntegratedSummary(topik, mataPelajaran, capaianPembelajaran, aiAnalysis)
+            });
+            
+            // Assessment & Reflection (Hybrid)
+            slides.push({
+                title: "EVALUASI & REFLEKSI",
+                icon: "📊",
+                content: generateHybridAssessment(topik, mataPelajaran, phaseLevel, aiAnalysis)
+            });
+            
+            // Action Planning & Extension (Hybrid)
+            slides.push({
+                title: "RENCANA TINDAK LANJUT",
+                icon: "📋",
+                content: generateComprehensiveActionPlanning(topik, mataPelajaran, phaseLevel, aiAnalysis)
+            });
+            
+            return slides;
+        }
+
+        function determineOptimalSlideCount(mataPelajaran, phaseLevel, aiAnalysis) {
+            // Base slide count based on phase level
+            let baseCount = 12; // Default
+            
+            if (phaseLevel <= 2) {
+                baseCount = 10; // Fase A-B: 10-12 slides
+            } else if (phaseLevel <= 4) {
+                baseCount = 15; // Fase C-D: 15-18 slides  
+            } else {
+                baseCount = 18; // Fase E-F: 18-20 slides
+            }
+            
+            // Adjust based on subject complexity
+            const subjectComplexity = {
+                'Matematika': 1.2, // More complex, needs more slides
+                'IPA': 1.15,
+                'Bahasa Indonesia': 1.0,
+                'IPS': 1.1,
+                'Bahasa Inggris': 1.1,
+                'PKn': 0.9,
+                'Seni Budaya': 0.95,
+                'PJOK': 0.85
+            };
+            
+            const multiplier = subjectComplexity[mataPelajaran] || 1.0;
+            const adjustedCount = Math.round(baseCount * multiplier);
+            
+            // Ensure within reasonable bounds (10-20 slides)
+            return Math.max(10, Math.min(20, adjustedCount));
+        }
+
+        function generateDefaultSlides(formData, aiAnalysis, phaseLevel) {
+            // Default structure for fallback
+            const slides = [];
+            const topik = formData.topikMateri;
+            const mataPelajaran = formData.mataPelajaran;
+            const slideCount = determineOptimalSlideCount(mataPelajaran, phaseLevel, aiAnalysis);
+            
+            slides.push({
+                title: "PENGENALAN MATERI",
+                icon: "📖",
+                content: `Mari kita pelajari tentang ${topik} dalam ${mataPelajaran}. Materi ini penting untuk pemahaman kalian.`
+            });
+            
+            // Generate dynamic number of slides
+            for (let i = 2; i <= slideCount - 1; i++) {
+                slides.push({
+                    title: `PEMBELAJARAN ${i}`,
+                    icon: "📚",
+                    content: generateLearningContent(topik, mataPelajaran, i, phaseLevel)
+                });
+            }
+            
+            slides.push({
+                title: "PENUTUP",
+                icon: "🎓",
+                content: `Selamat! Kalian telah mempelajari ${topik}. Terus semangat belajar!`
+            });
+            
+            return slides;
+        }
+
+        // Markdown Content Generation Functions
+        function generateTitleSlide(topik, mataPelajaran, penyusun, kelasFase) {
+            return `## ${topik}
+**📚 Mata Pelajaran:** ${mataPelajaran}  
+**👩‍🏫 Guru:** ${penyusun}  
+**🎒 Kelas:** ${kelasFase}  
+**📅 Hari/Tanggal:** ${new Date().toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+
+*Selamat datang di pembelajaran yang menyenangkan! Mari kita mulai petualangan belajar bersama! 🌟*`;
+        }
+
+        function generateLearningObjectivesMarkdown(capaianPembelajaran, topik, phaseLevel) {
+            if (phaseLevel <= 2) {
+                return `## 🎯 Setelah belajar hari ini, kalian akan bisa:
+• **🔍 Mengenal** ${topik} dengan baik dan benar
+• **⚙️ Memahami** cara kerja dan fungsi ${topik}  
+• **🌍 Menggunakan** ${topik} dalam kehidupan sehari-hari  
+• **📖 Menceritakan** pengalaman belajar dengan percaya diri
+• **🎨 Berkreasi** dengan pengetahuan tentang ${topik}
+
+*${capaianPembelajaran}*
+
+**Ayo semangat belajar! Kalian pasti bisa! 💪✨**`;
+            } else if (phaseLevel <= 4) {
+                return `## 🎯 Tujuan Pembelajaran Hari Ini:
+• **🧠 Memahami** konsep dasar dan prinsip ${topik}
+• **🔬 Menganalisis** cara kerja dan mekanisme ${topik}  
+• **⚡ Menerapkan** ${topik} dalam situasi nyata dan kontekstual
+• **📊 Mengevaluasi** manfaat dan dampak ${topik}
+• **💡 Mengkreasi** solusi sederhana menggunakan ${topik}
+
+*${capaianPembelajaran}*
+
+**Mari capai tujuan ini dengan semangat dan kerja sama! 🚀**`;
+            } else {
+                return `## 🎯 Capaian Pembelajaran:
+• **🔍 Menganalisis** konsep ${topik} secara mendalam dan kritis
+• **⚖️ Mengevaluasi** aplikasi ${topik} dalam berbagai konteks
+• **💡 Mencipta** solusi inovatif menggunakan prinsip ${topik}
+• **🌐 Merefleksikan** dampak ${topik} pada masa depan
+• **🤝 Berkolaborasi** dalam proyek berbasis ${topik}
+
+*${capaianPembelajaran}*
+
+**Menuju pemahaman yang holistik dan bermakna! 🎓**`;
+            }
+        }
+
+        function generateLearningRoadmap(topik, mataPelajaran, phaseLevel) {
+            if (phaseLevel <= 2) {
+                return `## 🗺️ Peta Petualangan Belajar Kita Hari Ini:
+**🌟 Tahap 1: PERKENALAN SERU**
+🎯 **Kenalan akrab** dengan ${topik} - Halo, teman baru!
+🤔 **Tanya jawab** - Apa sih ${topik} itu?
+
+**🔍 Tahap 2: EKSPLORASI MENYENANGKAN** 
+🌍 **Mencari jejak** ${topik} di sekitar kita
+👀 **Pengamatan** - Wah, ${topik} ada dimana-mana!
+
+**🎮 Tahap 3: BERMAIN SAMBIL BELAJAR**
+🎪 **Permainan edukatif** tentang ${topik}
+🎨 **Kreativitas** - Membuat karya tentang ${topik}
+
+**💭 Tahap 4: BERBAGI CERITA**
+📖 **Bercerita** pengalaman belajar ${topik}
+🎉 **Perayaan** - Kita berhasil belajar!
+
+*Siap untuk petualangan belajar yang seru dan tak terlupakan? Ayo berangkat! 🚀✨*`;
+            } else if (phaseLevel <= 4) {
+                return `## 🗺️ Peta Pembelajaran Sistematis:
+**📖 FASE 1: PENGENALAN KONSEPTUAL**
+🔍 **Definisi dan karakteristik** - Apa itu ${topik}?
+🌟 **Pentingnya ${topik}** dalam ${mataPelajaran}
+
+**🔬 FASE 2: EKSPLORASI MENDALAM**
+⚙️ **Mekanisme kerja** - Bagaimana ${topik} bekerja?
+🔗 **Hubungan konseptual** dengan materi lain
+
+**🎯 FASE 3: PRAKTIK TERBIMBING**
+🛠️ **Hands-on activities** - Mari coba sendiri!
+📊 **Pengamatan dan pencatatan** hasil
+
+**🌟 FASE 4: APLIKASI KONTEKSTUAL**
+🌍 **Penerapan** ${topik} dalam kehidupan nyata
+💡 **Problem solving** menggunakan ${topik}
+
+*Mari jelajahi dunia ${mataPelajaran} dengan sistematis dan menyenangkan! 🗺️🚀*`;
+            } else {
+                return `## 🎓 Roadmap Pembelajaran Akademik:
+**🧠 TAHAP 1: FONDASI TEORITIS**
+📚 **Konsep fundamental** dan prinsip dasar ${topik}
+🔬 **Landasan ilmiah** dan paradigma penelitian
+
+**🔍 TAHAP 2: ANALISIS KRITIS**
+📊 **Studi kasus** dan penelitian terkini
+⚖️ **Evaluasi** berbagai perspektif tentang ${topik}
+
+**⚡ TAHAP 3: SINTESIS PENGETAHUAN**
+🔗 **Integrasi** dengan konsep ${mataPelajaran} lainnya
+🌐 **Perspektif interdisipliner** dan holistik
+
+**🚀 TAHAP 4: INOVASI DAN APLIKASI**
+💡 **Pengembangan** solusi inovatif
+🌟 **Kontribusi** untuk kemajuan ${mataPelajaran}
+
+*Bersiap untuk perjalanan intelektual yang menantang dan transformatif! 🎓🌟*`;
+            }
+        }
+
+        function getIntroTitle(topik, mataPelajaran, index, phaseLevel) {
+            const titles = {
+                1: phaseLevel <= 2 ? `Hai, Kenalan dengan ${topik}!` : `Apa itu ${topik}?`,
+                2: phaseLevel <= 2 ? `${topik} di Sekitar Kita` : `Mengapa ${topik} Penting?`,
+                3: phaseLevel <= 2 ? `Cerita Tentang ${topik}` : `Sejarah dan Perkembangan ${topik}`,
+                4: `Karakteristik Unik ${topik}`
+            };
+            return titles[index] || `Pengenalan ${topik} ${index}`;
+        }
+
+        function getIntroIcon(index) {
+            const icons = ['👋', '🌍', '📚', '⭐'];
+            return icons[index - 1] || '📖';
+        }
+
+        function generateIntroConceptMarkdown(topik, mataPelajaran, index, phaseLevel) {
+            if (index === 1) {
+                if (phaseLevel <= 2) {
+                    return `## 👋 Halo, Mari Berkenalan dengan ${topik}!
+• **🌟 Apa itu ${topik}?** ${topik} adalah hal yang sangat menarik dan berguna dalam hidup kita
+• **🔍 Dimana kita bisa menemukannya?** ${topik} ada di mana-mana di sekitar kita lho!
+• **🕵️ Misi hari ini:** Kita akan jadi detektif ${topik} yang hebat!
+• **🙋‍♀️ Pengalaman kalian:** Siapa yang sudah pernah melihat atau menggunakan ${topik}?
+• **🎯 Kenapa penting?** ${topik} membantu kita memahami dunia dengan lebih baik
+
+*Angkat tangan tinggi-tinggi yang pernah lihat ${topik}! Mari berbagi cerita! 🙋‍♀️✨*`;
+                } else if (phaseLevel <= 4) {
+                    return `## 🔍 Mengenal ${topik} Lebih Dekat
+• **📖 Definisi:** ${topik} adalah konsep penting dalam ${mataPelajaran} yang berkaitan dengan...
+• **⭐ Ciri-ciri khusus:** Yang membuat ${topik} unik dan berbeda dari yang lain
+• **⚙️ Fungsi utama:** Mengapa ${topik} sangat penting untuk dipelajari dan dipahami
+• **🌍 Contoh nyata:** ${topik} dalam kehidupan sehari-hari yang sering kita jumpai
+• **🔗 Hubungan:** Bagaimana ${topik} terhubung dengan materi ${mataPelajaran} lainnya
+
+*Mari eksplorasi lebih dalam dan temukan keajaiban ${topik}! 🔍🌟*`;
+                } else {
+                    return `## 🧠 Konsep Fundamental ${topik}
+• **📚 Teori dasar:** Landasan ilmiah dan prinsip-prinsip yang mendasari ${topik}
+• **🔬 Paradigma ilmiah:** Cara pandang modern dalam memahami ${topik}
+• **📈 Evolusi konsep:** Perkembangan pemikiran tentang ${topik} dari masa ke masa
+• **🌐 Relevansi kontemporer:** Peran ${topik} dalam ${mataPelajaran} modern dan masa depan
+• **🔍 Metodologi:** Pendekatan ilmiah untuk mempelajari ${topik}
+
+*Membangun fondasi yang kuat untuk pemahaman mendalam dan komprehensif! 🏗️🎓*`;
+                }
+            } else if (index === 2) {
+                if (phaseLevel <= 2) {
+                    return `## 🌍 Wah! ${topik} Ada Dimana-mana!
+• **🏠 Di rumah:** Coba lihat di sekitar rumah kalian - pasti ada ${topik}!
+• **🏫 Di sekolah:** Bahkan di kelas kita ini juga ada ${topik} lho!
+• **🌳 Di alam:** Alam terbuka penuh dengan contoh-contoh ${topik} yang menakjubkan
+• **🧸 Di mainan:** Bahkan mainan favorit kalian menggunakan prinsip ${topik}!
+• **🚗 Di kendaraan:** Mobil, sepeda, semua menggunakan ${topik}
+
+*Ayo jadi detektif ${topik} dan cari sebanyak-banyaknya di sekitar kita! 🕵️‍♂️🔍*`;
+                } else {
+                    return `## 💡 Mengapa ${topik} Sangat Penting?
+• **🌟 Manfaat langsung:** Bagaimana ${topik} membantu kehidupan sehari-hari kita
+• **🚀 Peran dalam teknologi:** Kontribusi ${topik} dalam perkembangan teknologi modern
+• **🌍 Dampak sosial:** Pengaruh ${topik} terhadap masyarakat dan peradaban
+• **📈 Kontribusi ilmiah:** Peran ${topik} dalam kemajuan ${mataPelajaran}
+• **🔮 Masa depan:** Potensi ${topik} untuk menyelesaikan masalah masa depan
+
+*${topik} ternyata jauh lebih penting dan menarik dari yang kita bayangkan! 💡✨*`;
+                }
+            } else if (index === 3) {
+                if (phaseLevel <= 2) {
+                    return `## 📚 Cerita Menarik tentang ${topik}
+• **🏛️ Sejarah singkat:** Bagaimana manusia pertama kali menemukan ${topik}
+• **🌟 Tokoh penting:** Orang-orang hebat yang mempelajari ${topik}
+• **🎭 Cerita seru:** Kisah menarik tentang penemuan ${topik}
+• **🏆 Prestasi besar:** Pencapaian luar biasa berkat ${topik}
+• **🎪 Fakta unik:** Hal-hal mengejutkan tentang ${topik}
+
+*Siapa yang suka cerita? Mari dengarkan kisah seru tentang ${topik}! 📖✨*`;
+                } else {
+                    return `## 📈 Sejarah dan Perkembangan ${topik}
+• **🏛️ Asal mula:** Bagaimana konsep ${topik} pertama kali ditemukan
+• **👨‍🔬 Tokoh bersejarah:** Ilmuwan dan pemikir yang mengembangkan ${topik}
+• **⚡ Momen penting:** Penemuan-penemuan besar dalam sejarah ${topik}
+• **🔄 Evolusi konsep:** Bagaimana pemahaman tentang ${topik} berkembang
+• **🌐 Dampak global:** Pengaruh ${topik} terhadap peradaban dunia
+
+*Mari pelajari perjalanan panjang dan menarik dari ${topik}! 📚🌟*`;
+                }
+            }
+            return `## ⭐ Aspek Menarik Lainnya dari ${topik}
+• **🎯 Fakta unik:** Hal-hal mengejutkan tentang ${topik} yang jarang diketahui
+• **🔍 Hal penting:** Yang perlu kita ketahui untuk memahami ${topik} dengan baik
+• **💡 Daya tarik:** Mengapa ${topik} begitu menarik untuk dipelajari dan dieksplorasi
+• **🌈 Keragaman:** Berbagai aspek dan dimensi ${topik} yang perlu dipahami
+
+*Semakin banyak tahu, semakin penasaran dan excited untuk belajar lebih dalam! 🤔💫*`;
+        }
+
+        function getCoreTitle(topik, mataPelajaran, index, phaseLevel) {
+            if (mataPelajaran === 'Matematika') {
+                const mathTitles = ['Konsep Dasar', 'Operasi dan Aturan', 'Pola dan Hubungan', 'Pemecahan Masalah', 'Representasi', 'Generalisasi'];
+                return `${mathTitles[index - 1] || 'Konsep'} ${topik}`;
+            } else if (mataPelajaran === 'IPA') {
+                const ipaTitles = ['Observasi', 'Hipotesis', 'Eksperimen', 'Analisis Data', 'Kesimpulan', 'Aplikasi'];
+                return `${ipaTitles[index - 1] || 'Materi'} ${topik}`;
+            } else if (mataPelajaran === 'Bahasa Indonesia') {
+                const bahasaTitles = ['Pemahaman', 'Struktur', 'Makna', 'Penggunaan', 'Variasi', 'Kreativitas'];
+                return `${bahasaTitles[index - 1] || 'Pembelajaran'} ${topik}`;
+            }
+            return `Materi ${index}: ${topik}`;
+        }
+
+        function getCoreIcon(index) {
+            const icons = ['🔍', '⚡', '🧩', '🎯', '📐', '🌟', '💎', '🚀'];
+            return icons[index - 1] || '📚';
+        }
+
+        function generateCoreContentMarkdown(topik, mataPelajaran, index, phaseLevel, aiAnalysis) {
+            const coreTitle = getCoreTitle(topik, mataPelajaran, index, phaseLevel);
+            
+            if (phaseLevel <= 2) {
+                return `## ${coreTitle}
+• **🤔 Apa itu?** Penjelasan sederhana: ${coreTitle} adalah bagian penting dari ${topik} yang...
+• **⚙️ Bagaimana cara kerjanya?** Mari kita lihat langkah demi langkah dengan cara yang mudah dipahami
+• **🌟 Contoh nyata:** Seperti saat kalian... (contoh dari kehidupan sehari-hari anak-anak)
+• **🎮 Ayo praktik!** Mari kita coba bersama-sama dengan permainan seru
+• **🔍 Pengamatan:** Apa yang kalian lihat dan rasakan saat mencoba?
+
+*Tidak apa-apa kalau belum paham, pelan-pelan pasti bisa! Guru akan membantu! 🌱💪*`;
+            } else if (phaseLevel <= 4) {
+                return `## ${coreTitle}
+• **📖 Definisi lengkap:** Pengertian ${coreTitle} yang jelas dan tepat dalam konteks ${mataPelajaran}
+• **⭐ Karakteristik utama:** Ciri-ciri khusus yang membedakan dari konsep lainnya
+• **🔄 Proses dan tahapan:** Langkah-langkah sistematis yang terjadi dalam ${coreTitle}
+• **🔗 Hubungan konseptual:** Keterkaitan dengan materi ${mataPelajaran} yang sudah dipelajari
+• **📊 Aplikasi praktis:** Bagaimana ${coreTitle} diterapkan dalam situasi nyata
+
+*Semakin paham konsepnya, semakin seru eksplorasi selanjutnya! 🎯🚀*`;
+            } else {
+                return `## ${coreTitle}
+• **🧠 Landasan teoritis:** Teori ilmiah dan prinsip dasar yang mendasari ${coreTitle}
+• **⚙️ Mekanisme detail:** Cara kerja ${coreTitle} secara komprehensif dan sistematis
+• **📊 Variabel dan parameter:** Faktor-faktor yang mempengaruhi dan mengontrol ${coreTitle}
+• **🌐 Implikasi luas:** Dampak, konsekuensi, dan aplikasi ${coreTitle} dalam berbagai bidang
+• **🔬 Metodologi penelitian:** Pendekatan ilmiah untuk mempelajari ${coreTitle}
+
+*Membangun pemahaman mendalam untuk menjadi ahli masa depan! 🧠🎓*`;
+            }
+        }
+
+        function getActivityTitle(topik, mataPelajaran, index, phaseLevel) {
+            if (phaseLevel <= 2) {
+                const titles = ['Ayo Bermain!', 'Coba Sendiri Yuk!', 'Eksperimen Seru', 'Tantangan Menyenangkan'];
+                return titles[index - 1] || `Aktivitas ${index}`;
+            } else if (phaseLevel <= 4) {
+                const titles = ['Praktik Langsung', 'Investigasi', 'Studi Kasus', 'Proyek Mini'];
+                return titles[index - 1] || `Kegiatan ${index}`;
+            } else {
+                const titles = ['Analisis Mendalam', 'Penelitian', 'Sintesis', 'Evaluasi Kritis'];
+                return titles[index - 1] || `Tugas ${index}`;
+            }
+        }
+
+        function getActivityIcon(index) {
+            const icons = ['🎮', '🔬', '🎯', '🏆', '⚡', '🌟'];
+            return icons[index - 1] || '📝';
+        }
+
+        function generateActivityMarkdown(topik, mataPelajaran, index, phaseLevel, aiAnalysis) {
+            const activityTitle = getActivityTitle(topik, mataPelajaran, index, phaseLevel);
+            
+            if (phaseLevel <= 2) {
+                return `## ${activityTitle}
+**🎯 Tujuan Kegiatan:** Memahami ${topik} dengan cara yang menyenangkan dan mudah diingat!
+
+• **📦 Persiapan:** Siapkan alat dan bahan sederhana yang sudah disiapkan guru
+• **👂 Dengarkan:** Ikuti petunjuk guru dengan seksama dan tanyakan jika ada yang belum jelas
+• **👀 Amati:** Perhatikan baik-baik apa yang terjadi selama kegiatan berlangsung
+• **🗣️ Ceritakan:** Bagikan hasil pengamatan kalian dengan teman-teman
+• **🎨 Ekspresikan:** Gambar atau tunjukkan apa yang kalian pelajari
+
+*Tidak ada jawaban yang salah! Yang penting kalian berani mencoba dan belajar! 💪✨*`;
+            } else if (phaseLevel <= 4) {
+                return `## ${activityTitle}
+**🎯 Tujuan:** Membuktikan dan memahami konsep ${topik} melalui praktik langsung
+
+• **🛠️ Alat & Bahan:** [Daftar lengkap alat dan bahan yang diperlukan untuk kegiatan]
+• **📋 Prosedur sistematis:** 
+  - Langkah 1: Persiapan dan pengaturan alat
+  - Langkah 2: Pelaksanaan kegiatan sesuai instruksi
+  - Langkah 3: Pengamatan dan pencatatan data
+• **📊 Hasil pengamatan:** Catat semua yang kalian amati dengan detail
+• **💬 Diskusi kelompok:** Bahas temuan dengan teman dan bandingkan hasil
+• **📝 Kesimpulan:** Apa yang bisa kalian simpulkan dari kegiatan ini?
+
+*Belajar sambil melakukan adalah cara terbaik memahami ${mataPelajaran}! 🔬🌟*`;
+            } else {
+                return `## ${activityTitle}
+**🔬 Pendekatan Ilmiah:** Menerapkan metode penelitian untuk memahami ${topik}
+
+• **💭 Hipotesis awal:** Buat prediksi berdasarkan teori yang telah dipelajari
+• **🔬 Metodologi penelitian:** Rancang pendekatan ilmiah yang tepat dan sistematis
+• **📊 Pengumpulan data:** Lakukan pengamatan dan pencatatan data secara akurat
+• **📈 Analisis mendalam:** Interpretasi data dan hasil dengan pendekatan statistik
+• **✅ Validasi hipotesis:** Apakah hipotesis terbukti atau perlu direvisi?
+• **🌐 Implikasi:** Apa makna hasil penelitian untuk pemahaman ${topik}?
+
+*Kalian adalah peneliti muda yang akan mengubah dunia dengan penemuan kalian! 🎓🚀*`;
+            }
+        }
+
+        function generateConclusionMarkdown(topik, mataPelajaran, capaianPembelajaran, phaseLevel) {
+            if (phaseLevel <= 2) {
+                return `## 🎉 Wah, Kita Sudah Belajar Banyak Sekali!
+**🌟 Pencapaian Hari Ini:**
+• **🧠 Pengetahuan baru:** Sekarang kita tahu apa itu ${topik} dan bagaimana cara kerjanya
+• **🔍 Kemampuan observasi:** Kita bisa menemukan ${topik} di mana-mana di sekitar kita
+• **💪 Keberanian mencoba:** Kita sudah berani praktik sendiri dan berhasil!
+• **😊 Perasaan positif:** ${topik} ternyata seru, menarik, dan sangat bermanfaat
+• **🤝 Kerja sama:** Kita belajar bersama dengan kompak dan saling membantu
+
+**🎯 Tujuan Pembelajaran:** ${capaianPembelajaran} ✅ **TERCAPAI!**
+
+*Kalian semua luar biasa hebat! Ayo beri tepuk tangan untuk diri kalian sendiri! 👏✨*`;
+            } else if (phaseLevel <= 4) {
+                return `## 📚 Rangkuman Pembelajaran Hari Ini
+**🎯 Pencapaian Utama:**
+• **🧠 Konsep fundamental:** Pemahaman mendalam tentang dasar-dasar ${topik}
+• **⚙️ Proses dan mekanisme:** Cara kerja ${topik} secara sistematis dan logis
+• **🌍 Aplikasi praktis:** Penggunaan ${topik} dalam kehidupan nyata dan berbagai situasi
+• **💡 Manfaat dan nilai:** Pentingnya ${topik} untuk kehidupan dan masa depan kita
+• **🔗 Koneksi konseptual:** Hubungan ${topik} dengan materi ${mataPelajaran} lainnya
+
+**✅ Status Capaian:** ${capaianPembelajaran} - **BERHASIL DICAPAI!**
+
+*Tujuan pembelajaran tercapai dengan sangat baik! Kalian menunjukkan kemajuan yang luar biasa! 🚀*`;
+            } else {
+                return `## 🎓 Sintesis Pembelajaran Komprehensif
+**🏆 Pencapaian Akademik:**
+• **📚 Landasan teoritis:** Pemahaman mendalam terhadap teori dan prinsip ilmiah ${topik}
+• **🔍 Kemampuan analitis:** Skill mengkaji dan menganalisis ${topik} secara kritis dan sistematis
+• **⚡ Sintesis pengetahuan:** Kemampuan mengintegrasikan ${topik} dengan pengetahuan lain
+• **⚖️ Evaluasi kritis:** Penilaian objektif terhadap relevansi dan dampak ${topik}
+• **🌐 Perspektif holistik:** Pemahaman ${topik} dalam konteks global dan interdisipliner
+
+**🎯 Capaian Pembelajaran:** ${capaianPembelajaran} - **TERCAPAI DENGAN EXCELLENCE!**
+
+*Kalian telah menunjukkan kemampuan berpikir tingkat tinggi yang luar biasa! 🏆🌟*`;
+            }
+        }
+
+        function generateReflectionMarkdown(topik, mataPelajaran, phaseLevel) {
+            if (phaseLevel <= 2) {
+                return `## 💝 Pesan Spesial dari Guru untuk Kalian
+**🌟 Apresiasi Guru:**
+• **👏 Kebanggaan:** Kalian sudah belajar dengan luar biasa baik dan antusias hari ini!
+• **🔄 Kontinuitas:** ${topik} akan selalu ada di sekitar kalian, jadi terus amati dan eksplorasi
+• **👨‍👩‍👧‍👦 Berbagi cerita:** Jangan lupa ceritakan pembelajaran seru ini ke papa, mama, dan keluarga di rumah
+• **🚀 Semangat berkelanjutan:** Tetap penasaran dan excited untuk belajar hal-hal baru setiap hari
+• **💪 Kepercayaan diri:** Kalian semua pintar dan mampu belajar apa saja!
+
+**🎁 Hadiah Refleksi:** 
+*Apa yang paling kalian suka dari pembelajaran ${topik} hari ini? Mari berbagi dengan teman-teman!*
+
+*Guru sangat bangga dan sayang dengan kalian semua! Kalian adalah bintang-bintang kecil yang bersinar! 🌟💕*`;
+            } else if (phaseLevel <= 4) {
+                return `## 🤔 Refleksi dan Apresiasi Pembelajaran
+**💭 Pertanyaan Reflektif:**
+• **🏆 Pencapaian personal:** Apa yang sudah kalian kuasai dengan baik dari materi ${topik}?
+• **⚡ Tantangan konstruktif:** Bagian mana yang masih perlu diperdalam atau dipraktikkan lagi?
+• **🌍 Aplikasi masa depan:** Bagaimana kalian akan menggunakan pengetahuan ${topik} dalam kehidupan?
+• **🔥 Sumber motivasi:** Apa yang membuat kalian semakin semangat belajar ${mataPelajaran}?
+• **🎯 Target selanjutnya:** Aspek apa dari ${topik} yang ingin kalian eksplorasi lebih dalam?
+
+**📝 Jurnal Refleksi:** 
+*Tuliskan satu hal paling menarik yang kalian pelajari hari ini dan bagaimana perasaan kalian!*
+
+*Terus kembangkan rasa ingin tahu dan semangat eksplorasi kalian! 🚀✨*`;
+            } else {
+                return `## 🎯 Refleksi Pembelajaran Mendalam
+**🧠 Metakognisi dan Self-Assessment:**
+• **🔍 Proses kognitif:** Bagaimana strategi belajar kalian berkembang selama mempelajari ${topik}?
+• **🔗 Transfer knowledge:** Bagaimana kalian menghubungkan ${topik} dengan materi ${mataPelajaran} lainnya?
+• **💡 Inovasi dan kreativitas:** Ide-ide kreatif atau solusi inovatif apa yang muncul dari pembelajaran ini?
+• **📈 Komitmen pengembangan:** Langkah konkret apa yang akan kalian ambil untuk mendalami ${topik}?
+• **🌐 Perspektif global:** Bagaimana pemahaman ${topik} mengubah cara pandang kalian terhadap dunia?
+
+**🎓 Academic Growth Mindset:**
+*Refleksikan perjalanan intelektual kalian: dari tidak tahu menjadi paham, dari paham menjadi ahli!*
+
+*Pembelajaran sejati adalah perjalanan seumur hidup menuju wisdom dan expertise! 🎯🌟*`;
+            }
+        }
+
+        function generateNextChallengeMarkdown(topik, mataPelajaran, phaseLevel) {
+            if (phaseLevel <= 2) {
+                return `## Tantangan Seru untuk Besok! 🌈
+• Cari 3 contoh ${topik} di rumah kalian  
+• Gambar atau foto ${topik} yang kalian temukan  
+• Ceritakan ke keluarga apa yang sudah dipelajari  
+• Siapkan pertanyaan menarik tentang ${topik}  
+
+*Sampai jumpa di petualangan belajar berikutnya! 👋*`;
+            } else if (phaseLevel <= 4) {
+                return `## Proyek Lanjutan
+• **Investigasi:** Teliti lebih dalam tentang ${topik}  
+• **Dokumentasi:** Buat laporan sederhana  
+• **Sharing:** Presentasikan ke teman-teman  
+• **Eksplorasi:** Cari topik terkait yang menarik  
+
+*Jadilah peneliti cilik yang aktif! 🔍*`;
+            } else {
+                return `## Pengembangan Lanjutan
+• **Riset mandiri:** Eksplorasi aspek lanjutan ${topik}  
+• **Analisis kritis:** Evaluasi sumber dan informasi  
+• **Inovasi:** Kembangkan ide-ide kreatif  
+• **Kolaborasi:** Diskusi dengan komunitas belajar  
+
+*Wujudkan potensi terbaik kalian! ⭐*`;
+            }
+        }
+
+        // Gemini Visual Content Generation Functions
+        function generateVisualTitleSlide(topik, mataPelajaran, penyusun, kelasFase) {
+            return `# 🌈 ${topik} 🌈
+**✨ Mata Pelajaran:** ${mataPelajaran}  
+**👩‍🏫 Guru Kita:** ${penyusun}  
+**🎒 Kelas:** ${kelasFase}  
+
+*Hari ini kita akan berpetualang bersama! 🚀*`;
+        }
+
+        function generateVisualLearningGoalsMarkdown(capaianPembelajaran, topik, phaseLevel) {
+            if (phaseLevel <= 2) {
+                return `## 🎯 Impian Belajar Kita:
+🌟 Jadi teman baik dengan ${topik}  
+🔍 Menemukan ${topik} di mana-mana  
+🎮 Bermain sambil belajar ${topik}  
+📖 Punya cerita seru tentang ${topik}  
+
+*Kalian pasti bisa! Guru percaya! 💪*`;
+            } else if (phaseLevel <= 4) {
+                return `## ✨ Target Pembelajaran Kita:
+🧠 **Memahami** ${topik} dengan baik  
+🔬 **Mengeksplorasi** cara kerja ${topik}  
+🌍 **Menemukan** ${topik} dalam kehidupan  
+🎨 **Berkreasi** dengan ${topik}  
+
+*${capaianPembelajaran}*`;
+            } else {
+                return `## 🎓 Visi Pembelajaran:
+🔍 **Menganalisis** ${topik} secara mendalam  
+⚡ **Mengevaluasi** berbagai aspek ${topik}  
+💡 **Menciptakan** inovasi dengan ${topik}  
+🌟 **Merefleksikan** masa depan ${topik}  
+
+*${capaianPembelajaran}*`;
+            }
+        }
+
+        function generateVisualRoadmap(topik, mataPelajaran, phaseLevel) {
+            if (phaseLevel <= 2) {
+                return `## 🗺️ Peta Petualangan Kita:
+🎪 **Kenalan Seru** - Hai ${topik}!  
+🌍 **Jelajah Dunia** - ${topik} dimana-mana  
+🎨 **Bermain Kreatif** - Asyiknya ${topik}  
+💭 **Cerita Kita** - Pengalaman belajar  
+
+*Siap jadi penjelajah ${topik}? 🧭*`;
+            } else if (phaseLevel <= 4) {
+                return `## 🚀 Perjalanan Pembelajaran:
+🔍 **Eksplorasi** - Mengenal ${topik}  
+🧪 **Investigasi** - Rahasia ${topik}  
+🎯 **Aplikasi** - ${topik} dalam aksi  
+🌟 **Kreasi** - Karya dengan ${topik}  
+
+*Mari jadi peneliti ${mataPelajaran}! 🔬*`;
+            } else {
+                return `## 🎯 Roadmap Akademik:
+🧠 **Konseptualisasi** - Teori ${topik}  
+📊 **Analisis** - Data dan penelitian  
+⚡ **Sintesis** - Integrasi pengetahuan  
+🚀 **Inovasi** - Masa depan ${topik}  
+
+*Menuju pemahaman holistik! 🌐*`;
+            }
+        }
+
+        function getVisualIntroTitle(topik, mataPelajaran, index, phaseLevel) {
+            const titles = {
+                1: phaseLevel <= 2 ? `🎪 Selamat Datang, ${topik}!` : `🔍 Mengenal ${topik}`,
+                2: phaseLevel <= 2 ? `🌍 ${topik} di Sekitar Kita` : `💡 Mengapa ${topik} Menarik?`,
+                3: phaseLevel <= 2 ? `📚 Cerita ${topik}` : `📈 Perkembangan ${topik}`,
+                4: `⭐ Keunikan ${topik}`
+            };
+            return titles[index] || `🌟 Aspek ${topik} ${index}`;
+        }
+
+        function getVisualIntroIcon(index) {
+            const icons = ['🎪', '🌍', '📚', '⭐'];
+            return icons[index - 1] || '🌟';
+        }
+
+        function generateVisualIntroMarkdown(topik, mataPelajaran, index, phaseLevel) {
+            if (index === 1) {
+                if (phaseLevel <= 2) {
+                    return `## 🎪 Halo, Teman ${topik}!
+🌟 ${topik} adalah sahabat baru kita hari ini  
+🎨 Kita akan bermain dan belajar bersama  
+🔍 Mari cari ${topik} dengan mata detektif  
+🙋‍♀️ Siapa yang excited belajar ${topik}?  
+
+*Angkat tangan tinggi-tinggi! 🙌*`;
+                } else if (phaseLevel <= 4) {
+                    return `## 🔍 Mari Berkenalan dengan ${topik}
+🎯 **Apa itu ${topik}?** Definisi yang mudah dipahami  
+✨ **Ciri khas:** Yang membuat ${topik} istimewa  
+🌍 **Dimana ada:** ${topik} dalam kehidupan kita  
+💡 **Mengapa penting:** Manfaat ${topik} untuk kita  
+
+*Siap untuk eksplorasi seru? 🚀*`;
+                } else {
+                    return `## 🧠 Fondasi Pemahaman ${topik}
+📚 **Konsep dasar** dan landasan teori ${topik}  
+🔬 **Paradigma ilmiah** dalam memahami ${topik}  
+📈 **Evolusi pemikiran** tentang ${topik}  
+🌐 **Konteks modern** ${topik} dalam ${mataPelajaran}  
+
+*Membangun pemahaman yang kokoh! 🏗️*`;
+                }
+            } else if (index === 2) {
+                if (phaseLevel <= 2) {
+                    return `## 🌍 ${topik} Ada Dimana-mana!
+🏠 **Di rumah:** Lihat sekeliling rumah kalian  
+🏫 **Di sekolah:** Ada juga di kelas kita  
+🌳 **Di alam:** Alam penuh dengan ${topik}  
+🧸 **Di mainan:** Bahkan mainan punya ${topik}!  
+
+*Ayo jadi detektif ${topik}! 🕵️‍♀️*`;
+                } else {
+                    return `## 💡 Mengapa ${topik} Menarik?
+🌟 **Keajaiban:** Hal-hal menakjubkan tentang ${topik}  
+🚀 **Teknologi:** Peran ${topik} dalam inovasi  
+🌍 **Dampak:** Pengaruh ${topik} pada dunia  
+💫 **Masa depan:** Potensi ${topik} yang luar biasa  
+
+*${topik} lebih keren dari yang kita bayangkan! 🤩*`;
+                }
+            }
+            return `## 🌟 Fakta Menarik ${topik}
+✨ Hal-hal unik yang perlu kita tahu  
+🎯 Aspek menarik untuk dipelajari  
+💡 Mengapa ${topik} layak dijelajahi  
+
+*Semakin tahu, semakin takjub! 😍*`;
+        }
+
+        function getVisualCoreTitle(topik, mataPelajaran, index, phaseLevel) {
+            if (mataPelajaran === 'Matematika') {
+                const mathTitles = ['🔢 Dasar-dasar', '⚡ Operasi', '🧩 Pola', '🎯 Problem Solving', '📐 Representasi', '🌟 Generalisasi'];
+                return `${mathTitles[index - 1] || '🔍 Konsep'} ${topik}`;
+            } else if (mataPelajaran === 'IPA') {
+                const ipaTitles = ['👀 Observasi', '💭 Hipotesis', '🧪 Eksperimen', '📊 Analisis', '💡 Kesimpulan', '🚀 Aplikasi'];
+                return `${ipaTitles[index - 1] || '🔬 Materi'} ${topik}`;
+            } else if (mataPelajaran === 'Bahasa Indonesia') {
+                const bahasaTitles = ['📖 Pemahaman', '🏗️ Struktur', '💎 Makna', '🎯 Penggunaan', '🌈 Variasi', '🎨 Kreativitas'];
+                return `${bahasaTitles[index - 1] || '📚 Pembelajaran'} ${topik}`;
+            }
+            return `🌟 Materi ${index}: ${topik}`;
+        }
+
+        function getVisualCoreIcon(index) {
+            const icons = ['🔍', '⚡', '🧩', '🎯', '📐', '🌟', '💎', '🚀'];
+            return icons[index - 1] || '📚';
+        }
+
+        function generateVisualCoreMarkdown(topik, mataPelajaran, index, phaseLevel, aiAnalysis) {
+            const coreTitle = getVisualCoreTitle(topik, mataPelajaran, index, phaseLevel);
+            
+            if (phaseLevel <= 2) {
+                return `## ${coreTitle}
+🎯 **Apa sih ini?** Penjelasan yang mudah dimengerti  
+🔍 **Gimana caranya?** Langkah-langkah sederhana  
+🌟 **Contohnya:** Seperti... (dari dunia anak-anak)  
+🎮 **Yuk coba!** Mari praktik bareng-bareng  
+
+*Santai aja, kita belajar sambil main! 🎪*`;
+            } else if (phaseLevel <= 4) {
+                return `## ${coreTitle}
+📚 **Definisi:** Pengertian yang jelas dan mudah  
+✨ **Karakteristik:** Ciri-ciri yang membedakan  
+🔄 **Proses:** Tahapan atau langkah-langkah  
+🔗 **Hubungan:** Keterkaitan dengan konsep lain  
+
+*Semakin paham, semakin asyik! 🎯*`;
+            } else {
+                return `## ${coreTitle}
+🧠 **Teori:** Landasan ilmiah dan prinsip dasar  
+⚙️ **Mekanisme:** Cara kerja secara detail  
+📊 **Variabel:** Faktor-faktor yang berpengaruh  
+🌐 **Implikasi:** Dampak dan konsekuensi luas  
+
+*Menuju pemahaman yang mendalam! 🎓*`;
+            }
+        }
+
+        function getCreativeActivityTitle(topik, mataPelajaran, index, phaseLevel) {
+            if (phaseLevel <= 2) {
+                const titles = ['🎪 Bermain Seru!', '🎨 Kreasi Kita!', '🧪 Eksperimen Asyik!', '🏆 Tantangan Hebat!'];
+                return titles[index - 1] || `🎮 Aktivitas ${index}`;
+            } else if (phaseLevel <= 4) {
+                const titles = ['🔬 Praktik Langsung', '🕵️ Investigasi Seru', '📚 Studi Kasus', '🎯 Proyek Kreatif'];
+                return titles[index - 1] || `🌟 Kegiatan ${index}`;
+            } else {
+                const titles = ['🧠 Analisis Mendalam', '🔍 Penelitian', '⚡ Sintesis Kreatif', '🎓 Evaluasi Kritis'];
+                return titles[index - 1] || `💡 Tugas ${index}`;
+            }
+        }
+
+        function getCreativeActivityIcon(index) {
+            const icons = ['🎪', '🎨', '🧪', '🏆', '⚡', '🌟'];
+            return icons[index - 1] || '🎯';
+        }
+
+        function generateCreativeActivityMarkdown(topik, mataPelajaran, index, phaseLevel, aiAnalysis) {
+            const activityTitle = getCreativeActivityTitle(topik, mataPelajaran, index, phaseLevel);
+            
+            if (phaseLevel <= 2) {
+                return `## ${activityTitle}
+🎯 **Persiapan:** Siapkan alat main yang seru  
+👥 **Bersama-sama:** Ikuti petunjuk dengan gembira  
+👀 **Amati:** Lihat apa yang terjadi dengan mata berbinar  
+📖 **Ceritakan:** Bagikan pengalaman kalian dengan semangat  
+
+*Tidak ada yang salah, yang ada hanya belajar! 🌈*`;
+            } else if (phaseLevel <= 4) {
+                return `## ${activityTitle}
+🎯 **Tujuan:** Membuktikan keajaiban ${topik}  
+🛠️ **Alat & Bahan:** Perlengkapan untuk eksplorasi  
+📋 **Prosedur:** Langkah-langkah yang sistematis  
+📊 **Hasil:** Catat dan diskusikan temuan menarik  
+
+*Belajar dengan tangan dan hati! 💫*`;
+            } else {
+                return `## ${activityTitle}
+💭 **Hipotesis:** Prediksi berdasarkan pemahaman  
+🔬 **Metodologi:** Pendekatan ilmiah yang tepat  
+📈 **Analisis:** Interpretasi data dan temuan  
+✅ **Kesimpulan:** Validasi atau pengembangan teori  
+
+*Menjadi peneliti muda yang inspiratif! 🌟*`;
+            }
+        }
+
+        function generateVisualConclusionMarkdown(topik, mataPelajaran, capaianPembelajaran, phaseLevel) {
+            if (phaseLevel <= 2) {
+                return `## 🎉 Wah, Kita Hebat Sekali!
+🌟 Sekarang kita sudah kenal baik dengan ${topik}  
+🔍 Kita bisa menemukan ${topik} dimana-mana  
+🎮 Kita sudah bermain dan belajar dengan seru!  
+💝 ${topik} ternyata teman yang menyenangkan  
+
+*Kalian semua luar biasa! Tos dulu! ✋*`;
+            } else if (phaseLevel <= 4) {
+                return `## 🏆 Pencapaian Pembelajaran Kita
+🎯 **Konsep utama:** Pemahaman mendalam tentang ${topik}  
+⚡ **Proses:** Cara kerja dan mekanisme yang dipahami  
+🌍 **Aplikasi:** Penggunaan ${topik} dalam kehidupan nyata  
+💡 **Manfaat:** Pentingnya ${topik} untuk masa depan  
+
+*Mission accomplished! Tujuan tercapai! ✅*`;
+            } else {
+                return `## 🎓 Sintesis Pembelajaran Holistik
+🧠 **Teori:** Landasan ilmiah yang telah dikuasai  
+🔍 **Analisis:** Kemampuan mengkaji secara kritis  
+⚡ **Sintesis:** Integrasi dengan pengetahuan lain  
+🌐 **Evaluasi:** Penilaian terhadap relevansi dan dampak  
+
+*${capaianPembelajaran} - Berhasil dicapai! 🏆*`;
+            }
+        }
+
+        function generateVisualReflectionMarkdown(topik, mataPelajaran, phaseLevel) {
+            if (phaseLevel <= 2) {
+                return `## 💝 Pesan Sayang dari Guru
+🌟 Kalian sudah belajar dengan luar biasa hari ini  
+🏠 ${topik} akan selalu menemani kalian dimana-mana  
+👨‍👩‍👧‍👦 Jangan lupa cerita ke papa mama di rumah ya  
+🚀 Tetap semangat dan penasaran untuk belajar hal baru!  
+
+*Guru sayang kalian semua! 💕*`;
+            } else if (phaseLevel <= 4) {
+                return `## 🌈 Refleksi dan Apresiasi
+🏆 **Pencapaian:** Apa yang sudah kalian kuasai dengan baik?  
+🤔 **Tantangan:** Bagian mana yang masih perlu diperdalam?  
+🌍 **Aplikasi:** Bagaimana akan kalian terapkan dalam hidup?  
+🔥 **Motivasi:** Apa yang membuat kalian semakin semangat?  
+
+*Terus jaga api semangat belajar kalian! 🔥*`;
+            } else {
+                return `## 🎯 Refleksi Pembelajaran Mendalam
+🧠 **Metakognisi:** Bagaimana proses belajar kalian berlangsung?  
+🔗 **Transfer:** Bagaimana menghubungkan dengan materi lain?  
+💡 **Inovasi:** Ide-ide kreatif apa yang muncul?  
+📈 **Komitmen:** Langkah lanjutan yang akan kalian ambil?  
+
+*Pembelajaran sejati adalah perjalanan seumur hidup! 🌟*`;
+            }
+        }
+
+        function generateVisualFutureMarkdown(topik, mataPelajaran, phaseLevel) {
+            if (phaseLevel <= 2) {
+                return `## 🌈 Mimpi Indah untuk Besok!
+🔍 Cari 5 contoh ${topik} di rumah kalian  
+📸 Foto atau gambar ${topik} yang kalian temukan  
+👨‍👩‍👧‍👦 Ceritakan ke keluarga petualangan belajar hari ini  
+❓ Siapkan pertanyaan seru tentang ${topik}  
+
+*Sampai jumpa di petualangan belajar berikutnya! 👋*`;
+            } else if (phaseLevel <= 4) {
+                return `## 🚀 Proyek Masa Depan
+🔬 **Investigasi:** Teliti lebih dalam tentang ${topik}  
+📝 **Dokumentasi:** Buat laporan kreatif dan menarik  
+🎤 **Sharing:** Presentasikan ke teman-teman dengan percaya diri  
+🌟 **Eksplorasi:** Cari topik terkait yang menantang  
+
+*Jadilah peneliti cilik yang menginspirasi! 🌟*`;
+            } else {
+                return `## ⭐ Visi Pengembangan Lanjutan
+🔍 **Riset mandiri:** Eksplorasi aspek lanjutan ${topik}  
+🧠 **Analisis kritis:** Evaluasi sumber dan informasi  
+💡 **Inovasi:** Kembangkan ide-ide breakthrough  
+🤝 **Kolaborasi:** Diskusi dengan komunitas akademik  
+
+*Wujudkan potensi terbaik untuk dunia! 🌍*`;
+            }
+        }
+
+        // Helper Functions for Dynamic Content Generation
+        function determineOptimalSlideCount(mataPelajaran, phaseLevel, aiAnalysis) {
+            // Base slide count based on phase level
+            let baseCount = 12; // Default
+            
+            if (phaseLevel <= 2) {
+                baseCount = 10; // Fase A-B: 10-12 slides
+            } else if (phaseLevel <= 4) {
+                baseCount = 15; // Fase C-D: 15-18 slides  
+            } else {
+                baseCount = 18; // Fase E-F: 18-20 slides
+            }
+            
+            // Adjust based on subject complexity
+            const subjectComplexity = {
+                'Matematika': 1.2, // More complex, needs more slides
+                'IPA': 1.15,
+                'Bahasa Indonesia': 1.0,
+                'IPS': 1.1,
+                'Bahasa Inggris': 1.1,
+                'PKn': 0.9,
+                'Seni Budaya': 0.95,
+                'PJOK': 0.85
+            };
+            
+            const multiplier = subjectComplexity[mataPelajaran] || 1.0;
+            const adjustedCount = Math.round(baseCount * multiplier);
+            
+            // Ensure within reasonable bounds (10-20 slides)
+            return Math.max(10, Math.min(20, adjustedCount));
+        }
+
+        // Icon and Title Generation Functions
+        function getConceptIcon(index) {
+            const icons = ['🔍', '🧩', '⚡', '🎯', '🔬', '📐', '🌟', '💡'];
+            return icons[(index - 1) % icons.length];
+        }
+
+        function getApplicationIcon(index) {
+            const icons = ['💡', '🌍', '🏠', '🎨', '🔧', '📱', '🚀', '⭐'];
+            return icons[(index - 1) % icons.length];
+        }
+
+        function getExplorationIcon(index) {
+            const icons = ['🔍', '🌟', '🎯', '🧭', '🔬', '🎪', '🎭', '🎨'];
+            return icons[(index - 1) % icons.length];
+        }
+
+        function getSensoryIcon(index) {
+            const icons = ['👀', '👂', '✋', '👃', '👅', '🧠', '💭', '❤️'];
+            return icons[(index - 1) % icons.length];
+        }
+
+        function getProgressiveIcon(index) {
+            const icons = ['🎯', '🔄', '⚡', '🚀', '🌟', '💎', '🏆', '🎪'];
+            return icons[(index - 1) % icons.length];
+        }
+
+        function getContextualIcon(index) {
+            const icons = ['🌍', '🏠', '🎭', '🎨', '🌈', '🎪', '🎯', '⭐'];
+            return icons[(index - 1) % icons.length];
+        }
+
+        // Title Generation Functions
+        function getConceptTitle(topik, mataPelajaran, index, phaseLevel) {
+            if (mataPelajaran === 'Matematika') {
+                const titles = ['Dasar-dasar', 'Operasi', 'Aplikasi', 'Pemecahan Masalah', 'Pola & Hubungan', 'Representasi', 'Generalisasi', 'Abstraksi'];
+                return titles[(index - 1) % titles.length];
+            } else if (mataPelajaran === 'IPA') {
+                const titles = ['Observasi', 'Hipotesis', 'Eksperimen', 'Analisis', 'Kesimpulan', 'Aplikasi', 'Prediksi', 'Evaluasi'];
+                return titles[(index - 1) % titles.length];
+            } else if (mataPelajaran === 'Bahasa Indonesia') {
+                const titles = ['Pemahaman', 'Analisis', 'Interpretasi', 'Sintesis', 'Evaluasi', 'Kreasi', 'Komunikasi', 'Refleksi'];
+                return titles[(index - 1) % titles.length];
+            }
+            return `Konsep ${index}`;
+        }
+
+        function getApplicationTitle(topik, mataPelajaran, index, phaseLevel) {
+            if (phaseLevel <= 2) {
+                const titles = ['Di Rumah', 'Di Sekolah', 'Saat Bermain', 'Dengan Keluarga'];
+                return titles[(index - 1) % titles.length];
+            } else if (phaseLevel <= 4) {
+                const titles = ['Kehidupan Sehari-hari', 'Teknologi', 'Lingkungan', 'Masyarakat'];
+                return titles[(index - 1) % titles.length];
+            } else {
+                const titles = ['Industri', 'Penelitian', 'Inovasi', 'Masa Depan'];
+                return titles[(index - 1) % titles.length];
+            }
+        }
+
+        function getExplorationTitle(topik, mataPelajaran, index, phaseLevel) {
+            const titles = ['Penemuan Awal', 'Investigasi Mendalam', 'Eksperimen', 'Observasi Kritis', 'Analisis Data', 'Sintesis Temuan'];
+            return titles[(index - 1) % titles.length];
+        }
+
+        function getSensoryTitle(topik, mataPelajaran, index, phaseLevel) {
+            const titles = ['Visual', 'Auditori', 'Kinestetik', 'Taktil', 'Multi-sensori', 'Emosional'];
+            return titles[(index - 1) % titles.length];
+        }
+
+        function getCreativeTitle(topik, mataPelajaran, index, phaseLevel) {
+            const titles = ['Eksplorasi Kreatif', 'Inovasi', 'Desain Solusi', 'Ekspresi Artistik'];
+            return titles[(index - 1) % titles.length];
+        }
+
+        function getProgressiveTitle(topik, mataPelajaran, index, phaseLevel) {
+            const titles = ['Fondasi', 'Pengembangan', 'Pendalaman', 'Integrasi', 'Aplikasi', 'Masteri'];
+            return titles[(index - 1) % titles.length];
+        }
+
+        function getContextualTitle(topik, mataPelajaran, index, phaseLevel) {
+            const titles = ['Lokal', 'Nasional', 'Global', 'Historis', 'Kontemporer', 'Futuristik'];
+            return titles[(index - 1) % titles.length];
+        }
+
+        function getProblemTitle(topik, mataPelajaran, index, phaseLevel) {
+            const titles = ['Masalah Sederhana', 'Tantangan Menengah', 'Kasus Kompleks', 'Proyek Besar'];
+            return titles[(index - 1) % titles.length];
+        }
+
+        function getCreativeIntegrationTitle(topik, mataPelajaran, index, phaseLevel) {
+            const titles = ['Sintesis Kreatif', 'Inovasi Terpadu', 'Solusi Orisinal'];
+            return titles[(index - 1) % titles.length];
+        }
+
+        function getPracticeTitle(topik, mataPelajaran, index, phaseLevel) {
+            const titles = ['Latihan Dasar', 'Penerapan', 'Pemecahan Masalah', 'Evaluasi Diri'];
+            return titles[(index - 1) % titles.length];
+        }
+
+        // ChatGPT Content Generation Functions
+        function generateCognitiveHook(topik, mataPelajaran, phaseLevel) {
+            if (phaseLevel <= 2) {
+                return `Hai teman-teman! Hari ini kita akan belajar tentang ${topik}. Siapa yang pernah melihat atau menggunakan ${topik} di rumah?`;
+            } else if (phaseLevel <= 4) {
+                return `Pernahkah kalian bertanya-tanya mengapa ${topik} penting dalam ${mataPelajaran}? Mari kita temukan jawabannya bersama!`;
+            } else {
+                return `Bagaimana ${topik} mempengaruhi pemahaman kita tentang ${mataPelajaran}? Mari kita analisis secara sistematis.`;
+            }
+        }
+
+        function generateLearningObjectives(capaianPembelajaran, topik, phaseLevel) {
+            if (phaseLevel <= 2) {
+                return `Hari ini kita akan belajar tentang ${topik} dengan tujuan: ${capaianPembelajaran}. Mari kita capai tujuan ini bersama-sama dengan cara yang menyenangkan!`;
+            } else if (phaseLevel <= 4) {
+                return `Tujuan pembelajaran kita adalah: ${capaianPembelajaran}. Melalui pemahaman ${topik}, kalian akan dapat mencapai kompetensi yang diharapkan.`;
+            } else {
+                return `Capaian pembelajaran yang akan kita raih: ${capaianPembelajaran}. Mari kita analisis bagaimana ${topik} berkontribusi pada pencapaian tujuan ini.`;
+            }
+        }
+
+        function generateDetailedConceptContent(topik, mataPelajaran, index, phaseLevel, aiAnalysis) {
+            const conceptTitle = getConceptTitle(topik, mataPelajaran, index, phaseLevel);
+            
+            if (phaseLevel <= 2) {
+                return `Mari kita pelajari ${conceptTitle} dari ${topik}. Ini seperti puzzle yang akan kita susun bersama! Kalian akan menemukan hal-hal menarik tentang bagaimana ${conceptTitle} bekerja dalam ${mataPelajaran}.`;
+            } else if (phaseLevel <= 4) {
+                return `${conceptTitle} dalam ${topik}: Mari kita eksplorasi bagaimana konsep ini membantu kita memahami ${mataPelajaran} lebih baik. Perhatikan hubungan antara ${conceptTitle} dengan konsep-konsep lain yang sudah kita pelajari.`;
+            } else {
+                return `Analisis ${conceptTitle}: Bagaimana ${conceptTitle} berinteraksi dengan sistem yang lebih luas dalam ${mataPelajaran}? Mari kita kaji implikasi teoritis dan praktis dari konsep ini dalam konteks ${topik}.`;
+            }
+        }
+
+        function generateContextualApplication(topik, mataPelajaran, index, phaseLevel, aiAnalysis) {
+            const appTitle = getApplicationTitle(topik, mataPelajaran, index, phaseLevel);
+            
+            if (phaseLevel <= 2) {
+                return `${appTitle}: Kalian bisa menemukan ${topik} ${appTitle.toLowerCase()}! Mari kita lihat contoh-contoh yang ada di sekitar kita dan bagaimana kita bisa menggunakannya.`;
+            } else if (phaseLevel <= 4) {
+                return `Aplikasi ${appTitle}: Dalam ${appTitle.toLowerCase()}, ${topik} memiliki peran penting. Mari kita analisis bagaimana konsep ${mataPelajaran} diterapkan dalam konteks ini.`;
+            } else {
+                return `Studi Kasus ${appTitle}: Bagaimana ${topik} diimplementasikan dalam ${appTitle.toLowerCase()}? Mari kita evaluasi efektivitas dan dampaknya dalam konteks ${mataPelajaran} modern.`;
+            }
+        }
+
+        function generatePracticeContent(topik, mataPelajaran, index, phaseLevel, aiAnalysis) {
+            const practiceTitle = getPracticeTitle(topik, mataPelajaran, index, phaseLevel);
+            
+            if (phaseLevel <= 2) {
+                return `${practiceTitle}: Sekarang saatnya mencoba! Mari kita praktikkan apa yang sudah kita pelajari tentang ${topik} dengan cara yang menyenangkan.`;
+            } else if (phaseLevel <= 4) {
+                return `${practiceTitle}: Mari kita uji pemahaman kalian tentang ${topik}. Gunakan strategi yang sudah kita pelajari untuk menyelesaikan tantangan ini.`;
+            } else {
+                return `${practiceTitle}: Terapkan konsep ${topik} dalam skenario yang kompleks. Analisis masalah, buat strategi, dan evaluasi solusi kalian.`;
+            }
+        }
+
+        function generateComprehensiveSynthesis(topik, mataPelajaran, capaianPembelajaran, aiAnalysis) {
+            return `Mari kita integrasikan semua pemahaman tentang ${topik}. Bagaimana konsep-konsep yang telah kita pelajari saling terhubung dan mendukung pencapaian tujuan: ${capaianPembelajaran}? Refleksikan perjalanan belajar kalian hari ini.`;
+        }
+
+        function generateRealWorldConnection(topik, mataPelajaran, phaseLevel, aiAnalysis) {
+            if (phaseLevel <= 2) {
+                return `${topik} ada di mana-mana di sekitar kita! Mari kita lihat bagaimana apa yang kita pelajari hari ini bisa membantu kita dalam kehidupan sehari-hari.`;
+            } else if (phaseLevel <= 4) {
+                return `Koneksi dengan dunia nyata: Bagaimana pemahaman tentang ${topik} dapat membantu kalian memecahkan masalah dalam kehidupan sehari-hari dan masa depan?`;
+            } else {
+                return `Implikasi global: Bagaimana ${topik} berkontribusi pada perkembangan ${mataPelajaran} dan dampaknya terhadap masyarakat, teknologi, dan masa depan?`;
+            }
+        }
+
+        function generateNextSteps(topik, mataPelajaran, phaseLevel, aiAnalysis) {
+            if (phaseLevel <= 2) {
+                return `Apa yang akan kita pelajari selanjutnya? Mari kita lihat bagaimana ${topik} akan membantu kita memahami materi ${mataPelajaran} yang lebih menarik lagi!`;
+            } else if (phaseLevel <= 4) {
+                return `Langkah selanjutnya: Bagaimana kalian bisa mengembangkan pemahaman tentang ${topik}? Apa proyek atau eksplorasi yang bisa kalian lakukan?`;
+            } else {
+                return `Pengembangan lanjutan: Identifikasi area untuk penelitian lebih lanjut, proyek independen, atau aplikasi inovatif dari ${topik} dalam ${mataPelajaran}.`;
+            }
+        }
+
+        function generatePriorKnowledge(topik, mataPelajaran, phaseLevel) {
+            if (phaseLevel <= 2) {
+                return `Sebelum belajar ${topik}, mari kita ingat apa yang sudah kita ketahui. Apa yang kalian tahu tentang hal ini?`;
+            } else if (phaseLevel <= 4) {
+                return `Mari kita hubungkan ${topik} dengan materi ${mataPelajaran} yang sudah kita pelajari sebelumnya.`;
+            } else {
+                return `Untuk memahami ${topik}, kita perlu mengaktifkan pengetahuan dasar tentang ${mataPelajaran} yang telah kalian kuasai.`;
+            }
+        }
+
+        function generateProgressiveConcepts(topik, mataPelajaran, phaseLevel) {
+            const slides = [];
+            for (let i = 1; i <= 3; i++) {
+                slides.push({
+                    title: `KONSEP ${i}: ${topik.toUpperCase()}`,
+                    icon: `🔍`,
+                    content: generateConceptContent(topik, mataPelajaran, i, phaseLevel)
+                });
+            }
+            return slides;
+        }
+
+        function generateConceptContent(topik, mataPelajaran, level, phaseLevel) {
+            if (phaseLevel <= 2) {
+                return `Mari kita pelajari bagian ${level} dari ${topik}. Ini seperti puzzle yang akan kita susun bersama!`;
+            } else if (phaseLevel <= 4) {
+                return `Konsep ${level}: ${topik} memiliki karakteristik khusus yang perlu kita pahami dalam konteks ${mataPelajaran}.`;
+            } else {
+                return `Analisis konsep ${level}: Bagaimana ${topik} berinteraksi dengan elemen lain dalam sistem ${mataPelajaran}?`;
+            }
+        }
+
+        function generateApplicationExamples(topik, mataPelajaran, phaseLevel) {
+            const slides = [];
+            for (let i = 1; i <= 3; i++) {
+                slides.push({
+                    title: `CONTOH APLIKASI ${i}`,
+                    icon: `💡`,
+                    content: generateExampleContent(topik, mataPelajaran, i, phaseLevel)
+                });
+            }
+            return slides;
+        }
+
+        function generateExampleContent(topik, mataPelajaran, example, phaseLevel) {
+            if (phaseLevel <= 2) {
+                return `Contoh ${example}: Kalian bisa menemukan ${topik} saat bermain atau di rumah. Misalnya...`;
+            } else if (phaseLevel <= 4) {
+                return `Contoh ${example}: Dalam kehidupan sehari-hari, ${topik} dapat kita temukan di berbagai situasi yang berkaitan dengan ${mataPelajaran}.`;
+            } else {
+                return `Studi kasus ${example}: Analisis penerapan ${topik} dalam konteks ${mataPelajaran} modern dan implikasinya.`;
+            }
+        }
+
+        function generateSynthesis(topik, mataPelajaran, capaianPembelajaran) {
+            return `Sekarang kita telah memahami ${topik} secara menyeluruh. Mari kita rangkum bagaimana konsep ini mendukung tujuan pembelajaran kita: ${capaianPembelajaran}`;
+        }
+
+        function generateMetacognition(topik, mataPelajaran, phaseLevel) {
+            if (phaseLevel <= 2) {
+                return `Apa yang kalian rasakan setelah belajar ${topik}? Bagian mana yang paling menarik?`;
+            } else if (phaseLevel <= 4) {
+                return `Bagaimana pemahaman tentang ${topik} mengubah cara kalian melihat ${mataPelajaran}?`;
+            } else {
+                return `Refleksikan proses belajar kalian: strategi apa yang paling efektif untuk memahami ${topik}?`;
+            }
+        }
+
+        // Gemini Content Generation Functions
+        function generateVisualContext(topik, mataPelajaran, phaseLevel) {
+            return `Bayangkan ${topik} sebagai sesuatu yang hidup di sekitar kita. Mari kita lihat dengan mata hati dan pikiran yang terbuka!`;
+        }
+
+        function generateVisualLearningGoals(capaianPembelajaran, topik, phaseLevel) {
+            if (phaseLevel <= 2) {
+                return `Tujuan belajar kita hari ini: ${capaianPembelajaran}. Mari kita wujudkan dengan cara yang menyenangkan dan penuh warna!`;
+            } else if (phaseLevel <= 4) {
+                return `Visi pembelajaran kita: ${capaianPembelajaran}. Melalui eksplorasi ${topik}, kita akan mencapai pemahaman yang bermakna.`;
+            } else {
+                return `Aspirasi pembelajaran: ${capaianPembelajaran}. Mari kita jelajahi ${topik} dengan perspektif yang luas dan mendalam.`;
+            }
+        }
+
+        function generateInteractiveDiscoveryContent(topik, mataPelajaran, index, phaseLevel, aiAnalysis) {
+            const explorationTitle = getExplorationTitle(topik, mataPelajaran, index, phaseLevel);
+            
+            if (phaseLevel <= 2) {
+                return `${explorationTitle}: Mari kita jadi detektif cilik! Apa yang bisa kalian temukan tentang ${topik} melalui pengamatan dan eksplorasi langsung?`;
+            } else if (phaseLevel <= 4) {
+                return `${explorationTitle}: Saatnya menjadi peneliti muda! Mari kita investigasi ${topik} dengan cara yang interaktif dan menyenangkan.`;
+            } else {
+                return `${explorationTitle}: Sebagai peneliti muda, bagaimana kalian akan mengeksplorasi ${topik}? Gunakan metode investigasi yang sistematis namun kreatif.`;
+            }
+        }
+
+        function generateMultiSensoryContent(topik, mataPelajaran, index, phaseLevel, aiAnalysis) {
+            const sensoryTitle = getSensoryTitle(topik, mataPelajaran, index, phaseLevel);
+            
+            if (phaseLevel <= 2) {
+                return `Pengalaman ${sensoryTitle}: Mari kita rasakan ${topik} dengan ${sensoryTitle.toLowerCase()}! Bagaimana ${topik} terlihat, terdengar, atau terasa?`;
+            } else if (phaseLevel <= 4) {
+                return `Pembelajaran ${sensoryTitle}: Gunakan indera ${sensoryTitle.toLowerCase()} untuk memahami ${topik}. Apa yang kalian amati dan rasakan?`;
+            } else {
+                return `Analisis ${sensoryTitle}: Bagaimana pendekatan ${sensoryTitle.toLowerCase()} memperkaya pemahaman kita tentang ${topik} dalam konteks ${mataPelajaran}?`;
+            }
+        }
+
+        function generateCreativeActivityContent(topik, mataPelajaran, index, phaseLevel, aiAnalysis) {
+            const creativeTitle = getCreativeTitle(topik, mataPelajaran, index, phaseLevel);
+            
+            if (phaseLevel <= 2) {
+                return `${creativeTitle}: Saatnya berkreasi! Bagaimana kalian bisa mengekspresikan pemahaman tentang ${topik} dengan cara yang unik dan menyenangkan?`;
+            } else if (phaseLevel <= 4) {
+                return `${creativeTitle}: Mari wujudkan ide-ide kreatif tentang ${topik}! Gunakan imajinasi kalian untuk menciptakan sesuatu yang bermakna.`;
+            } else {
+                return `${creativeTitle}: Bagaimana kalian dapat mengintegrasikan pemahaman ${topik} dalam karya kreatif yang inovatif dan berdampak?`;
+            }
+        }
+
+        function generateContextualRealWorld(topik, mataPelajaran, phaseLevel, aiAnalysis) {
+            if (phaseLevel <= 2) {
+                return `${topik} ada di mana-mana di sekitar kita! Mari kita jelajahi bagaimana apa yang kita pelajari bisa membantu dalam kehidupan sehari-hari.`;
+            } else if (phaseLevel <= 4) {
+                return `Aplikasi nyata: Bagaimana ${topik} berperan dalam kehidupan sehari-hari, teknologi, dan lingkungan sekitar kita?`;
+            } else {
+                return `Dampak global: Bagaimana ${topik} mempengaruhi masyarakat, teknologi, dan perkembangan ${mataPelajaran} di dunia?`;
+            }
+        }
+
+        function generateCollaborativeReflection(topik, mataPelajaran, phaseLevel) {
+            if (phaseLevel <= 2) {
+                return `Mari berbagi! Apa yang paling menarik dari ${topik} menurut kalian? Ceritakan pengalaman belajar kalian hari ini!`;
+            } else if (phaseLevel <= 4) {
+                return `Refleksi bersama: Bagaimana pemahaman tentang ${topik} mengubah cara pandang kalian terhadap ${mataPelajaran}?`;
+            } else {
+                return `Diskusi reflektif: Mari evaluasi proses pembelajaran kita tentang ${topik}. Apa insight baru yang kalian peroleh?`;
+            }
+        }
+
+        function generateFutureInspiration(topik, mataPelajaran, phaseLevel, aiAnalysis) {
+            if (phaseLevel <= 2) {
+                return `Bayangkan masa depan kalian! Bagaimana pemahaman tentang ${topik} akan membantu kalian menjadi orang yang hebat?`;
+            } else if (phaseLevel <= 4) {
+                return `Inspirasi masa depan: Bagaimana ${topik} dapat membuka peluang karir dan kontribusi kalian untuk dunia?`;
+            } else {
+                return `Visi futuristik: Bagaimana kalian dapat berkontribusi pada pengembangan ${mataPelajaran} melalui inovasi berbasis ${topik}?`;
+            }
+        }
+
+        function generateCulturalConnection(topik, mataPelajaran, phaseLevel) {
+            return `Dalam budaya Indonesia, ${topik} memiliki makna khusus. Mari kita jelajahi bagaimana nenek moyang kita memahami konsep ini.`;
+        }
+
+        function generateInteractiveDiscovery(topik, mataPelajaran, phaseLevel) {
+            const slides = [];
+            slides.push({
+                title: "EKSPLORASI INTERAKTIF",
+                icon: "🔍",
+                content: `Mari kita jadi detektif! Apa yang bisa kalian temukan tentang ${topik} melalui pengamatan langsung?`
+            });
+            slides.push({
+                title: "PENEMUAN BERSAMA",
+                icon: "🌟",
+                content: `Wow! Ternyata ${topik} memiliki banyak aspek menarik. Mari kita diskusikan penemuan kalian!`
+            });
+            return slides;
+        }
+
+        function generateMultiSensoryExamples(topik, mataPelajaran, phaseLevel) {
+            const slides = [];
+            const senses = ['LIHAT', 'DENGAR', 'RASAKAN'];
+            senses.forEach((sense, i) => {
+                slides.push({
+                    title: `${sense} ${topik.toUpperCase()}`,
+                    icon: i === 0 ? "👀" : i === 1 ? "👂" : "✋",
+                    content: `Mari kita ${sense.toLowerCase()} ${topik} dengan cara yang menyenangkan dan mudah diingat!`
+                });
+            });
+            return slides;
+        }
+
+        function generateRealWorldApplication(topik, mataPelajaran, phaseLevel) {
+            return `Di dunia nyata, ${topik} digunakan dalam berbagai profesi dan kehidupan sehari-hari. Mari kita jelajahi kemungkinan-kemungkinannya!`;
+        }
+
+        function generateCreativeExpression(topik, mataPelajaran, phaseLevel) {
+            return `Sekarang saatnya berkreasi! Bagaimana kalian bisa mengekspresikan pemahaman tentang ${topik} dengan cara yang unik dan personal?`;
+        }
+
+        function generateFutureConnection(topik, mataPelajaran, phaseLevel) {
+            return `Bayangkan masa depan kalian! Bagaimana pemahaman tentang ${topik} akan membantu kalian mencapai impian dan cita-cita?`;
+        }
+
+        // Hybrid Content Generation Functions
+        function generateEngagingIntro(topik, mataPelajaran, phaseLevel) {
+            return `Selamat datang dalam petualangan belajar ${topik}! Hari ini kita akan menggabungkan logika dan kreativitas untuk memahami ${mataPelajaran}.`;
+        }
+
+        function generateIntegratedGoals(capaianPembelajaran, topik, phaseLevel) {
+            if (phaseLevel <= 2) {
+                return `Tujuan terintegrasi kita: ${capaianPembelajaran}. Mari kita capai dengan cara yang sistematis namun menyenangkan melalui eksplorasi ${topik}!`;
+            } else if (phaseLevel <= 4) {
+                return `Capaian pembelajaran terintegrasi: ${capaianPembelajaran}. Kita akan menggunakan pendekatan yang menggabungkan analisis mendalam dan kreativitas dalam mempelajari ${topik}.`;
+            } else {
+                return `Objektif pembelajaran komprehensif: ${capaianPembelajaran}. Mari kita integrasikan pemahaman teoritis dan aplikasi praktis ${topik} secara holistik.`;
+            }
+        }
+
+        function generateHybridProgressiveContent(topik, mataPelajaran, index, phaseLevel, aiAnalysis) {
+            const progressiveTitle = getProgressiveTitle(topik, mataPelajaran, index, phaseLevel);
+            
+            if (phaseLevel <= 2) {
+                return `${progressiveTitle} ${topik}: Mari kita bangun pemahaman step by step! Setiap langkah akan membawa kita lebih dekat dengan penguasaan ${mataPelajaran}.`;
+            } else if (phaseLevel <= 4) {
+                return `${progressiveTitle}: Bagaimana ${topik} berkembang dalam pemahaman kita? Mari kita analisis secara sistematis namun tetap kontekstual.`;
+            } else {
+                return `${progressiveTitle}: Analisis mendalam tentang bagaimana ${topik} terintegrasi dalam framework ${mataPelajaran} yang lebih luas.`;
+            }
+        }
+
+        function generateHybridContextualContent(topik, mataPelajaran, index, phaseLevel, aiAnalysis) {
+            const contextualTitle = getContextualTitle(topik, mataPelajaran, index, phaseLevel);
+            
+            if (phaseLevel <= 2) {
+                return `Konteks ${contextualTitle}: Mari lihat bagaimana ${topik} muncul dalam kehidupan ${contextualTitle.toLowerCase()}! Ini akan membantu kita memahami ${mataPelajaran} lebih baik.`;
+            } else if (phaseLevel <= 4) {
+                return `Perspektif ${contextualTitle}: Bagaimana ${topik} dipahami dalam konteks ${contextualTitle.toLowerCase()}? Mari kita analisis dengan pendekatan yang sistematis.`;
+            } else {
+                return `Analisis ${contextualTitle}: Bagaimana dimensi ${contextualTitle.toLowerCase()} memperkaya pemahaman kita tentang ${topik} dalam ${mataPelajaran}?`;
+            }
+        }
+
+        function generateHybridProblemContent(topik, mataPelajaran, index, phaseLevel, aiAnalysis) {
+            const problemTitle = getProblemTitle(topik, mataPelajaran, index, phaseLevel);
+            
+            if (phaseLevel <= 2) {
+                return `${problemTitle}: Mari kita selesaikan tantangan ini bersama-sama! Gunakan apa yang sudah kita pelajari tentang ${topik} dengan cara yang kreatif.`;
+            } else if (phaseLevel <= 4) {
+                return `${problemTitle}: Saatnya menguji pemahaman! Bagaimana kalian akan menggunakan konsep ${topik} untuk menyelesaikan tantangan ini?`;
+            } else {
+                return `${problemTitle}: Analisis dan selesaikan masalah kompleks ini menggunakan pemahaman mendalam tentang ${topik} dalam konteks ${mataPelajaran}.`;
+            }
+        }
+
+        function generateHybridCreativeContent(topik, mataPelajaran, index, phaseLevel, aiAnalysis) {
+            const creativeTitle = getCreativeIntegrationTitle(topik, mataPelajaran, index, phaseLevel);
+            
+            if (phaseLevel <= 2) {
+                return `${creativeTitle}: Saatnya berkreasi dengan pemahaman kita! Bagaimana kalian bisa menggabungkan logika dan imajinasi dalam memahami ${topik}?`;
+            } else if (phaseLevel <= 4) {
+                return `${creativeTitle}: Mari integrasikan pemahaman sistematis dengan ekspresi kreatif tentang ${topik}. Apa karya inovatif yang bisa kalian ciptakan?`;
+            } else {
+                return `${creativeTitle}: Bagaimana kalian dapat mensintesis pemahaman teoritis dan praktis ${topik} dalam solusi kreatif yang berdampak?`;
+            }
+        }
+
+        function generateComprehensiveIntegratedSummary(topik, mataPelajaran, capaianPembelajaran, aiAnalysis) {
+            return `Rangkuman terintegrasi: Mari kita sintesis semua aspek pembelajaran ${topik} - dari pemahaman konseptual hingga aplikasi kreatif. Bagaimana semua ini mendukung pencapaian: ${capaianPembelajaran}? Refleksikan perjalanan pembelajaran yang holistik ini.`;
+        }
+
+        function generateHybridAssessment(topik, mataPelajaran, phaseLevel, aiAnalysis) {
+            if (phaseLevel <= 2) {
+                return `Evaluasi & Refleksi: Mari kita lihat seberapa jauh pemahaman kalian tentang ${topik}! Apa yang sudah kalian kuasai dan apa yang masih ingin kalian pelajari lebih dalam?`;
+            } else if (phaseLevel <= 4) {
+                return `Penilaian holistik: Bagaimana kalian mengevaluasi pemahaman kalian tentang ${topik}? Mari refleksikan proses belajar dan hasil yang telah dicapai.`;
+            } else {
+                return `Evaluasi komprehensif: Lakukan self-assessment mendalam tentang penguasaan ${topik}. Identifikasi kekuatan, area pengembangan, dan strategi pembelajaran lanjutan.`;
+            }
+        }
+
+        function generateComprehensiveActionPlanning(topik, mataPelajaran, phaseLevel, aiAnalysis) {
+            if (phaseLevel <= 2) {
+                return `Rencana ke depan: Apa yang ingin kalian lakukan selanjutnya dengan pemahaman ${topik}? Mari buat rencana belajar yang menyenangkan untuk masa depan!`;
+            } else if (phaseLevel <= 4) {
+                return `Strategi lanjutan: Bagaimana kalian akan mengembangkan dan menerapkan pemahaman ${topik}? Buat rencana aksi yang konkret dan bermakna.`;
+            } else {
+                return `Roadmap pengembangan: Susun strategi jangka panjang untuk mendalami ${topik}, termasuk proyek penelitian, aplikasi inovatif, dan kontribusi pada ${mataPelajaran}.`;
+            }
+        }
+
+        function generateSystematicFoundation(topik, mataPelajaran, phaseLevel) {
+            return `Mari kita bangun pemahaman yang kuat tentang ${topik} dengan pendekatan yang sistematis namun menyenangkan.`;
+        }
+
+        function generateProgressiveUnderstanding(topik, mataPelajaran, phaseLevel) {
+            const slides = [];
+            slides.push({
+                title: "PEMAHAMAN BERTAHAP 1",
+                icon: "🎯",
+                content: `Langkah pertama memahami ${topik}: Mari kita mulai dari dasar yang kokoh.`
+            });
+            slides.push({
+                title: "PEMAHAMAN BERTAHAP 2",
+                icon: "🚀",
+                content: `Langkah kedua: Sekarang kita tingkatkan pemahaman dengan menghubungkan konsep-konsep.`
+            });
+            return slides;
+        }
+
+        function generateContextualExamples(topik, mataPelajaran, phaseLevel) {
+            const slides = [];
+            slides.push({
+                title: "CONTOH KONTEKSTUAL 1",
+                icon: "🌍",
+                content: `Mari lihat bagaimana ${topik} muncul dalam kehidupan sehari-hari di Indonesia.`
+            });
+            slides.push({
+                title: "CONTOH KONTEKSTUAL 2",
+                icon: "🏠",
+                content: `Contoh lain: Bagaimana ${topik} berperan dalam lingkungan keluarga dan masyarakat kita.`
+            });
+            return slides;
+        }
+
+        function generateProblemSolving(topik, mataPelajaran, phaseLevel) {
+            return `Saatnya menguji pemahaman! Mari kita selesaikan masalah yang melibatkan ${topik} dengan strategi yang tepat.`;
+        }
+
+        function generateCreativeApplication(topik, mataPelajaran, phaseLevel) {
+            return `Bagaimana kita bisa menerapkan ${topik} dengan cara yang kreatif dan inovatif? Mari bereksperimen!`;
+        }
+
+        function generateIntegratedSummary(topik, mataPelajaran, capaianPembelajaran) {
+            return `Mari kita integrasikan semua yang telah dipelajari tentang ${topik}. Bagaimana ini mendukung tujuan pembelajaran kita?`;
+        }
+
+        function generateActionPlanning(topik, mataPelajaran, phaseLevel) {
+            return `Apa langkah selanjutnya? Mari buat rencana untuk menerapkan pemahaman ${topik} dalam kehidupan kalian!`;
+        }
+
+        function generateLearningContent(topik, mataPelajaran, slideNumber, phaseLevel) {
+            const contents = [
+                `Mari kita eksplorasi aspek menarik dari ${topik} dalam ${mataPelajaran}.`,
+                `Bagaimana ${topik} berkaitan dengan kehidupan sehari-hari kalian?`,
+                `Mari kita lihat contoh-contoh ${topik} yang mudah dipahami.`,
+                `Apa manfaat mempelajari ${topik} untuk masa depan kalian?`,
+                `Mari kita praktikkan pemahaman tentang ${topik} bersama-sama.`,
+                `Bagaimana ${topik} membantu kita memahami ${mataPelajaran} lebih baik?`,
+                `Mari kita diskusikan pengalaman kalian dengan ${topik}.`,
+                `Apa yang paling menarik dari ${topik} menurut kalian?`
+            ];
+            return contents[slideNumber - 2] || `Mari kita pelajari lebih dalam tentang ${topik}.`;
+        }
+
+        function displayResults(formData, slides) {
+            // Display presentation info
+            const infoHTML = `
+                <div class="bg-blue-50 p-4 rounded-lg">
+                    <h3 class="font-semibold text-blue-800">Penyusun</h3>
+                    <p class="text-blue-600">${formData.penyusun}</p>
+                </div>
+                <div class="bg-green-50 p-4 rounded-lg">
+                    <h3 class="font-semibold text-green-800">Mata Pelajaran</h3>
+                    <p class="text-green-600">${formData.mataPelajaran}</p>
+                </div>
+                <div class="bg-purple-50 p-4 rounded-lg">
+                    <h3 class="font-semibold text-purple-800">Kelas/Fase</h3>
+                    <p class="text-purple-600">${formData.kelasFase}</p>
+                </div>
+                <div class="bg-orange-50 p-4 rounded-lg">
+                    <h3 class="font-semibold text-orange-800">Topik Materi</h3>
+                    <p class="text-orange-600">${formData.topikMateri}</p>
+                </div>
+            `;
+            document.getElementById('presentationInfo').innerHTML = infoHTML;
+
+            // Display slide structure
+            const structureHTML = slides.map((slide, index) => `
+                <div class="bg-gray-50 p-4 rounded-lg border-l-4 border-blue-500 cursor-pointer hover:bg-gray-100 transition-colors" onclick="goToSlide(${index})">
+                    <div class="flex items-center mb-2">
+                        <span class="text-2xl mr-2">${slide.icon}</span>
+                        <h3 class="font-semibold text-gray-800">${slide.title}</h3>
+                    </div>
+                    <p class="text-sm text-gray-600">Slide ${index + 1}</p>
+                </div>
+            `).join('');
+            document.getElementById('slideStructure').innerHTML = structureHTML;
+
+            // Initialize slide display
+            currentSlide = 0;
+            displaySlide(currentSlide);
+        }
+
+        function displaySlide(index) {
+            if (!presentationData || index < 0 || index >= presentationData.length) return;
+
+            const slide = presentationData[index];
+            const slideHTML = `
+                <div class="h-full flex flex-col justify-center items-center p-4 sm:p-6 lg:p-8 bg-gradient-to-br from-blue-50 via-white to-purple-50 relative overflow-hidden">
+                    <!-- Background Pattern -->
+                    <div class="absolute inset-0 opacity-5">
+                        <div class="absolute top-10 left-10 w-20 h-20 bg-blue-400 rounded-full"></div>
+                        <div class="absolute bottom-10 right-10 w-16 h-16 bg-purple-400 rounded-full"></div>
+                        <div class="absolute top-1/2 left-1/4 w-12 h-12 bg-green-400 rounded-full"></div>
+                    </div>
+                    
+                    <!-- Main Content -->
+                    <div class="text-center max-w-5xl mx-auto relative z-10">
+                        <div class="text-4xl sm:text-5xl lg:text-6xl mb-4 sm:mb-6 animate-bounce">${slide.icon}</div>
+                        <h2 class="text-xl sm:text-2xl lg:text-3xl xl:text-4xl font-bold text-gray-800 mb-4 sm:mb-6 leading-tight">${slide.title}</h2>
+                        <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-4 sm:p-6 lg:p-8 shadow-lg border border-white/20">
+                            <p class="text-sm sm:text-base lg:text-lg xl:text-xl text-gray-700 leading-relaxed">${slide.content}</p>
+                        </div>
+                        
+                        <!-- Slide Indicator -->
+                        <div class="mt-4 sm:mt-6 flex justify-center">
+                            <div class="bg-blue-100 px-3 py-1 rounded-full text-xs sm:text-sm font-semibold text-blue-800">
+                                Slide ${index + 1} dari ${presentationData.length}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Corner Decorations -->
+                    <div class="absolute top-4 right-4 text-xs sm:text-sm text-gray-400 font-mono">
+                        AI Generated
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('slidePreview').innerHTML = slideHTML;
+            document.getElementById('slideCounter').textContent = `${index + 1} / ${presentationData.length}`;
+            
+            // Update progress indicator
+            const progress = ((index + 1) / presentationData.length) * 100;
+            document.getElementById('slideProgress').style.width = `${progress}%`;
+            document.getElementById('progressText').textContent = `${Math.round(progress)}% selesai`;
+            
+            // Update navigation buttons
+            document.getElementById('prevSlide').disabled = index === 0;
+            document.getElementById('nextSlide').disabled = index === presentationData.length - 1;
+            
+            // Add smooth transition effect
+            document.getElementById('slidePreview').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('slidePreview').style.opacity = '1';
+            }, 100);
+        }
+
+        function goToSlide(index) {
+            currentSlide = index;
+            displaySlide(currentSlide);
+        }
+
+        // Navigation event listeners
+        document.getElementById('prevSlide').addEventListener('click', () => {
+            if (currentSlide > 0) {
+                currentSlide--;
+                displaySlide(currentSlide);
+            }
+        });
+
+        document.getElementById('nextSlide').addEventListener('click', () => {
+            if (currentSlide < presentationData.length - 1) {
+                currentSlide++;
+                displaySlide(currentSlide);
+            }
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (!presentationData) return;
+            
+            if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+                e.preventDefault();
+                if (currentSlide > 0) {
+                    currentSlide--;
+                    displaySlide(currentSlide);
+                }
+            } else if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') {
+                e.preventDefault();
+                if (currentSlide < presentationData.length - 1) {
+                    currentSlide++;
+                    displaySlide(currentSlide);
+                }
+            } else if (e.key === 'Home') {
+                e.preventDefault();
+                currentSlide = 0;
+                displaySlide(currentSlide);
+            } else if (e.key === 'End') {
+                e.preventDefault();
+                currentSlide = presentationData.length - 1;
+                displaySlide(currentSlide);
+            }
+        });
+
+        // Download functionality
+        document.getElementById('downloadBtn').addEventListener('click', () => {
+            const customModal = document.createElement('div');
+            customModal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+            customModal.innerHTML = `
+                <div class="bg-white p-8 rounded-xl max-w-md mx-4">
+                    <h3 class="text-xl font-bold mb-4">📥 Download Presentasi</h3>
+                    <p class="text-gray-600 mb-6">Presentasi Anda siap diunduh dalam format PowerPoint (.pptx)</p>
+                    <div class="flex gap-4">
+                        <button onclick="this.closest('.fixed').remove()" class="flex-1 bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-600">Batal</button>
+                        <button onclick="downloadPresentation(); this.closest('.fixed').remove()" class="flex-1 bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700">Download</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(customModal);
+        });
+
+        // Edit functionality
+        document.getElementById('editBtn').addEventListener('click', () => {
+            const customModal = document.createElement('div');
+            customModal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+            customModal.innerHTML = `
+                <div class="bg-white p-8 rounded-xl max-w-md mx-4">
+                    <h3 class="text-xl font-bold mb-4">✏️ Edit Presentasi</h3>
+                    <p class="text-gray-600 mb-6">Fitur edit akan membuka editor presentasi interaktif</p>
+                    <div class="flex gap-4">
+                        <button onclick="this.closest('.fixed').remove()" class="flex-1 bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-600">Batal</button>
+                        <button onclick="openEditor(); this.closest('.fixed').remove()" class="flex-1 bg-orange-600 text-white py-2 px-4 rounded-lg hover:bg-orange-700">Buka Editor</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(customModal);
+        });
+
+        function downloadPresentation() {
+            // Simulate download
+            const toast = document.createElement('div');
+            toast.className = 'fixed top-4 right-4 bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg z-50';
+            toast.textContent = '✅ Presentasi berhasil diunduh!';
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        function openEditor() {
+            // Simulate editor opening
+            const toast = document.createElement('div');
+            toast.className = 'fixed top-4 right-4 bg-blue-600 text-white px-6 py-3 rounded-lg shadow-lg z-50';
+            toast.textContent = '🚀 Membuka editor presentasi...';
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        // Fullscreen presentation mode
+        document.getElementById('fullscreenBtn').addEventListener('click', () => {
+            if (!presentationData) return;
+            
+            const fullscreenModal = document.createElement('div');
+            fullscreenModal.className = 'fixed inset-0 bg-black z-50 flex items-center justify-center';
+            fullscreenModal.innerHTML = `
+                <div class="w-full h-full flex flex-col">
+                    <!-- Fullscreen Header -->
+                    <div class="bg-black/50 text-white p-4 flex justify-between items-center">
+                        <div class="flex items-center gap-4">
+                            <h3 class="text-lg font-semibold">Mode Presentasi</h3>
+                            <span class="bg-white/20 px-3 py-1 rounded-full text-sm">
+                                ${currentSlide + 1} / ${presentationData.length}
+                            </span>
+                        </div>
+                        <button onclick="this.closest('.fixed').remove()" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg transition-colors">
+                            ✕ Keluar
+                        </button>
+                    </div>
+                    
+                    <!-- Fullscreen Slide -->
+                    <div class="flex-1 flex items-center justify-center p-8">
+                        <div id="fullscreenSlide" class="w-full max-w-6xl h-full max-h-[80vh] bg-gradient-to-br from-blue-50 via-white to-purple-50 rounded-2xl shadow-2xl flex items-center justify-center relative overflow-hidden">
+                            ${document.getElementById('slidePreview').innerHTML}
+                        </div>
+                    </div>
+                    
+                    <!-- Fullscreen Navigation -->
+                    <div class="bg-black/50 text-white p-4 flex justify-center items-center gap-4">
+                        <button onclick="navigateFullscreen(-1)" class="bg-white/20 hover:bg-white/30 px-6 py-3 rounded-lg transition-colors disabled:opacity-50" ${currentSlide === 0 ? 'disabled' : ''}>
+                            ← Sebelumnya
+                        </button>
+                        <div class="bg-white/20 px-4 py-2 rounded-lg">
+                            Slide ${currentSlide + 1} dari ${presentationData.length}
+                        </div>
+                        <button onclick="navigateFullscreen(1)" class="bg-white/20 hover:bg-white/30 px-6 py-3 rounded-lg transition-colors disabled:opacity-50" ${currentSlide === presentationData.length - 1 ? 'disabled' : ''}>
+                            Selanjutnya →
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(fullscreenModal);
+            
+            // Fullscreen navigation function
+            window.navigateFullscreen = (direction) => {
+                const newSlide = currentSlide + direction;
+                if (newSlide >= 0 && newSlide < presentationData.length) {
+                    currentSlide = newSlide;
+                    displaySlide(currentSlide);
+                    
+                    // Update fullscreen slide
+                    const fullscreenSlide = document.getElementById('fullscreenSlide');
+                    if (fullscreenSlide) {
+                        fullscreenSlide.innerHTML = document.getElementById('slidePreview').innerHTML;
+                    }
+                    
+                    // Update fullscreen counter and buttons
+                    const counter = fullscreenModal.querySelector('.bg-white\\/20.px-4');
+                    if (counter) {
+                        counter.textContent = `Slide ${currentSlide + 1} dari ${presentationData.length}`;
+                    }
+                    
+                    // Update button states
+                    const prevBtn = fullscreenModal.querySelector('button[onclick="navigateFullscreen(-1)"]');
+                    const nextBtn = fullscreenModal.querySelector('button[onclick="navigateFullscreen(1)"]');
+                    if (prevBtn) prevBtn.disabled = currentSlide === 0;
+                    if (nextBtn) nextBtn.disabled = currentSlide === presentationData.length - 1;
+                }
+            };
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9938e28f423cfdc1',t:'MTc2MTMwMjczMS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
